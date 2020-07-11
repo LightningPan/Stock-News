@@ -1,13 +1,17 @@
 package com.server.main;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
 public class User {
     @Id
+    @Column(length = 100)
     private String openid;
+    @Column(length = 100)
     private String session_key;
+    @Column(length = 100)
     private String token;
 
     public User() {

@@ -1,13 +1,19 @@
 package com.server.main;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class UserStock {
+public class UserStock implements Serializable {
+
     @Id
+    @Column(length = 100)
+    private String Id;
+    @Column(length = 100)
     private String openid;
-    @Id
+    @Column(length = 100)
     private String stock;
 
     public UserStock() {
@@ -27,5 +33,12 @@ public class UserStock {
 
     public void setStock(String stock) {
         this.stock = stock;
+    }
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 }

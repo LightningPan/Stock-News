@@ -9,10 +9,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;
@@ -23,7 +21,9 @@ import java.util.Map;
 public class Login {
 
     private EntityManager em;
+    @Autowired
     private UserRepository userRepository;
+
     public Map<String,String> getWxUserOpenid(String code,String APPID,String APPSecret){
         String url="https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+APPSecret+"&js_code="+code+"&grant_type=authorization_code";
         Map<String,String> map=new HashMap<String,String>();
@@ -33,10 +33,7 @@ public class Login {
             HttpResponse response=client.execute(get);
             HttpEntity result=response.getEntity();
             String content= EntityUtils.toString(result);
-            //JSONObject json= JSON.parseObject(content);
             map= JSON.parseObject(content,new TypeReference<HashMap<String,String>>(){});
-            //map.put("openid",json.getString("openid"));
-            //map.put("session_key",json.getString("session_key"));
         }
         catch (Exception e){
 
@@ -44,11 +41,17 @@ public class Login {
         return map;
     }
 
-    @RequestMapping(value = "{code}",method = RequestMethod.POST)
-    public String wxLogin(@PathVariable(value = "code") String code){
-
+    @RequestMapping(method = RequestMethod.POST)
+    public String wxLogin(@RequestParam(value = "code") String code){
+        if(code==null){
+            return "fail";
+        }
+        code=code.substring(1);
         try{
-            Map map=getWxUserOpenid(code,,);
+            Map map=getWxUserOpenid(code,"wx6da9db3558e80c44","14a14aef47e5215df9d59c161f799a57");
+            if(map.get("openid")==null){
+                return "fail";
+            }
             User user=new User();
             user.setOpenid((String) map.get("openid"));
             user.setSession_key((String) map.get("session_key"));

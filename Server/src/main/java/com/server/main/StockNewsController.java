@@ -1,3 +1,8 @@
+/*
+ * author:Tan Pan
+ * create time:2020-07-07
+ * update time:2020-07-12
+ * */
 package com.server.main;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +29,7 @@ public class StockNewsController {
                                       @RequestParam(value = "Range" ,defaultValue = "10") Integer range,
                                       @RequestParam(value="Order",defaultValue = "desc") String order){
         try{
-            String sql="select * from "+location+StockCode+" where releaseTime>='"+date+"' order by releaseTime "+order+" limit "+range;
+            String sql="select * from "+location+StockCode+"news where time>='"+date+"' order by time "+order+" limit "+range;
             Query nativeQuery=em.createNativeQuery(sql);
             List<Object[]> resultList=nativeQuery.getResultList();
             return resultList;
@@ -36,6 +41,25 @@ public class StockNewsController {
             result.add(failResult);
             return result;
         }
+    }
+    @RequestMapping(value = "FuzzySearch",method = RequestMethod.GET)
+    public List<Object[]> fuzzySearch(@RequestParam(value = "content")String content,
+                                      @RequestParam(value = "Location",defaultValue = "sh") String location,
+                                      @RequestParam("StockCode") String StockCode){
+        try{
+            String sql="select title,path from "+location+StockCode+"news where title REGEXP '"+content+"' OR author REGEXP '"+content+"'";
+            Query nativeQuery=em.createNativeQuery(sql);
+            List<Object[]> resultList=nativeQuery.getResultList();
+            return resultList;
+        }
+        catch (Exception e){
+            List<Object[]> result=new ArrayList<Object[]>() ;
+            Object[] failResult=new Object[1];
+            failResult[0]="Fail";
+            result.add(failResult);
+            return result;
+        }
+
     }
 
 }

@@ -1,12 +1,18 @@
+/*
+ * author:Tan Pan
+ * create time:2020-07-07
+ * update time:2020-07-12
+ * */
 package com.server.main;
 
-import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +24,7 @@ public class StockDetailController {
 
     @RequestMapping(value = "Day",method= RequestMethod.GET)
     public List<Object[]> searchByDate(@RequestParam("Date") String date,
-                                       @RequestParam(value = "Location",defaultValue = "sh") String location,
+                                       @RequestParam(value = "Location",defaultValue = "SH") String location,
                                        @RequestParam("StockCode") String StockCode){
         try{
         String sql="select * from "+location+StockCode+" where time='"+date+"'";

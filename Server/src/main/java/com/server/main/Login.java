@@ -1,3 +1,8 @@
+/*
+ * author:Tan Pan
+ * create time:2020-07-09
+ * update time:2020-07-10
+ * */
 package com.server.main;
 
 import com.alibaba.fastjson.JSON;
@@ -43,10 +48,10 @@ public class Login {
 
     @RequestMapping(method = RequestMethod.POST)
     public String wxLogin(@RequestParam(value = "code") String code){
+        System.out.println(code);
         if(code==null){
             return "fail";
         }
-        code=code.substring(1);
         try{
             Map map=getWxUserOpenid(code,"wx6da9db3558e80c44","14a14aef47e5215df9d59c161f799a57");
             if(map.get("openid")==null){

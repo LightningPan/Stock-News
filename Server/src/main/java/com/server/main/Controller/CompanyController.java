@@ -3,7 +3,7 @@
 * create time:2020-07-07
 * update time:2020-07-12
 * */
-package com.server.main;
+package com.server.main.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

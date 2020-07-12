@@ -3,8 +3,9 @@
  * create time:2020-07-09
  * update time:2020-07-10
  * */
-package com.server.main;
+package com.server.main.Repository;
 
+import com.server.main.Wx.UserStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

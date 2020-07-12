@@ -3,10 +3,11 @@
  * create time:2020-07-09
  * update time:2020-07-10
  * */
-package com.server.main;
+package com.server.main.Wx;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.server.main.Repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

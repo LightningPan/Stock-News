@@ -1,0 +1,83 @@
+ <!--作者：李广 尚志强-->
+<!--pages/mainpage/shareDetail/shareDetail.wxml-->
+<view class="imageBg1">
+  <cu-custom class="text-white" bgColor="imageBg1" isBack="{{true}}">
+    <view slot="backText">返回</view>
+    <view slot="content">
+      <text class="text-xl">{{name}}</text>
+    </view>
+  </cu-custom>
+  <view class="cu-bar solid-bottom margin-top text-white ">
+    <view class='action'>
+      <text class='cuIcon-titles  '></text> {{name}}词云图
+    </view>
+    <view  bindtap='save'>
+        <button class=" cu-btn lines-white saveBtn">
+          {{saveBtnContent}}</button>
+      </view>
+  </view>
+</view>
+<image wx:if="false" class="ciyuntuSs"  src="{{imageSrc}}" mode="aspectFit"></image>
+<view class="box">
+</view>
+
+
+<view class="imageBg1">
+  <view class=" text-align">
+
+    <view class="flex align-center">
+      <view class="flex-treble ">
+
+        <view class="  text-white  share-price ">
+          <text class="text-df" decode='true'>今日股票{{(weekDay==5)||(weekDay==6)?'的':''}}当前价: </text>
+          <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{price}}
+          <text class="text-df">\n预测{{(weekDay==5)||(weekDay==6)?'下周一':'明天'}}收盘价: </text>
+          <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{forecast}}</view>
+      </view>
+
+
+      <view class="flex-sub  radius " bindtap='save'>
+        <button class=" cu-btn lines-white saveBtn">
+          {{saveBtnContent}}</button>
+      </view>
+    </view>
+
+  </view>
+
+
+  <view class="grid col-3 margin-bottom text-white text-center">
+    <view class="text-df indexnum">今日开盘价</view>
+    <view class="text-df indexnum">今日最高价</view>
+    <view class="text-df indexnum">今日最小价</view>
+    <view class="indexnum">
+      <view class="text-xl ">
+        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{kaipan}}
+      </view>
+
+    </view>
+    <view class="indexnum">
+      <view class="text-xl ">
+        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{max}}
+      </view>
+
+    </view>
+    <view class="indexnum">
+      <view class="text-xl ">
+        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view>{{min}}
+      </view>
+
+    </view>
+  </view>
+</view>
+
+<view class="foreast-info">
+
+  <canvas style="width: 98%; height: 200px;" canvas-id="yueEle" binderror="canvasIdErrorCallback"></canvas>
+
+</view>
+
+<view class='cu-load load-modal'  wx:if="{{loadModal}}">
+  <!-- <view class='cuIcon-emojifill text-orange'></view> -->
+  <image src='/images/logo.png' class='png' mode='aspectFit'></image>
+  <view class='black-text'>分析数据中...</view>
+</view>

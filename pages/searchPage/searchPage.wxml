@@ -1,0 +1,40 @@
+ <!--作者：李广 尚志强-->
+<!--pages/searchPage/searchPage.wxml-->
+
+<view class="bg-black shadow shadow-lg  radius indexFrame">
+  <view class="bg-black shadow shadow-lg  radius indexFrame">
+    <cu-custom bgColor="imageBg1" isBack="{{true}}">
+      <view slot="backText">返回</view>
+      <view slot="content">我的自选</view>
+    </cu-custom>
+    <view class="cu-bar  search">
+      <view class="search-form  radius">
+        <text class="cuIcon-search"></text>
+        <input type="text" bindinput="getinput" auto-focus placeholder="搜索股票" confirm-type="search" bindconfirm="searchShare" bindinput="getInput"></input>
+      </view>
+      <view class="action">
+        <button class="cu-btn bg-black round" bindtap="searchShare">搜索</button>
+      </view>
+    </view>
+  </view>
+  <import src="shareItem/shareItem.wxml" />
+  <view>
+
+    <view class="padding-xxl radius bg-black  grid flex flex-wrap  text-center margin-bottom ">
+      <view class="basis-sm">
+        <view class=" text-m text-left padding-left-xl ">股票预测详情</view>
+      </view>
+
+
+    </view>
+
+    <block wx:for="{{shareItems}}" wx:key="shareItems" wx:for-item="item">
+      <template is="shareItemTemp" data="{{item}}" />
+    </block>
+  </view>
+</view>
+<view class="" hover-class="none" hover-stop-propagation="false">
+  <image class="" src="/images/Figure_1.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
+    
+  </image>
+</view>

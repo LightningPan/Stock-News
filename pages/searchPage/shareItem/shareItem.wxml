@@ -1,0 +1,26 @@
+<!--pages/searchPage/shareItem/shareItem.wxml-->
+
+<template name="shareItemTemp">
+
+
+  <view class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
+    <view class="basis-lg  " bindtap="NavtoShare" data-cur="{{[item.market,item.shareNum,item.isSelected]}}">
+      <view class=" text-md text-cut text-bold text-left padding-left-lg align-center" style="width:200px">
+
+        <view class=" text-xl ShareNameSs">{{item.shareName}}</view>
+        <view class="cu-tag line-white">{{item.shareMarket=='gb_'?'us':item.market}}</view> <text class=" text-l text-grey text-left ">{{item.shareNum}}</text></view>
+    </view>
+    <!-- <view class="basis-xs  " bindtap="NavtoShare" data-cur="{{[item.market,item.shareNum]}}">
+      <view class=" text-l text-grey text-left padding-left-lg ">{{item.shareNum}}</view>
+    </view> -->
+    <view class="basis-sm text-sm ">
+      <button class="btnSs cu-btn lines-white padding-right-lg " bindtap="addOrDelShare" data-cur="{{[item.isSelected,item.shareNum,item.index]}}">
+        <text>{{item.isSelected?'已添加':'+自选'}}</text>
+      </button>
+    </view>
+
+
+  </view>
+
+
+</template>

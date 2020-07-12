@@ -1,0 +1,19 @@
+ <!--作者：李广 尚志强-->
+<!--pages/mainpage/myOption/indexItem/indexItem.wxml-->
+<template  name="indexItemTemp">
+
+
+  <view bindtap="NavtoShare" data-cur="{{[item.market,item.shareNum,item.isSelected]}}" class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
+    <view class="basis-sm  ">
+    <view class=" text-xl text-bold text-left padding-left-lg ">{{item.shareName}}</view>
+      <view class=" padding-left-lg  align-center" > <view class="cu-tag sm line-white ">{{item.market=='gb_'?'us':item.market}}</view>
+     {{item.shareNum}}</view></view>
+    <view class="basis-xs text-left "> 
+    <view class="text-sm">{{item.market=='gb_'?'$':item.market=='hk'?'HKD':'￥'}}</view>
+    <view class="text-lg" > {{item.price}}</view>
+    </view>
+    <view class=" text-lg basis-xs  text-left   {{item.present>0?'text-red':'text-green'}}">{{item.present}}%</view>
+    <view wx:if="{{item.forecast>0}}" class=" text-lg  basis-xs  text-left  {{item.forecast-item.price>0?'text-red':'text-green'}}">{{item.forecast}}</view> <view wx:else><text class="text-sm">计算中....</text></view>
+  </view>
+
+</template>

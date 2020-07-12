@@ -1,0 +1,12 @@
+ <!--作者：李广 尚志强-->
+<cu-custom class="text-white" bgColor="imageBg1" isBack="{{true}}">
+  <view slot="backText">返回</view>
+</cu-custom>
+
+<view class="solid-bottom text-xl text-center padding">
+  <text class="text-white text-bold">{{newsdata.title}}</text>
+
+</view>
+
+<import src="/towxml/entry.wxml" />
+<template is="entry" data="{{...article}}" />

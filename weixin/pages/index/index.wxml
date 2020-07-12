@@ -1,0 +1,49 @@
+ <!--作者：李广 尚志强-->
+<scroll-view scroll-y class="scrollPage">
+  <view class="UCenter-bg">
+    <image src="/images/greenleeks.png" class="png" style="width:150px; height:150px "></image>
+    <view class="text-sl  text-bold">leeks
+    </view>
+
+    
+  </view>
+
+
+  <view class="padding flex flex-direction  margin-top-xl ">
+    <button class="cu-btn lines-black lg " wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权leeks</button>
+    <button class="cu-btn lines-black lg " wx:else bindtap='btn_login'>进入leeks</button>
+
+    <navigator open-type="exit" target="miniProgram">
+      <button style="width:100%" class="cu-btn bg-black margin-top-lg lg ">离开leeks</button>
+    </navigator>
+
+
+
+    <view class="cu-modal {{modalName=='notNwModal'?'show':''}}">
+      <view class="cu-dialog  ">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">请检查网络</view>
+        </view>
+        <view class="padding-xl">
+          leeks,要在正常网络环境才能使用，请检查网络是否正常，再重新打开小程序
+        </view>
+        <view class="cu-bar bg-white">
+         <navigator style="width:100%" open-type="exit" target="miniProgram">
+        <view    class="action margin-0 flex-sub text-center  solid-left" bindtap="hideModal">我知道了</view>
+    </navigator>
+        
+        </view>
+
+      </view>
+    </view>
+
+
+
+
+
+
+
+  </view>
+
+
+</scroll-view>

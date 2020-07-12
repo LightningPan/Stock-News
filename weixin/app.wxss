@@ -1,0 +1,31 @@
+/**app.wxss**/
+/*<--作者：李广 尚志强-->*/
+@import "colorui/main.wxss";
+@import "colorui/icon.wxss";
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+.topbg{
+  background-color: #2f3640;
+}
+.imageBg1{
+
+  background-size: cover;
+}
+.imageBg2{
+
+  background-size: cover;
+}.imageBg3{
+  
+  background-size: cover;
+}
+ .searchbtn {
+  background-color: #273c75;
+}

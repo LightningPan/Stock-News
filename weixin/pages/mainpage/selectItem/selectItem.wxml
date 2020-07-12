@@ -1,0 +1,23 @@
+ <!--作者：李广 尚志强-->
+<!--pages/mainpage/selectItem/selectItem.wxml-->
+
+<template name="selectItemTemp">
+
+
+  <view class="padding-xxl text-white radius  grid flex flex-wrap  align-center margin-bottom ">
+    <view class="basis-sm  " bindtap="NavtoShare" data-cur="{{[item.market,item.shareNum]}}">
+      <view class=" text-md text-cut text-bold text-left padding-left-lg align-center" style="width:150px">
+        <view class="cu-tag line-white">{{item.shareMarket=='gb_'?'us':item.market}}</view> {{item.shareName}}</view>
+    </view>
+    
+    <view class="basis-sm  text-sm ">
+      <button class="btnSs cu-btn lines-white padding-right-lg " bindtap="addOrDelShare" data-cur="{{[item.isSelected,item.shareNum,item.index]}}" >
+        <text>{{item.isSelected?'已添加':'+自选'}}</text>
+      </button>
+    </view>
+
+
+  </view>
+
+
+</template>

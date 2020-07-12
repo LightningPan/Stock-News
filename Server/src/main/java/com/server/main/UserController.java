@@ -1,5 +1,9 @@
+/*
+ * author:Tan Pan
+ * create time:2020-07-09
+ * update time:2020-07-10
+ * */
 package com.server.main;
-
 
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +20,7 @@ public class UserController {
         String openid=userRepository.queryOpenId(token);
         return userStockRepository.queryAllByOpenid(openid);
     }
+
 
 
 

@@ -1,0 +1,373 @@
+ <!--作者：李广 尚志强-->
+<scroll-view scroll-y bindscroll="onPageScroll" scroll-top="{{NewsscrollTop}}" bindscrolltolower="onReachBottom" class="DrawerPage {{modalName=='selectModal'?'show':''}}">
+  <!-- myOption -->
+  <view wx:if="{{PageCur=='myOption'}}">
+    <view class="bg-black shadow shadow-lg  radius indexFrame">
+      <cu-custom bgColor="imageBg1" isBack="{{true}}">
+        <view slot="backText">返回</view>
+        <view slot="content">我的自选</view>
+      </cu-custom>
+      <view class="cu-bar  search">
+        <view class="search-form  radius">
+          <text class="cuIcon-search"></text>
+          <input type="text" placeholder="搜索股票" confirm-type="search" bindtap="navToSp"></input>
+        </view>
+        <view class="action ">
+          <button class="cu-btn bg-black round">搜索</button>
+        </view>
+      </view>
+      <view class="grid col-3 margin-bottom text-center">
+        <view class="text-xl indexnum">{{ hsstockIndexs[0].name}}</view>
+        <view class="text-xl indexnum">{{ ggstockIndexs[0].name}}</view>
+        <view class="text-xl indexnum">{{ mgstockIndexs[0].name}}</view>
+        <view class="indexnum">
+          <view class="text-xl ">
+            {{ hsstockIndexs[0].price}}
+          </view>
+          <view class="  grid flex text-sm  ">
+            <view class="  flex-twice padding-sm {{hsstockIndexs[0].changePrice>0?'text-red':'text-green'}}">{{hsstockIndexs[0].changePrice}}</view>
+            <view class=" flex-twice padding-sm {{hsstockIndexs[0].present>0?'text-red':'text-green'}}">{{hsstockIndexs[0].present}}% </view>
+
+          </view>
+        </view>
+        <view class="indexnum">
+          <view class="text-xl ">
+            {{ ggstockIndexs[0].price}}
+          </view>
+          <view class="  grid flex text-sm  ">
+            <view class="  flex-twice padding-sm {{ggstockIndexs[0].changePrice>0?'text-red':'text-green'}}">{{ggstockIndexs[0].changePrice}} </view>
+            <view class=" flex-twice padding-sm {{ggstockIndexs[0].present>0?'text-red':'text-green'}}">{{ggstockIndexs[0].present}}% </view>
+
+          </view>
+        </view>
+        <view class="indexnum">
+          <view class="text-xl ">
+            {{ mgstockIndexs[0].price}}
+          </view>
+          <view class="  grid flex  text-sm ">
+            <view class="  flex-twice padding-sm {{mgstockIndexs[0].changePrice>0?'text-red':'text-green'}}">{{mgstockIndexs[0].changePrice}}</view>
+            <view class=" flex-twice padding-sm {{mgstockIndexs[0].present>0?'text-red':'text-green'}}">{{mgstockIndexs[0].present}}% </view>
+
+          </view>
+        </view>
+
+
+        <!-- 
+    <view class="text indexnum" wx:for="{{6}}" wx:key>
+      <text class="{{stockIdexs[index].present>0?'text-red':'text-black'}}" wx:if="{{index<3}}"> {{ stockIdexs[index].present}}% </text>
+      <text class="{{stockIdexs[index-3].forecast>0?'text-red':'text-black'}}" wx:if="{{index>=3}}"> {{ stockIdexs[index-3].forecast}}%</text>
+
+    </view> -->
+      </view>
+
+    </view>
+    <import src="myOption/indexItem/indexItem.wxml" />
+    <view>
+
+      <view class="padding-xxl radius bg-black imageBg1 grid flex flex-wrap  text-center margin-bottom ">
+        <view class="basis-sm">
+          <view class=" text-m text-left padding-left-xl ">股票名称</view>
+          <view class=" text-sm text-grey text-left padding-left-xl">股票代号</view>
+        </view>
+        <view class="  text-sm basis-xs padding-top-sm text-left ">当前价格</view>
+        <view class=" text-sm basis-xs padding-top-sm text-left">当前涨跌幅</view>
+        <view class=" text-xs basis-xs padding-top-sm text-left">预测明日收盘价</view>
+      </view>
+
+      <block wx:for="{{indexItems}}" wx:key="indexItems" wx:for-item="item">
+        <template is="indexItemTemp" data="{{item}}" />
+      </block>
+    </view>
+
+    <view class="margin-bottom-xl">
+      <text>\n
+  </text>
+    </view>
+  </view>
+
+  <!-- marketPage -->
+
+  <view wx:if="{{PageCur=='marketPage'}}">
+    <view class="bg-black shadow shadow-lg  radius indexFrame">
+
+      <cu-custom bgColor="imageBg1" isBack="{{true}}">
+        <view slot="backText">返回</view>
+        <view slot="content">行情资讯</view>
+      </cu-custom>
+
+      <view class="cu-bar search">
+        <view class="search-form  radius">
+          <text class="cuIcon-search"></text>
+          <input type="text" placeholder="搜索股票" confirm-type="search" bindtap="navToSp"></input>
+        </view>
+        <view class="action ">
+          <button class="cu-btn bg-black round">搜索</button>
+        </view>
+      </view>
+
+    </view>
+
+    <scroll-view scroll-x class="imageBg1 nav">
+      <view class="flex text-center">
+        <view class=" cu-item flex-sub  {{index==TabCur?'text-white cur':''}} " wx:for="{{3}}" wx:key bindtap="marketSelect" data-id="{{index}}">
+          <view class="text-white"> {{marketName[index]}}</view>
+        </view>
+      </view>
+    </scroll-view>
+
+
+
+
+
+    <view wx:if="{{TabCur==0}}">
+
+      <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ hsstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
+          <view class="text-xl  text-white " wx:key>{{ hsstockIndexs[index].price}}</view>
+
+          <view class="  grid flex  text-sm  ">
+            <view class="  flex-twice padding-sm  {{hsstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{hsstockIndexs[index].changePrice}} </view>
+            <view class=" flex-twice padding-sm  {{hsstockIndexs[index].present>0?'text-red':'text-green'}}">{{hsstockIndexs[index].present}}% </view>
+
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{TabCur==1}}">
+      <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ ggstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
+          <view class="text-xl  text-white " wx:key>{{ ggstockIndexs[index].price}}</view>
+
+          <view class="  grid flex  text-sm  ">
+            <view class="  flex-twice padding-sm  {{ggstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{ggstockIndexs[index].changePrice}} </view>
+            <view class=" flex-twice padding-sm  {{ggstockIndexs[index].present>0?'text-red':'text-green'}}">{{ggstockIndexs[index].present}}% </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <view wx:if="{{TabCur==2}}">
+      <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ mgstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
+          <view class="text-xl  text-white " wx:key>{{ mgstockIndexs[index].price}}</view>
+
+          <view class="  grid flex  text-sm  ">
+            <view class="  flex-twice padding-sm  {{mgstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{mgstockIndexs[index].changePrice}} </view>
+            <view class=" flex-twice padding-sm  {{mgstockIndexs[index].present>0?'text-red':'text-green'}}">{{mgstockIndexs[index].present}}% </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <view class="cu-bar solid-bottom margin-top text-white imageBg1">
+      <view class='action'>
+        <text class='cuIcon-titles  '></text> 股市资讯
+      </view>
+    </view>
+
+
+
+
+    <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key>
+      <view class="cu-item cardStyle " bindtap="NavtoNewsPage" data-cur="{{index}}">
+        <view class="content">
+          <view class="desc">
+            <view class="text-content padding-sm  ">
+              <view class="text-xl text-white ">{{newsTitles[index].title}}</view>
+            </view>
+            <view>
+              <view class="cu-tag bg-red light sm round">{{newsTitles[index].source}}</view>
+            </view>
+          </view>
+          <image class="padding-sm " src="{{newsTitles[index].headpic}}  " mode="aspectFill"></image>
+
+        </view>
+      </view>
+    </view>
+          <view class="goTop" hidden='{{!showGoTop}}'  bindtap="goTop">回到顶部</view>
+    <view class="cu-load bg-black loading"></view>
+
+
+
+    <view class="margin-bottom-xl">
+      <text>\n
+  </text>
+
+
+
+    </view>
+  </view>
+
+
+
+  <view class="messagePageSs" wx:if="{{PageCur=='messagesPage'}}">
+    <view class="text-white">
+      <cu-custom bgColor="imageBg1" isBack="{{true}}">
+        <view slot="backText">返回</view>
+        <view slot="content">消息</view>
+      </cu-custom>
+    </view>
+    <view class = "text-center margin-top-xl" wx:if="{{messagesData.num==0}}">
+     <text class="cuIcon-emoji xxl text-black"></text><text class="text-xxl text-black text-bold"> 暂无消息~ </text>
+    </view>
+    <block wx:for="{{messagesData}}" wx:key="messagesData" wx:for-item="message">
+
+      <view wx:if="{{index!='num'}}"  class="cu-timeline ">
+        <view class="cu-time  ">{{message[0].date}}</view>
+
+        <block wx:for="{{message}}" wx:key="message" wx:for-item="content">
+          <view class=" cu-item" bindtap="NavtoShare" data-cur="{{[content.contents.market,content.contents.sharenum,true]}}" cur cuIcon-noticefill>
+            <view class="content  bg-black shadow-blur">
+
+
+              <view>{{content.contents.content}} </view>
+              <view class="text-right padding"> ————
+                <view class="cu-tag sm line-white ">{{content.contents.market=='gb_'?'us':content.contents.market}}</view>
+                {{content.contents.sharenum}}
+                <text>{{content.contents.sharename}} </text>
+              </view>
+            </view>
+
+          </view>
+        </block>
+      </view>
+    </block>
+    <view class="margin-bottom-xl">
+      <text>\n
+  </text>
+    </view>
+  </view>
+
+
+
+
+  <!-- myPage -->
+  <view wx:if="{{PageCur=='myPage'}}" class="personalView  bg-white">
+
+
+    <scroll-view scroll-y class="scrollPage ">
+      <view class="shadow shadow-lg ">
+        <view class="UCenter-bg">
+          <cu-custom class="text-white" isBack="{{true}}">
+            <view slot="backText">返回</view>
+            <view slot="content">我的</view>
+          </cu-custom>
+          <view class="avater_nickname ">
+            <view class="cu-avatar xl round" style="background-image:url({{userInfo.avatarUrl}})"></view>
+            <view class="text-xxl text-center">{{userInfo.nickName}}
+            </view>
+
+          </view>
+          <image src="http://i1.fuimg.com/691748/83388a096d28fab7.gif" mode="scaleToFill" class="gif-wave"></image>
+        </view>
+        <view class=" text-bold text-center">
+          <text class="text-xxl">leeks</text>
+
+          <text>\nleeks-致力于散户翻身</text>
+        </view>
+        <view class="padding flex flex-direction margin-top-">
+
+          <button class="cu-btn lines-black margin-tb-sm lg" bindtap="showModal" data-target="introduceModal">关于leeks</button>
+          <view class="cu-modal {{modalName=='introduceModal'?'show':''}}">
+            <view class="cu-dialog  ">
+              <view class="cu-bar bg-white justify-end">
+                <view class="content">关于leeks</view>
+              </view>
+              <view class="padding-xl">
+                leeks, 由2020韭菜实训团队倾力打造，致力于为散户翻身
+              </view>
+              <view class="cu-bar bg-white">
+                <view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">我知道了</view>
+              </view>
+
+            </view>
+          </view>
+          <button class="cu-btn bg-black margin-tb-sm lg" bindtap="showModal" data-target="feedbackModal">意见反馈 </button>
+          <view class="fbSs" wx:if="{{modalName=='feedbackModal'}}">
+            <view class="cu-dialog   ">
+              <view class="cu-form-group  align-start">
+                <view class="title">意见反馈:</view>
+                <textarea value='{{fbInput}}' bindinput="getFbIput"></textarea>
+              </view>
+
+
+              <view class="cu-bar bg-white">
+                <view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">发送</view>
+              </view>
+
+            </view>
+          </view>
+
+          <button class="cu-btn lines-black margin-tb-sm lg" bindtap="showModal" data-target="selectModal">我的自选</button>
+
+
+
+        </view>
+        <view>
+
+
+
+
+        </view>
+      </view>
+      <view class="margin-bottom-xl">
+        <text>\n
+  </text>
+
+
+
+      </view>
+    </scroll-view>
+
+  </view>
+
+
+
+
+  <view class="cu-bar tabbar imageBg1 shadow foot">
+    <view class="action" bindtap="NavChange" data-cur="myOption">
+      <view class='cuIcon-cu-image'>
+        <image src="/images/tabbar/myOption{{PageCur=='myOption'?'_cur':''}}.png"></image>
+      </view>
+      <view class="{{PageCur=='myOption'?'text-white':'text-gray'}}">自选</view>
+    </view>
+    <view class="action" bindtap="NavChange" data-cur="marketPage">
+      <view class='cuIcon-cu-image'>
+        <image src="/images/tabbar/marketPage{{PageCur=='marketPage'?'_cur':''}}.png"></image>
+      </view>
+      <view class="{{PageCur=='marketPage'?'text-white':'text-gray'}}">行情</view>
+    </view>
+    <view class="action" bindtap="NavChange" data-cur="messagesPage">
+      <view class='cuIcon-cu-image'>
+        <view>
+          <image src="/images/tabbar/messagesPage{{PageCur=='messagesPage'?'_cur':''}}.png"> </image>
+        </view>
+        <view wx:if="{{unreadNum!=0}}" style="margin-right:20%" class="cu-tag badge">{{unreadNum}}</view>
+      </view>
+      <view class="{{PageCur=='messagesPage'?'text-white':'text-gray'}}">消息</view>
+    </view>
+    <view class="action" bindtap="NavChange" data-cur="myPage">
+      <view class='cuIcon-cu-image'>
+        <image src="/images/tabbar/myPage{{PageCur=='myPage'?'_cur':''}}.png"></image>
+      </view>
+      <view class="{{PageCur=='myPage'?'text-white':'text-gray'}}">我的</view>
+    </view>
+  </view>
+</scroll-view>
+<view class="DrawerClose {{modalName=='selectModal'?'show':''}}" bindtap="hideModal">
+  <text class="cuIcon-pullright"></text>
+</view>
+<scroll-view scroll-y class="DrawerWindow  {{modalName=='selectModal'?'show':''}}">
+  <view class="cu-list menu  card-menu selectViewSs shadow-lg">
+    <import src="./selectItem/selectItem.wxml" />
+
+    <block wx:for="{{indexItems}}" wx:key="indexItems" wx:for-item="item">
+      <template is="selectItemTemp" data="{{item}}" />
+    </block>
+
+  </view>
+
+</scroll-view>

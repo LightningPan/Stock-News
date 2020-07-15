@@ -5,10 +5,7 @@
  * */
 package com.server.main.Controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,10 +18,10 @@ import java.util.List;
 public class StockDetailController {
     @PersistenceContext
     private EntityManager em;
-
+    @ResponseBody
     @RequestMapping(value = "Day",method= RequestMethod.GET)
     public List<Object[]> searchByDate(@RequestParam("Date") String date,
-                                       @RequestParam(value = "Location",defaultValue = "SH") String location,
+                                       @RequestParam(value = "Location",defaultValue = "sh") String location,
                                        @RequestParam("StockCode") String StockCode){
         try{
         String sql="select * from "+location+StockCode+" where time='"+date+"'";
@@ -39,7 +36,7 @@ public class StockDetailController {
             return result;
         }
     }
-
+    @ResponseBody
     @RequestMapping(value = "Month",method = RequestMethod.GET)
     public List<Object[]> searchByMonth(@RequestParam("Date") String date,
                                        @RequestParam(value = "Location",defaultValue = "sh") String location,
@@ -59,7 +56,7 @@ public class StockDetailController {
             return result;
         }
     }
-
+    @ResponseBody
     @RequestMapping(value="Range",method = RequestMethod.GET)
     public List<Object[]> searchRange(@RequestParam("Date") String date,
                                       @RequestParam(value = "Location",defaultValue = "sh") String location,

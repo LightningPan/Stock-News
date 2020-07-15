@@ -2,7 +2,7 @@
  * author:Tan Pan
  * create time:2020-07-09
  * update time:2020-07-10
- * */
+ **/
 package com.server.main.Wx;
 
 import com.alibaba.fastjson.JSON;
@@ -46,7 +46,7 @@ public class Login {
         }
         return map;
     }
-
+    @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
     public String wxLogin(@RequestParam(value = "code") String code){
         System.out.println(code);

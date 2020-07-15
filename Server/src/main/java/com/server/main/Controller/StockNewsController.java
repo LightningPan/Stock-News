@@ -1,14 +1,11 @@
 /*
  * author:Tan Pan
  * create time:2020-07-07
- * update time:2020-07-12
- * */
+ * update time:2020-07-15
+ **/
 package com.server.main.Controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,33 +18,30 @@ import java.util.List;
 public class StockNewsController {
     @PersistenceContext
     private EntityManager em;
-
+    @ResponseBody
     @RequestMapping(value="Range",method = RequestMethod.GET)
-    public List<Object[]> searchRange(@RequestParam("Date") String date,
-                                      @RequestParam(value = "Location",defaultValue = "sh") String location,
+    public List<String> searchRange(@RequestParam("Date") String date,
+                                      @RequestParam(value = "Location",defaultValue = "sse") String location,
                                       @RequestParam("StockCode") String StockCode,
                                       @RequestParam(value = "Range" ,defaultValue = "10") Integer range,
                                       @RequestParam(value="Order",defaultValue = "desc") String order){
         try{
-            String sql="select * from "+location+StockCode+"news where time>='"+date+"' order by time "+order+" limit "+range;
+            String sql="select link from "+location+" where stockCode='"+StockCode+"' and link in " +
+                    "(select link from newslinks where releasetime>='"+date+"' order by releasetime "+order+") limit "+range;
             Query nativeQuery=em.createNativeQuery(sql);
-            List<Object[]> resultList=nativeQuery.getResultList();
+            List<String> resultList=nativeQuery.getResultList();
             return resultList;
         }
         catch (Exception e){
-            List<Object[]> result=new ArrayList<Object[]>() ;
-            Object[] failResult=new Object[1];
-            failResult[0]="Fail";
-            result.add(failResult);
+            List<String> result=new ArrayList<String>() ;
             return result;
         }
     }
+    @ResponseBody
     @RequestMapping(value = "FuzzySearch",method = RequestMethod.GET)
-    public List<Object[]> fuzzySearch(@RequestParam(value = "content")String content,
-                                      @RequestParam(value = "Location",defaultValue = "sh") String location,
-                                      @RequestParam("StockCode") String StockCode){
+    public List<Object[]> fuzzySearch(@RequestParam(value = "content")String content){
         try{
-            String sql="select title,path from "+location+StockCode+"news where title REGEXP '"+content+"' OR author REGEXP '"+content+"'";
+            String sql="select link from newslinks where title REGEXP '"+content+"'";
             Query nativeQuery=em.createNativeQuery(sql);
             List<Object[]> resultList=nativeQuery.getResultList();
             return resultList;

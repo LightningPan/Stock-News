@@ -84,13 +84,14 @@ Page({
     var that = this;
     if (e.currentTarget.dataset.cur == "messagesPage") {
       wx.request({
-        url: 'http://106.15.182.82:8080/changeIsReadByUserName?username=' + app.globalData.openid,
+        url: 'http://106.54.95.249/' + app.globalData.openid,
         success(res) {
           console.log(res.data);
         }
       })
       that.setData({
-        unreadNum: 0
+        unreadNum: 0,
+        UserStock:app.globalData.openid,
       })
     }
     this.setData({
@@ -105,6 +106,39 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
+  //message 获取输入
+  getdetailInput: function(e) {
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+  //message 获取duankou
+  searchdetailShare: function() {
+    if(this.data.inputValue!=null){
+      var that = this;
+      var url = "https://106.54.95.249/StockDetail/" + this.data.inputValue;
+      wx.request({
+        url: url,
+        //仅为示例，并非真实的接口地址
+
+        header: {
+          'content-type': 'text/json' // 默认值
+        },
+        
+        success(res) {
+          console.log(res.data)
+          that.setData({
+           result:res.data,
+          })
+        },
+        fail(log){
+          console.log('--------fail----------')
+        }
+      })
+    }
+
+  },
+
   onLoad: function(options) {
     // console.log(app.globalData.openid);
     // console.log(app.globalData.userInfo);
@@ -140,6 +174,7 @@ Page({
       }
     })
   },
+  //九大指数
   refreshIndex: function() {
     var that = this
     var hsurl = 'https://hq.sinajs.cn/list='

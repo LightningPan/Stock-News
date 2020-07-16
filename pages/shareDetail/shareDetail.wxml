@@ -1,5 +1,7 @@
  <!--作者：李广 尚志强-->
 <!--pages/mainpage/shareDetail/shareDetail.wxml-->
+
+<view class="backtitle"> {{shareName}}</view>
 <view class="imageBg1">
   <cu-custom class="text-white" bgColor="imageBg1" isBack="{{true}}">
     <view slot="backText">返回</view>
@@ -9,7 +11,12 @@
   </cu-custom>
   <view class="cu-bar solid-bottom margin-top text-white ">
     <view class='action'>
-      <text class='cuIcon-titles  '></text> {{name}}词云图
+      <text class='cuIcon-titles  '></text> {{shareName}}词云图
+      <view class="wordcl">
+   <!--<image src="https://106.54.95.249/Chart/WordCloud/"></image>-->
+   
+      </view>
+      
     </view>
     <view  bindtap='save'>
         <button class=" cu-btn lines-white saveBtn">
@@ -75,9 +82,9 @@
   <canvas style="width: 98%; height: 200px;" canvas-id="yueEle" binderror="canvasIdErrorCallback"></canvas>
 
 </view>
-
-<view class='cu-load load-modal'  wx:if="{{loadModal}}">
+<!--分析图表-->
+<!--<view class='cu-load load-modal'  wx:if="{{loadModal}}">-->
   <!-- <view class='cuIcon-emojifill text-orange'></view> -->
-  <image src='/images/logo.png' class='png' mode='aspectFit'></image>
-  <view class='black-text'>分析数据中...</view>
-</view>
+ <!-- <image src='/images/greenleeks.png' class='png' mode='aspectFit'></image>-->
+ <!-- <view class='black-text'>分析数据中...</view>
+</view>  -->

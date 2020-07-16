@@ -47,7 +47,7 @@ map,.mapBox{
   height: 300rpx;
 }
 page{
-background-image: image-set();
+background-image: url(https://pixabay.com/images/id-4376981/);
   background-color: #fff;
   background-size: cover;
 }

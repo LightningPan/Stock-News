@@ -73,6 +73,7 @@
         <view class=" text-sm basis-xs padding-top-sm text-left">当前涨跌幅</view>
         <view class=" text-xs basis-xs padding-top-sm text-left">预测明日收盘价</view>
       </view>
+      
 
       <block wx:for="{{indexItems}}" wx:key="indexItems" wx:for-item="item">
         <template is="indexItemTemp" data="{{item}}" />
@@ -201,7 +202,7 @@
     </view>
   </view>
 
-
+<!--消息界面-->
 
   <view class="messagePageSs" wx:if="{{PageCur=='messagesPage'}}">
     <view class="text-white">
@@ -209,6 +210,28 @@
         <view slot="backText">返回</view>
         <view slot="content">消息</view>
       </cu-custom>
+    </view>
+    <view class="detailsearch">
+      <view class="search ">
+        
+        <input type="text" bindinput="getdetailinput" auto-focus placeholder="搜索股票交易明细" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
+      </view>
+      <view class="detailaction">
+        <button class=" round" bindtap="searchdetailShare">搜索</button>
+      </view>
+      <form>
+  <view class="class">
+    <text> --  股票交易详情</text>
+<text>--日期--上市地址(sh,sz)--股票数字代码</text>
+
+<view wx:for="{{result}}" wx:key="item">
+<view >
+  {{index}}:{{item[0]}} --{{item[1]}}--{{item[2]}}--{{item[3]}}</view>
+
+
+  
+</view></view>
+</form>
     </view>
     <view class = "text-center margin-top-xl" wx:if="{{messagesData.num==0}}">
      <text class="cuIcon-emoji xxl text-black"></text><text class="text-xxl text-black text-bold"> 暂无消息~ </text>

@@ -17,7 +17,7 @@ Page({
     var that = this;
     console.log(app.globalData.openid)
     wx.request({
-      url: 'http://106.15.182.82:8080/registerUser?username=' + app.globalData.openid,
+      url: 'http://106.54.95.249/Login' + app.globalData.openid,
       success(res) {
         console.log(res.data);
       }

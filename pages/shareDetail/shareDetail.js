@@ -35,12 +35,13 @@ Page({
   onLoad: function(options) {
     var mydate = new Date();
     var myddy = mydate.getDay();
-
+var shareName=options.shareName;
     this.setData({
       num: options.num,
       market: options.market,
       isSelected: options.isSelected == 'true' ? true : options.isSelected == 'false' ? false:'',
-      weekDay:myddy
+      weekDay:myddy,
+    
     })
     if (this.data.isSelected) {
       this.setData({
@@ -181,14 +182,14 @@ Page({
             console.log(that.data.dayData);
 
             wx.request({
-              url: 'http://106.15.182.82:8080/getForecastInfo?sharename=' + that.data.name + '&sharenum=' + that.data.num + '&market=' + that.data.market,
+              url: 'http://leektraining.work/getForecastInfo?sharename=' + that.data.name + '&sharenum=' + that.data.num + '&market=' + that.data.market,
               header: {
                 'content-type': 'application/json'
               },
               success(res) {
                 console.log(res);
                 that.setData({
-                  imageSrc: "http://106.15.182.82:8080/image/get?imgname=" + that.data.num + "  ",
+                  imageSrc: "http://leektraining.work/image/get?imgname=" + that.data.num + "  ",
 
                 })
                 if (typeof res.data == 'number') {
@@ -268,7 +269,7 @@ Page({
               },
               fail(res) {
                 that.setData({
-                  imageSrc: "http://106.15.182.82:8080/image/get?imgname=" + that.data.name+ "  "
+                  imageSrc: "http://leektraining.work/image/get?imgname=" + that.data.name+ "  "
                 })
               }
             })
@@ -292,7 +293,7 @@ Page({
     var that = this;
     if (!this.data.isSelected) {
       wx.request({
-        url: 'http://106.15.182.82:8080/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + that.data.num,
+        url: 'http://leektraining.work/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + that.data.num,
       })
       this.data.isSelected = true,
         this.data.saveBtnContent = "已添加",
@@ -302,7 +303,7 @@ Page({
         })
     } else {
       wx.request({
-        url: 'http://106.15.182.82:8080/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + that.data.num,
+        url: 'http://leektraining.work/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + that.data.num,
       })
       this.data.isSelected = false,
         this.data.saveBtnContent = "+自选"

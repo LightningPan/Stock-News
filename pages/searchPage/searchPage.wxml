@@ -26,15 +26,18 @@
       </view>
 
 
-    </view>
+    </view> </view>
+<text>************json_test*********</text>
+<form>
+  <view class="class">
+    <text> --  股票编码  -- 股票名称 --  所在地  -- 行业</text>
+<view wx:for="{{result}}" wx:key="item">
+<view bindtap="NavtoShareItem">
+  {{index}}:{{item[0]}} - {{item[1]}}-  {{item[2]}} - {{item[3]}}</view>
 
-    <block wx:for="{{shareItems}}" wx:key="shareItems" wx:for-item="item">
-      <template is="shareItemTemp" data="{{item}}" />
-    </block>
+
+  
+</view></view>
+</form>
   </view>
-</view>
-<view class="" hover-class="none" hover-stop-propagation="false">
-  <image class="" src="/images/Figure_1.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
-    
-  </image>
-</view>
+

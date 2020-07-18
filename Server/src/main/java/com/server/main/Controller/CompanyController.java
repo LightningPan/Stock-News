@@ -1,7 +1,7 @@
 /*
 * author:Tan Pan
 * create time:2020-07-07
-* update time:2020-07-14
+* update time:2020-07-17
 **/
 package com.server.main.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +18,9 @@ public class CompanyController {
     private EntityManager em;
 
     @ResponseBody
-    @RequestMapping(value = "StockCode/{Location}/{Code}",method=RequestMethod.GET)
-    public List<Object[]> searchByCode(@PathVariable("Code") String stockCode,
-                                       @PathVariable("Location")String location){
-        String sql="select * from stockinfos where ts_Code='"+stockCode+"."+location+"'";
+    @RequestMapping(value = "StockCode/{StockCode}",method=RequestMethod.GET)
+    public List<Object[]> searchByCode(@PathVariable("StockCode") String stockCode){
+        String sql="select * from stockinfos where ts_Code='"+stockCode+"'";
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
         return resultList;
@@ -71,6 +70,14 @@ public class CompanyController {
         String sql="select ts_Code,shortName from stockinfos where delist_date='"+date+"'";
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
+        return resultList;
+    }
+    @ResponseBody
+    @RequestMapping(value = "Recommend/{Range}",method = RequestMethod.GET)
+    public List<String> getRecommendation(@PathVariable(value = "Range")String range){
+        String sql="select StockCode from Recommend order by recommend desc limit "+range;
+        Query nativeQuery=em.createNativeQuery(sql);
+        List<String> resultList=nativeQuery.getResultList();
         return resultList;
     }
 

@@ -1,12 +1,13 @@
 /*
  * author:Tan Pan
  * create time:2020-07-07
- * update time:2020-07-10
+ * update time:2020-07-16
  * */
 package com.server.main.Wx;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -15,6 +16,7 @@ public class UserStock implements Serializable {
 
     @Id
     @Column(length = 100)
+    @GeneratedValue
     private String Id;
     @Column(length = 100)
     private String openid;

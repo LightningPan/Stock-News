@@ -21,10 +21,9 @@ public class StockDetailController {
     @ResponseBody
     @RequestMapping(value = "Day",method= RequestMethod.GET)
     public List<Object[]> searchByDate(@RequestParam("Date") String date,
-                                       @RequestParam(value = "Location",defaultValue = "sh") String location,
                                        @RequestParam("StockCode") String StockCode){
         try{
-        String sql="select * from "+location+StockCode+" where time='"+date+"'";
+        String sql="select * from "+StockCode+" where time='"+date+"'";
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
         return resultList;}
@@ -39,11 +38,10 @@ public class StockDetailController {
     @ResponseBody
     @RequestMapping(value = "Month",method = RequestMethod.GET)
     public List<Object[]> searchByMonth(@RequestParam("Date") String date,
-                                       @RequestParam(value = "Location",defaultValue = "sh") String location,
                                        @RequestParam("StockCode") String StockCode,
                                         @RequestParam(value = "Order" ,defaultValue = "desc")String order){
         try{
-        String sql="select * from "+location+StockCode+" where DATE_FORMAT(time,'%Y%m')='"+date+"' order by time "+order;
+        String sql="select * from "+StockCode+" where DATE_FORMAT(time,'%Y%m')='"+date+"' order by time "+order;
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
         return resultList;
@@ -59,12 +57,11 @@ public class StockDetailController {
     @ResponseBody
     @RequestMapping(value="Range",method = RequestMethod.GET)
     public List<Object[]> searchRange(@RequestParam("Date") String date,
-                                      @RequestParam(value = "Location",defaultValue = "sh") String location,
                                       @RequestParam("StockCode") String StockCode,
                                       @RequestParam(value = "Range" ,defaultValue = "10") Integer range,
                                       @RequestParam(value="Order",defaultValue = "desc") String order){
         try{
-        String sql="select * from "+location+StockCode+" where time>='"+date+"' order by time "+order+" limit "+range;
+        String sql="select * from "+StockCode+" where time>='"+date+"' order by time "+order+" limit "+range;
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
         return resultList;

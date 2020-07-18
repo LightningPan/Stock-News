@@ -39,18 +39,16 @@ public class StockNewsController {
     }
     @ResponseBody
     @RequestMapping(value = "FuzzySearch",method = RequestMethod.GET)
-    public List<Object[]> fuzzySearch(@RequestParam(value = "content")String content){
+    public List<String> fuzzySearch(@RequestParam(value = "content")String content){
         try{
             String sql="select link from newslinks where title REGEXP '"+content+"'";
             Query nativeQuery=em.createNativeQuery(sql);
-            List<Object[]> resultList=nativeQuery.getResultList();
+            List<String> resultList=nativeQuery.getResultList();
             return resultList;
         }
         catch (Exception e){
-            List<Object[]> result=new ArrayList<Object[]>() ;
-            Object[] failResult=new Object[1];
-            failResult[0]="Fail";
-            result.add(failResult);
+            List<String> result=new ArrayList<String>() ;
+            result.add("fail");
             return result;
         }
 

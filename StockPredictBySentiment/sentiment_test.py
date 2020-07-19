@@ -47,6 +47,6 @@ def test():
     '''
 
     handler = Sentimentor()
-    doc_sentiment_score = handler.doc_sentiment_score("港湖指数今日下跌2000点")
+    doc_sentiment_score = handler.doc_sentiment_score("港湖指数今日涨2000点")
     print(doc_sentiment_score)
 test()

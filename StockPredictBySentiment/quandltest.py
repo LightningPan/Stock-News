@@ -1,10 +1,12 @@
 # author:LuYufei
 # createtime:2020-07-09
 # update: time:2020-07-11
+# coding: utf-8
 import os
 import numpy as np
 import quandl
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import pandas as pd
 import datetime
 from keras import Sequential
@@ -34,7 +36,7 @@ def getstock(year,month,day,quandlstockcode):
 
 
 def readdata(dataname):
-    csv = dataname+'.csv'
+    csv = 'stocks/'+dataname+'.csv'
     stockdata = pd.read_csv(csv)
     print(stockdata)
     print(type(stockdata))
@@ -57,11 +59,11 @@ def drawtrend(stockdata):
 #3.构造训练集与验证集
 ############
 # 时间点长度
-def devide_trainx(stockdata):
+def devide_trainx(stockdata,timeinterval):
     time_stamp = 50
 # 划分训练集与验证集
-    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Volume']]  #  'Volume'
-    train = stockdata[  50+time_stamp:]
+    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Amount', 'Sentiment']]  #  'Volume'
+    train = stockdata[  timeinterval+time_stamp:]
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_data = scaler.fit_transform(train)
     x_train=[]
@@ -70,10 +72,10 @@ def devide_trainx(stockdata):
     x_train = np.array(x_train)
     return x_train
 
-def devide_trainy(stockdata):
+def devide_trainy(stockdata,timeinterval):
     time_stamp = 50
-    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Volume']]  # 'Volume'
-    train = stockdata[  50+time_stamp:]
+    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Amount', 'Sentiment']]  # 'Volume'
+    train = stockdata[  timeinterval+time_stamp:]
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_data = scaler.fit_transform(train)
     y_train = []
@@ -82,10 +84,10 @@ def devide_trainy(stockdata):
     y_train = np.array(y_train)
     return y_train
 
-def devide_validx(stockdata):
+def devide_validx(stockdata,timeinterval):
     time_stamp = 50
-    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Volume']]  # 'Volume'
-    valid = stockdata[:time_stamp+50]
+    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Amount', 'Sentiment']]  # 'Volume'
+    valid = stockdata[:time_stamp+timeinterval]
 # 归一化
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_data = scaler.fit_transform(valid)
@@ -94,10 +96,10 @@ def devide_validx(stockdata):
         x_valid.append(scaled_data[i - time_stamp:i])
     x_valid = np.array(x_valid)
     return x_valid
-def devide_validy(stockdata):
+def devide_validy(stockdata,timeinterval):
     time_stamp = 50
-    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Volume']]  # 'Volume'
-    valid = stockdata[:time_stamp+50]
+    stockdata = stockdata[['Open', 'High', 'Low', 'Close', 'Amount', 'Sentiment']]  # 'Volume'
+    valid = stockdata[:time_stamp+timeinterval]
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_data = scaler.fit_transform(valid)
     y_valid = []
@@ -146,7 +148,7 @@ def trainmodel(x_train,y_train,dataname):
 
 ###############
 # 超参数
-    epochs = 2
+    epochs = 5
     batch_size = 16
 # LSTM 参数: return_sequences=True LSTM输出为一个序列。默认为False，输出一个值。
 # input_dim：输入单个样本特征值的维度
@@ -167,7 +169,7 @@ def trainmodel(x_train,y_train,dataname):
 def predictx_valid(x_valid,y_valid,stockname,modelname):
     scaler = MinMaxScaler(feature_range=(0, 1))
     time_stamp = 50
-    valid = stockname[:time_stamp+50]
+    valid = stockname[:time_stamp+250]
     model=load_model(modelname)
     closing_price = model.predict(x_valid)
     scaler.fit_transform(pd.DataFrame(valid['Close'].values))
@@ -184,38 +186,85 @@ def predictx_valid(x_valid,y_valid,stockname,modelname):
 #closing_price,y_valid=predictx_valid(x_valid,y_valid)
 
 
-def matchstock(closing_price,y_valid):
+def matchstock(closing_price,y_valid,stockname,dataname,timeinterval):
 #6.拟合stock trend
 ##############3
+    time_stamp = 50
+    plt.rcParams['font.sans-serif'] = ['KaiTi']
     plt.figure(figsize=(16, 8))
     dict_data = {
         'Predictions': closing_price.reshape(1,-1)[0],
         'Close': y_valid[0]
     }
+    valid = stockname[:timeinterval]
     data_pd = pd.DataFrame(dict_data)
 
+    data=closing_price
+    length = len(data)
+    ans = []
+    for i in range(3, length - 3):
+        if data[i] > data[i - 1] and data[i] > data[i - 2] and data[i]>data[i-3] and data[i] > data[i + 1] and data[i] > data[i + 2]and data[i] > data[i + 3]:
+            ans.append(i)
 
+
+    cns = []
+    for i in range(3, length - 3):
+        if data[i] < data[i - 1] and data[i] < data[i - 2] and data[i] < data[i - 3] and data[i] < data[i + 1] and data[i] < data[i + 2] and data[i] < data[i + 3]:
+            cns.append(i)
+    print(ans)
+    print(y_valid)
+
+
+    #plt.style.use('fast')
     plt.plot(data_pd[['Close']],label="actual")
     plt.plot(data_pd[['Predictions']],label="predictions")
-    plt.legend(['actual','predictions'])
 
+    plt.xlabel('Date',fontsize=18)
+    plt.ylabel('Closing prise',fontsize=18)
+    if timeinterval==250:
+        plt.xticks(range(len(valid)-1,-1,-25),valid['Date'].loc[::25],rotation=45)
+    else:
+        plt.xticks(range(len(valid) - 1, -1, -5), valid['Date'].loc[::5], rotation=45)
+    plt.title("股票代码:"+dataname+" K线图")
+    plt.plot(ans,closing_price[ans],'rv',label="卖出")
+    plt.plot(cns,closing_price[cns],'gv',label="买入")
+    """
+    for i in range(0, len(ans)):
+        print(closing_price[ans[i]])
+        plt.plot(ans[i],closing_price[ans[i]],'rv',label="卖出")
+    for i in range(0, len(cns)):
+        print(closing_price[cns[i]])
+        plt.plot(cns[i],closing_price[cns[i]],'gv',label="买入")
+    """
+    plt.legend()
+    #plt.legend(['actual', 'predictions','卖  出','买入'])
+    # ax = plt.gca()
+
+    # 设置ax区域背景颜色
+    #ax.patch.set_facecolor("black")
+
+# 设置ax区域背景颜色透明度
+    #ax.patch.set_alpha(0.8)
+    plt.savefig('resultimage/'+dataname+'-'+str(timeinterval)+'epochs5'+'.png',transparent=True)
     plt.show()
+
 
 #matchstock(closing_price,y_valid)
 
 
 def predictstock(dataname):
     stockname=readdata(dataname)
-    x_train = devide_trainx(stockname)
-    y_train = devide_trainy(stockname)
-    x_valid=devide_validx(stockname)
-    y_valid=devide_validy(stockname)
+    timeinterval=250
+    x_train = devide_trainx(stockname,timeinterval)
+    y_train = devide_trainy(stockname,timeinterval)
+    x_valid=devide_validx(stockname,timeinterval)
+    y_valid=devide_validy(stockname,timeinterval)
     modelname=trainmodel(x_train,y_train,dataname)
     closing_price,y_valid=predictx_valid(x_valid,y_valid,stockname,modelname)
-    matchstock(closing_price,y_valid)
+    matchstock(closing_price,y_valid,stockname,dataname,timeinterval)
     np.savetxt(dataname+'-predictclosingprice.txt',closing_price,fmt='%f',delimiter=',')
 
 
 if __name__ == '__main__':
 
-    predictstock('002656')
+    predictstock('600519')

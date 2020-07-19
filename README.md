@@ -1,1 +1,2 @@
 # Stock-News
+StockPredictBySentiment文件夹中是关于机器学习的内容

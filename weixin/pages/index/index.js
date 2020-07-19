@@ -5,7 +5,6 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -15,14 +14,27 @@ Page({
   btn_login: function() {
 
     var that = this;
-    console.log(app.globalData.openid)
-    wx.request({
-      url: 'http://106.15.182.82:8080/registerUser?username=' + app.globalData.openid,
-      success(res) {
-        console.log(res.data);
+    
+    wx.login({
+      success(res){
+        if(res.code){
+            wx.request({
+              url: 'https://106.54.95.249/Login',
+              method:"POST",
+              data:{
+                code:res.code
+              },
+              header:{
+                'Content-Type':'application/x-www-form-urlencoded'
+              },
+              success:function(res){
+                app.globalData.token=res.data
+                console.log(app.globalData.token)
+              }
+            })
+        }
       }
     })
-    app.globalData.userInfo = this.data.userInfo;
     app.globalData.inIndexPage = false;
 
     wx.navigateTo({
@@ -32,15 +44,6 @@ Page({
   },
 
   onLoad: function() {
-    // wx.request({
-    //   url: 'http://106.15.182.82:8080/registerUser?username=aaaa',
-    //   success(res) {
-    //     console.log(res.data);
-
-    //   }
-    // })
-
-
     
     if (app.globalData.userInfo) {
       this.setData({

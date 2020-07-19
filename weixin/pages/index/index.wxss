@@ -1,7 +1,6 @@
 
 @import "../../colorui/animation.wxss";
 .UCenter-bg {
-  background-image: url(https://pixabay.com/zh/illustrations/box-background-random-white-1472804/);
   background-size: cover;
   height: 75vh;
   display: flex;
@@ -47,7 +46,7 @@ map,.mapBox{
   height: 300rpx;
 }
 page{
-background-image: image-set();
+background-image: url(https://cdn.pixabay.com/photo/2019/08/01/07/52/newyear-4376981_960_720.png);
   background-color: #fff;
   background-size: cover;
 }

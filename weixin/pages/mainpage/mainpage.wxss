@@ -7,8 +7,13 @@ page{
   height:100%
 
 }
+.detailaction{
+  display: flex;
+flex-direction:column;
+justify-content: center;
+}
 .messagePageSs{
-  background: #ffffff;
+  background-color:#333333;
   height:100%;
 }
 .bottombg{
@@ -114,7 +119,6 @@ page{
 }
 
 .DrawerWindow {
-   background-image: url();
   background-size: cover;
   position: absolute;
   width: 85vw;

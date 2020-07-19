@@ -139,7 +139,7 @@ public class Chart {
             WordCloud wordCloud=new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
             wordCloud.setPadding(2);
             Font font=new Font("华文宋体",2,20);
-            wordCloud.setColorPalette(new LinearGradientColorPalette(Color.RED, Color.BLUE, Color.GREEN, 30, 30));
+            wordCloud.setColorPalette(new LinearGradientColorPalette(Color.RED, Color.YELLOW, Color.WHITE, 30, 30));
             wordCloud.setKumoFont(new KumoFont(font));
             new Color(255,255,255,1);
             wordCloud.setBackgroundColor(new Color(0,0,0,0));

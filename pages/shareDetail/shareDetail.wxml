@@ -1,7 +1,7 @@
  <!--作者：李广 尚志强-->
 <!--pages/mainpage/shareDetail/shareDetail.wxml-->
 
-<view class="backtitle"> {{shareName}}</view>
+<view class="backtitle" style="color:white"> 
 <view class="imageBg1">
   <cu-custom class="text-white" bgColor="imageBg1" isBack="{{true}}">
     <view slot="backText">返回</view>
@@ -9,24 +9,53 @@
       <text class="text-xl">{{name}}</text>
     </view>
   </cu-custom>
-  <view class="cu-bar solid-bottom margin-top text-white ">
+  <view>
+    <input type="text"  auto-focus placeholder="请确定你所要搜索的股票代码"  bindconfirm="confirm" bindinput="getbianInput"></input>
+    <view class="roun1d">
+    <button  size="mini" style="border:1px black solid；text-align:right；margin:0 auto"  bindtap="confirm">确认</button>
+    </view>
+  </view>
+  <view class="cu-bar solid-bottom margin-top text-white">
     <view class='action'>
-      <text class='cuIcon-titles  '></text> {{shareName}}词云图
-      <view class="wordcl">
-   <!--<image src="https://106.54.95.249/Chart/WordCloud/"></image>-->
-   
+      <view>
+        <view class="swiper-tab">
+          <view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">k线图</view>
+          <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">预测图</view>
+          <view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">词云图</view>
       </view>
       
-    </view>
-    <view  bindtap='save'>
-        <button class=" cu-btn lines-white saveBtn">
-          {{saveBtnContent}}</button>
+      <swiper current="{{currentTab}}" duration="300"  bindchange="swiperTab">
+          <swiper-item ><view><image mode="aspectFit" src=' {{imageUrl1}}'
+            ></image>
+          </view>
+        </swiper-item>
+          <swiper-item>
+            <view>
+              <image mode="widthFix" src="{{imageUrl2}}">
+
+              </image>
+            </view>
+          </swiper-item>
+          <swiper-item>
+            <view>
+              <image mode="aspectFit" src=" https://106.54.95.249/Chart/WordCloud?url=http://www.cs.com.cn/cj/hyzx/202007/t20200716_6076964.html">
+
+              </image> 
+            </view>
+            </swiper-item>
+      </swiper>
+      
+    
       </view>
+  
+   
+     
+      
+    </view>
+   
   </view>
 </view>
-<image wx:if="false" class="ciyuntuSs"  src="{{imageSrc}}" mode="aspectFit"></image>
-<view class="box">
-</view>
+
 
 
 <view class="imageBg1">
@@ -47,30 +76,39 @@
         <button class=" cu-btn lines-white saveBtn">
           {{saveBtnContent}}</button>
       </view>
+
     </view>
 
   </view>
-
+  <view wx:for="{{result}}" wx:key="item">
+    <view  space="ensp" style="font-size=18px;display:flex;border:8px solid">
+     
+      {{index}}:{{item[0]}} - --{{item[1]}}- ------    -{{item[2]}} - ---{{item[3]}}
+    </view></view>
 
   <view class="grid col-3 margin-bottom text-white text-center">
     <view class="text-df indexnum">今日开盘价</view>
     <view class="text-df indexnum">今日最高价</view>
     <view class="text-df indexnum">今日最小价</view>
     <view class="indexnum">
+      <view wx:for="{{result}}" wx:key="item"></view>
       <view class="text-xl ">
-        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{kaipan}}
+        
+     
+        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{item[1]}}
+      </view>
+
+
+    </view>
+    <view class="indexnum">
+      <view class="text-xl ">
+        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{item[2]}}
       </view>
 
     </view>
     <view class="indexnum">
       <view class="text-xl ">
-        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{max}}
-      </view>
-
-    </view>
-    <view class="indexnum">
-      <view class="text-xl ">
-        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view>{{min}}
+        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view>{{item[3]}}
       </view>
 
     </view>
@@ -81,6 +119,7 @@
 
   <canvas style="width: 98%; height: 200px;" canvas-id="yueEle" binderror="canvasIdErrorCallback"></canvas>
 
+</view>
 </view>
 <!--分析图表-->
 <!--<view class='cu-load load-modal'  wx:if="{{loadModal}}">-->

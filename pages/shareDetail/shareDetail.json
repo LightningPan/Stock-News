@@ -2,5 +2,16 @@
 {
   "usingComponents": {
     
-  }
+  },
+  "usingComponents": {
+    "i-card": "../../dist/card/index"
+},
+
+"usingComponents": {
+  "i-card": "../../dist/card/index"
+},
+"usingComponents": {
+  "i-input": "../../dist/input/index"
+}
+  
 }

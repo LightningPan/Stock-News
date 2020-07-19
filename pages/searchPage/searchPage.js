@@ -6,7 +6,8 @@ Page({
   data: {
     inputValue: null,
     shareItems: null,
-    items:[]
+    items:[],
+   
   },
 
   /**
@@ -24,11 +25,13 @@ console.log(this.data.shareName)
 
   },
   //测试跳转到对应股票界面
-  NavtoShareItem:function(){
-wx.navigateTo({
-  url: '../shareDetail/shareDetail?shareName="{{item[1]}}"',
-})
-  },
+  NavtoShareItem:function(e){
+    //传递股票代码和名称
+    //通过提供的JSON.stingify方法,将对象转换成字符串后传递
+    var result=JSON.stringify(e.currentTarget.dataset.item);
+   wx.navigateTo({
+  url: '../shareDetail/shareDetail?currentStock=sz000001',
+  })},
   NavtoShare: function(e) {
     wx.navigateTo({
       url: '../shareDetail/shareDetail?market=' + e.currentTarget.dataset.cur[0] + "&num=" + e.currentTarget.dataset.cur[1] + "&isSelected=" + e.currentTarget.dataset.cur[2],
@@ -53,11 +56,13 @@ wx.navigateTo({
           console.log(res.data)
           that.setData({
            result:res.data,
+          
           })
         },
         fail(log){
           console.log('--------fail----------')
-        }
+        },
+        complete: function(res) {},
       })
     }
 
@@ -98,7 +103,7 @@ wx.navigateTo({
    */
   onShow: function() {
     var that = this;
-
+   
     if(this.data.shareItems!=null){
       wx.request({
         url: 'http://leektraining.work/searchSaveShareByUserName?username=' + app.globalData.openid,

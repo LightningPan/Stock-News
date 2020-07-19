@@ -2,8 +2,41 @@
 /* pages/mainpage/shareDetail/shareDetail.wxss */
 
 page{
-  background-color:#333333
+  background-color: #333333
   
+}
+.roun1d{
+  display: flex;
+  flex-direction:column;
+  justify-content: right; 
+}
+.swiper-tab{
+
+  width: 800rpx;
+  border-bottom: 2rpx solid #ccc;
+  text-align: center;
+  height: 100rpx;
+  line-height: 88rpx;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+.swiper-tab-item{
+  width: 100%; 
+  color:#FCFCFC
+}
+.active{
+  color:#F65959;
+  border-bottom: 4rpx solid #F65959;
+}
+swiper{
+  display: flex;
+text-align: center;
+margin-right:0em;
+
+}
+.cu-bar solid-bottom margin-top text-white{
+
 }
 .topBarColor{
   background-color: #2f3640;

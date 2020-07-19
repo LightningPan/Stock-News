@@ -27,13 +27,16 @@
 
 
     </view> </view>
-<text>************json_test*********</text>
+
 <form>
   <view class="class">
-    <text> --  股票编码  -- 股票名称 --  所在地  -- 行业</text>
+    <text space="emsp">  股票编码   股票名称  所在地   行业</text>
 <view wx:for="{{result}}" wx:key="item">
-<view bindtap="NavtoShareItem">
-  {{index}}:{{item[0]}} - {{item[1]}}-  {{item[2]}} - {{item[3]}}</view>
+<view  space="ensp" style="font-size=18px;display:flex;" bindtap="NavtoShareItem">
+ <text space="ensp" >
+    {{item[0]}}     {{item[1]}}     {{item[2]}}       {{item[3]}}
+</text>
+</view>
 
 
   

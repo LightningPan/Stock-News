@@ -88,6 +88,7 @@ justify-content: center;
 }
 .personalView{
   height:100%;
+  background-color: #ffff
 }
 .fbSs{
  border:2px solid #333333;
@@ -200,5 +201,7 @@ justify-content: center;
 .DrawerPage .cu-bar.tabbar .action {
   flex: initial;
 }
-
+.shadow shadow-lg{
+  background-color: #333333;
+}
 

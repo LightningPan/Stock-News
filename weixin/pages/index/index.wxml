@@ -1,7 +1,7 @@
  <!--作者：李广 尚志强-->
 <scroll-view scroll-y class="scrollPage">
   <view class="UCenter-bg">
-    <image src="/images/greenleeks.png" class="png" style="width:150px; height:150px "></image>
+    <image src="" class="png" style="width:150px; height:150px "></image>
     <view class="text-sl  text-bold">leeks
     </view>
 

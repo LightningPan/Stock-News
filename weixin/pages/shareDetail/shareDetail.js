@@ -1,5 +1,6 @@
 // <!--作者：李广 尚志强-->
 // pages/mainpage/shareDetail/shareDetail.js
+//股票详情界面
 var wxCharts = require("../../utils/wxcharts.js");
 var daylineChart = null;
 var yuelineChart = null;
@@ -59,7 +60,7 @@ Page({
   //
   confirm:function(){
   
-    
+    var that=this
     
     wx.request({
       url:'http://hq.sinajs.cn/list='+this.data.jichu,
@@ -69,19 +70,32 @@ Page({
       success(res){
          //   console.log(res.data);
          
-       //  var temp = res.data.split("\"");
-       //  var result = temp[1].split(",");
+         var temp = res.data.split("\"");
+         var result = temp[1].split(",");
          // that.data.name = result[0];
-        // this.name = decodeURIComponent(result[0]);
-console.log( res.data)
-result:res.data
+        that.name = decodeURIComponent(result[0]);
+        that.data.max = result[4];
+              that.data.min = result[5];
+              that.data.numShare=result[8];
+              that.data.amount=result[9];
+              that.data.kaipan = result[1];
+              that.data.price=result[3];
+     console.log( res.data)
+       result:res.data
 
       }
     })
     this.setData({
  jichu:this.data.inputdetailValue,
 imageUrl1: 'http://image.sinajs.cn/newchart/daily/n/'+ this.data.jichu+'.gif',
-imageUrl2:'https://106.54.95.249/Chart/Prediction/'+this.data.jichu+'?Range=50'
+imageUrl2:'https://106.54.95.249/Chart/Prediction/'+this.data.jichu+'?Range=50',
+name: this.data.name,
+price:this.data.price,
+numShare:this.data.numShare,
+amount:this.data.amount,
+max: this.data.max,
+min: this.data.min,
+kaipan: this.data.kaipan,
     })
   },
 
@@ -115,7 +129,7 @@ imageUrl2:'https://106.54.95.249/Chart/Prediction/'+this.data.jichu+'?Range=50'
         saveBtnContent: "已添加"
       })
     }
-    this.getShareInf();
+    this.confirm();
 
   },
   //confirm 动态改变图片url

@@ -1,5 +1,6 @@
 // <!--作者：李广 尚志强-->
 // pages/searchPage/searchPage.js\
+//搜索框及搜索界面
 const app = getApp();
 Page({
 
@@ -30,7 +31,7 @@ console.log(this.data.shareName)
     //通过提供的JSON.stingify方法,将对象转换成字符串后传递
     var result=JSON.stringify(e.currentTarget.dataset.item);
    wx.navigateTo({
-  url: '../shareDetail/shareDetail?currentStock=sz000001',
+  url: '../shareDetail/shareDetail',
   })},
   NavtoShare: function(e) {
     wx.navigateTo({

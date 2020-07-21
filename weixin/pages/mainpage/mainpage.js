@@ -1,11 +1,9 @@
 //<!--作者：李广 尚志强-->
 // pages/mainpage/mainpage.js
-//主页面 包含tabbar的主界面
 const app = getApp();
 
 Page({
   data: {
-    unreadNum: 0,
     messagesData: null,
     fbInput: null,
     modalName: null,
@@ -83,18 +81,6 @@ Page({
 
   NavChange(e) {
     var that = this;
-    if (e.currentTarget.dataset.cur == "messagesPage") {
-      wx.request({
-        url: 'http://106.54.95.249/' + app.globalData.openid,
-        success(res) {
-          console.log(res.data);
-        }
-      })
-      that.setData({
-        unreadNum: 0,
-        UserStock:app.globalData.openid,
-      })
-    }
     this.setData({
       PageCur: e.currentTarget.dataset.cur,
       modalName: null,
@@ -137,27 +123,29 @@ Page({
 
   },
 
+  
   onLoad: function(options) {
     // console.log(app.globalData.openid);
     // console.log(app.globalData.userInfo);
+    this.setData({
+      indexItems:[
+        {
+          shareNum:'sh600519',
+          present:'2.11',
+          shareName:'茅台',
+          forecast:1622,
+          price:'1620'
+        }
+
+      ]
+    })
     this.getMessages();
     this.data.userInfo = app.globalData.userInfo;
     this.setData({
       userInfo: this.data.userInfo,
-      indexItem:[
-        {
-          shareNum:1,
-          present:1,
-          shareNum:1,
-          forecast:1,
-          price:1
-        }
-      ]
-
-      
     })
     this.refreshIndex();
-
+    this.refreshItem();
     this.getNewsTitle();
   },
 
@@ -338,20 +326,15 @@ Page({
    */
   refreshItem: function() {
     var that = this
-   /* wx.request({
-      url: 'http://106.15.182.82:8080/searchSaveShareByUserName?username=' + app.globalData.openid,
-      success(res) {
-        app.globalData.mySelect = res.data;
-        for (var i = 0; i < res.data.length; i++) {
-          that.data.indexItems[i].isSelected = true;
-          that.data.indexItems[i].forecast = res.data[i].forecast.toFixed(3);
-        }
-        that.setData({
-          indexItems: that.data.indexItems
-        })
-       
+    wx.request({
+      url: 'https://106.54.95.249/',
+      method:"GET",
+      header:{
+        'token' : app.globalData.token
       }
-    })*/
+    })
+
+
     var url = 'https://hq.sinajs.cn/list='
     //沪深
     {
@@ -379,7 +362,7 @@ Page({
               case "sh":
               case "sz":
                 {
-                  that.data.indexItems[itemindex].price = result[3];
+                 /* that.data.indexItems[itemindex].price = result[3];
                   if (that.data.indexItems[itemindex].price == 0) {
                     that.data.indexItems[itemindex].price = result[2];
                     that.data.indexItems[itemindex].present = "-";
@@ -391,12 +374,12 @@ Page({
                       that.data.indexItems[itemindex].present = "+"
                     }
                     that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
-                  }
+                  }*/
                 }
                 break;
               case "hk":
                 {
-                  that.data.indexItems[itemindex].price = result[6];
+                  /*that.data.indexItems[itemindex].price = result[6];
                   if (that.data.indexItems[itemindex].price == 0) {
                     that.data.indexItems[itemindex].price = result[3];
                     that.data.indexItems[itemindex].present = "-";
@@ -409,12 +392,12 @@ Page({
                     }
                     that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
 
-                  }
+                  }*/
                 }
                 break;
               case "gb_":
                 {
-                  that.data.indexItems[itemindex].price = result[1];
+                  /*that.data.indexItems[itemindex].price = result[1];
                   if (that.data.indexItems[itemindex].price == 0) {
                     that.data.indexItems[itemindex].price = result[26];
                     that.data.indexItems[itemindex].present = "-";
@@ -427,14 +410,14 @@ Page({
                     }
                     that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
 
-                  }
+                  }*/
                 }
                 break;
             }
 
-            that.setData({
+            /*that.setData({
               indexItems: that.data.indexItems
-            })
+            })*/
             itemindex++;
             // that.stockIndexs[i].price = result[4];
           }
@@ -552,17 +535,17 @@ Page({
         url: 'http://106.15.182.82:8080/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + num,
       })*/
       this.data.indexItems[index].isSelected = true;
-      this.setData({
+     /* this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
     } else {
       /*wx.request({
         url: 'http://106.15.182.82:8080/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + num,
       })*/
-      this.data.indexItems[index].isSelected = false;
+      /*this.data.indexItems[index].isSelected = false;
       this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
     }
   },
   /**
@@ -571,7 +554,7 @@ Page({
   onShow: function() {
     var that = this;
 
-    wx.request({
+   /* wx.request({
       method:"POST",
       url: 'http://106.54.95.249/UserStock' ,
       header:{
@@ -594,7 +577,7 @@ Page({
         })
         that.refreshItem();
       }
-    })
+    })*/
   },
   onPageScroll: function (e) {
     console.log(e.detail.scrollTop)

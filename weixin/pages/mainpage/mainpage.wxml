@@ -72,7 +72,7 @@
         </view>
         <view class="  text-sm basis-xs padding-top-sm text-left ">当前价格</view>
         <view class=" text-sm basis-xs padding-top-sm text-left">当前涨跌幅</view>
-        <view class=" text-xs basis-xs padding-top-sm text-left">预测明日收盘价</view>
+        <view class=" text-sm basis-xs padding-top-sm text-left">明日估值</view>
       </view>
       
 
@@ -402,7 +402,6 @@
         <view>
           <image src="/images/tabbar/messagesPage{{PageCur=='messagesPage'?'_cur':''}}.png"> </image>
         </view>
-        <view wx:if="{{unreadNum!=0}}" style="margin-right:20%" class="cu-tag badge">{{unreadNum}}</view>
       </view>
       <view class="{{PageCur=='messagesPage'?'text-white':'text-gray'}}">消息</view>
     </view>

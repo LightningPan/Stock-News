@@ -16,7 +16,6 @@ public class UserStock implements Serializable {
 
     @Id
     @Column(length = 100)
-    @GeneratedValue
     private String Id;
     @Column(length = 100)
     private String openid;

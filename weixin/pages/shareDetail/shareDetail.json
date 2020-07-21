@@ -1,5 +1,6 @@
 
 {
+  "navigationBarTitleText": "{{name}}",
   "usingComponents": {
     
   },

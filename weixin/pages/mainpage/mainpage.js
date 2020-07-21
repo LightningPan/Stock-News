@@ -1,5 +1,6 @@
 //<!--作者：李广 尚志强-->
 // pages/mainpage/mainpage.js
+//主页面 包含tabbar的主界面
 const app = getApp();
 
 Page({

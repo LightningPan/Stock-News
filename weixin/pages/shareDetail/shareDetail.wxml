@@ -65,10 +65,15 @@
       <view class="flex-treble ">
 
         <view class="  text-white  share-price ">
-          <text class="text-df" decode='true'>今日股票{{(weekDay==5)||(weekDay==6)?'的':''}}当前价: </text>
-          <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{price}}
-          <text class="text-df">\n预测{{(weekDay==5)||(weekDay==6)?'下周一':'明天'}}收盘价: </text>
-          <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{forecast}}</view>
+          <text class="text-df" decode='true'>今日股票当前价: </text>
+          <view class="cu-tag line-white sm"></view> {{price}}
+          <text class="text-df">\n预测明天收盘价: </text>
+          <view class="cu-tag line-white sm"></view> {{forecast}}
+          <text class="text-df">\n成交股票数: </text>
+          <view class="cu-tag line-white sm"></view> {{ numShare}}
+          <text class="text-df">\n成交金额: </text>
+          <view class="cu-tag line-white sm"></view> {{amount}}
+        </view>
       </view>
 
 
@@ -95,20 +100,20 @@
       <view class="text-xl ">
         
      
-        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{item[1]}}
+        <view class="cu-tag line-white sm"></view> {{kaipan}}
       </view>
 
 
     </view>
     <view class="indexnum">
       <view class="text-xl ">
-        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view> {{item[2]}}
+        <view class="cu-tag line-white sm"></view> {{max}}
       </view>
 
     </view>
     <view class="indexnum">
       <view class="text-xl ">
-        <view class="cu-tag line-white sm">{{market=='gb_'?'$':market=='hk'?'HKD':'￥'}}</view>{{item[3]}}
+        <view class="cu-tag line-white sm"></view>{{min}}
       </view>
 
     </view>

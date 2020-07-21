@@ -1,5 +1,6 @@
 //<!--作者：李广 尚志强-->
 // pages/newsPage/newsPage.js
+//新闻界面
 var app = getApp();
 
 Page({

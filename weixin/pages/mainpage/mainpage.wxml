@@ -1,6 +1,7 @@
  <!--作者：李广 尚志强-->
 <scroll-view scroll-y bindscroll="onPageScroll" scroll-top="{{NewsscrollTop}}" bindscrolltolower="onReachBottom" class="DrawerPage {{modalName=='selectModal'?'show':''}}">
   <!-- myOption -->
+  <!--自选界面-->
   <view wx:if="{{PageCur=='myOption'}}">
     <view class="bg-black shadow shadow-lg  radius indexFrame">
       <cu-custom bgColor="imageBg1" isBack="{{true}}">
@@ -87,7 +88,7 @@
   </view>
 
   <!-- marketPage -->
-
+<!--市场界面 新闻-->
   <view wx:if="{{PageCur=='marketPage'}}">
     <view class="bg-black shadow shadow-lg  radius indexFrame">
 
@@ -299,8 +300,9 @@
 
 
   <!-- myPage -->
+  <!--我的界面-->
 
-  <view wx:if="{{PageCur=='myPage'}}" class="personalView  bg-white">
+  <view   wx:if="{{PageCur=='myPage'}}" class="personalView  bg-white">
 
 
     <scroll-view scroll-y class="scrollPage ">

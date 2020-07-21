@@ -12,6 +12,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User,String> {
 
-    @Query(value = "select openid from User where User.token=:token", nativeQuery=true)
-    public String queryOpenId(@Param("token")String token);
+    @Query(value = "select openid from User u where u.token=:token", nativeQuery=true)
+    String queryOpenId(@Param("token") String token);
 }

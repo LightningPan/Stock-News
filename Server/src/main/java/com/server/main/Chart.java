@@ -1,7 +1,7 @@
 /*
  * author:Tan Pan
  * create time:2020-07-10
- * update time:2020-07-17
+ * update time:2020-07-21
  * */
 package com.server.main;
 
@@ -51,9 +51,9 @@ public class Chart {
     @ResponseBody
     @RequestMapping(value="Actuality/K/Day",method= RequestMethod.GET)
     public List<Object[]> getActualityKDay(@RequestParam(value="StockCode")String stockCode,
-                                       @RequestParam(value="Date") String time,
-                                       @RequestParam(value = "Range")String range){
-        String sql="select time,topen,tclose,high,low from "+stockCode+" where time>='"+time+"' order by time asc"+" limit "+range;
+                                       @RequestParam(value="SDate") String time,
+                                       @RequestParam(value = "EDate")String etime){
+        String sql="select time,topen,tclose,high,low from "+stockCode+" where time>='"+time+"' and time<='"+etime+"' order by time asc";
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
         return resultList;

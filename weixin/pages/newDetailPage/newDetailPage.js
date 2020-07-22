@@ -43,7 +43,7 @@ inputnewdetailValue:this.data.inputnewdetailValue
         'content-type': 'text/json' // 默认值
       }, 
       success(res) {
-        console.log(res.data.data.list);
+        //console.log(res.data.data.list);
       /* switch ( this.data.inputnewdetailValue) {
           case (军事):{
             inputnewdetailValue=2
@@ -113,7 +113,7 @@ inputnewdetailValue:this.data.inputnewdetailValue
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log(this.data.newspage);
+    //console.log(this.data.newspage);
     this.setData({
       newspage: this.data.newspage + 1
     })

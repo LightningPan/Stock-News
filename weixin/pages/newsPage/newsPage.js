@@ -22,7 +22,7 @@ Page({
     this.setData({
       aid: options.newsaid
     })
-    console.log(this.data.aid)
+    //console.log(this.data.aid)
     this.getNewsMes()
   },
 
@@ -38,7 +38,7 @@ Page({
         'content-type': 'text/json' // 默认值
       },
       success(res) {
-        console.log(res.data.data);
+        //console.log(res.data.data);
         that.setData({
           newsdata: res.data.data,
           articleStr: res.data.data.content

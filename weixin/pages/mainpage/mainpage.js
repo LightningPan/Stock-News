@@ -402,7 +402,7 @@ this.setData({
     }
     })
     if (this.data.PageCur =="myOption"){
-      setTimeout(this.refreshItem, 5000)
+      setTimeout(this.refreshItem, 3000)
     }
   },
 

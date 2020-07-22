@@ -5,6 +5,15 @@ const app = getApp();
 
 Page({
   data: {
+    money:200000,
+    integral: 0,
+    currentTab: 0,
+    result1:0,
+    topprice:0,
+    lowprice:0,
+    profitloss:0,
+    sharenums:0,
+    shareinput:100,
     unreadNum: 0,
     messagesData: null,
     fbInput: null,
@@ -80,6 +89,109 @@ Page({
     newsTitles: []
 
   },
+
+
+   //滑动切换
+   swiperTab: function (e) {
+    var that = this;
+    that.setData({
+      currentTab: e.detail.current
+    });
+  },
+  //点击切换
+  clickTab: function (e) {
+    var that = this;
+    if (this.data.currentTab === e.target.dataset.current) {
+      return false;
+    } else {
+      that.setData({
+        currentTab: e.target.dataset.current
+      })
+    }
+  },
+
+
+
+  searchdetailShare1: function() {
+    if(this.data.inputValue!=null){
+      var that = this;
+      var money=this.data.money;
+      var url = "https://hq.sinajs.cn/list=" + this.data.inputValue;
+      wx.request({
+        url: url,
+        header: {
+          'content-type': 'text/json' // 默认值
+        },
+        success(res1) {
+          console.log(res1.data)
+          var result2=res1.data.split(",")[3]
+        
+          var lowprice=(result2*0.9).toFixed(3)
+          var topprice=(result2*1.1).toFixed(3)
+          console.log(topprice)
+          that.setData({
+           result1:res1.data.split(",")[3],
+           sharenums:parseInt(money/result2),
+           
+           lowprice:lowprice,
+           topprice:topprice,
+           
+          })
+          
+        },
+        fail(log){
+          console.log('--------fail----------')
+        }
+      })
+    }
+
+  },
+
+
+
+
+
+
+  getIntegral: function(e) {
+    var integral = e.detail.value;
+    if(integral<=this.data.sharenums) { // 判断value值是否小于等于100, 如果大于100限制输入100
+      if(integral == '') { // 判断value值是否等于空,为空integral默认0,
+        this.setData({
+          integral: 0
+        })
+      } else {
+        this.setData({
+          integral: integral,
+        })
+      }
+      
+    } else {
+      wx.showToast({
+        title: '最多可买'+this.data.sharenums+'股, 请重新输入',
+        icon: 'none',
+      })
+      this.setData({
+        integral: 100,
+        shareinput: 100,
+      })
+    }
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   NavChange(e) {
     var that = this;

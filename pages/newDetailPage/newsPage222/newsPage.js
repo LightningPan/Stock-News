@@ -54,6 +54,46 @@ Page({
   
 
   },
+  NavtoNewsPage: function(e) {
+    wx.navigateTo({
+      url: '../newsPage/newsPage?newsaid=' + this.data.newsTitles[e.currentTarget.dataset.cur].aid,
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+  NavtoNewsPage1: function(e) {
+    wx.navigateTo({
+      url: '../newsPage/newsPage?newsaid=' + this.data.newsTitles[e.currentTarget.dataset.cur].aid,
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+  NavtoNewsPage2: function(e) {
+    wx.navigateTo({
+      url: '../newsPage/newsPage?newsaid=' + this.data.newsTitles[e.currentTarget.dataset.cur].aid,
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+  NavtoNewsPage3: function(e) {
+    wx.navigateTo({
+      url: '../newsPage/newsPage?newsaid=' + this.data.newsTitles[e.currentTarget.dataset.cur].aid,
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+  onReachBottom: function() {
+    console.log(this.data.newspage);
+    this.setData({
+      newspage: this.data.newspage + 1
+    })
+    this.getNewsTitle();
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

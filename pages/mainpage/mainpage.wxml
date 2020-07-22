@@ -1,6 +1,7 @@
  <!--作者：李广 尚志强-->
 <scroll-view scroll-y bindscroll="onPageScroll" scroll-top="{{NewsscrollTop}}" bindscrolltolower="onReachBottom" class="DrawerPage {{modalName=='selectModal'?'show':''}}">
   <!-- myOption -->
+  <!--自选界面-->
   <view wx:if="{{PageCur=='myOption'}}">
     <view class="bg-black shadow shadow-lg  radius indexFrame">
       <cu-custom bgColor="imageBg1" isBack="{{true}}">
@@ -87,7 +88,7 @@
   </view>
 
   <!-- marketPage -->
-
+<!--市场界面 新闻-->
   <view wx:if="{{PageCur=='marketPage'}}">
     <view class="bg-black shadow shadow-lg  radius indexFrame">
 
@@ -99,10 +100,10 @@
       <view class="cu-bar search">
         <view class="search-form  radius">
           <text class="cuIcon-search"></text>
-          <input type="text" placeholder="搜索股票" confirm-type="search" bindtap="navToSp"></input>
+          <input type="text" placeholder="搜索股票新闻" confirm-type="search" bindinput="getdetailinput"></input>
         </view>
-        <view class="action ">
-          <button class="cu-btn bg-black round">搜索</button>
+        <view class="newaction ">
+          <button class="bg-black round" bindtap='navToNewdetail'>搜索</button>
         </view>
       </view>
 
@@ -299,8 +300,9 @@
 
 
   <!-- myPage -->
+  <!--我的界面-->
 
-  <view wx:if="{{PageCur=='myPage'}}" class="personalView  bg-white">
+  <view   wx:if="{{PageCur=='myPage'}}" class="personalView  bg-white">
 
 
     <scroll-view scroll-y class="scrollPage ">

@@ -1,9 +1,11 @@
 //<!--作者：李广 尚志强-->
 // pages/mainpage/mainpage.js
+//主页面 包含tabbar的主界面
 const app = getApp();
 
 Page({
   data: {
+    inputnewdetailValue:null,
     unreadNum: 0,
     messagesData: null,
     fbInput: null,
@@ -79,7 +81,33 @@ Page({
     newsTitles: []
 
   },
-
+ //跳转到搜索界面
+ navToNewdetail:function(){
+  wx.navigateTo({
+    url: '../newDetailPage/newDetailPage?inputnewdetailValue='+this.data.inputnewdetailValue,
+  })
+  if(this.data.inputnewdetailValue!=null){
+    wx.request({
+   
+      url: 'https://106.54.95.249/StockNews/FuzzySearch?content='+this.data.inputnewdetailValue,
+      header: {
+        'content-type': 'text/json' // 默认值
+      },
+      success(rec){
+console.log(rec.data)
+that.setData({
+  resul:rec.data,
+ })
+      }
+    })
+  }
+},
+//获取新闻输入
+getdetailinput:function(e){
+this.setData({
+  inputnewdetailValue: e.detail.value
+})
+},
   NavChange(e) {
     var that = this;
     if (e.currentTarget.dataset.cur == "messagesPage") {
@@ -162,7 +190,7 @@ Page({
 
   getNewsTitle: function() {
     var that = this;
-    var newsUrl = "http://api.dagoogle.cn/news/nlist?cid=4&psize=1";
+    var newsUrl = "http://api.dagoogle.cn/news/nlist?cid=4&psize=10";
     wx.request({
       url: newsUrl + "&page=" + that.data.newspage,
       //仅为示例，并非真实的接口地址

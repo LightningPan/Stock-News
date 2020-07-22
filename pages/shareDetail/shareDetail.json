@@ -1,5 +1,6 @@
 
 {
+  "navigationBarTitleText": "{{name}}",
   "usingComponents": {
     
   },
@@ -13,5 +14,5 @@
 "usingComponents": {
   "i-input": "../../dist/input/index"
 }
-  
+   
 }

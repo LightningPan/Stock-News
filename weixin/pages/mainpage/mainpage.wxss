@@ -203,4 +203,84 @@ justify-content: center;
 .shadow shadow-lg{
   background-color: #333333;
 }
+.swiper-tab{
+
+  width: 700rpx;
+  border-bottom: 1rpx solid #ccc;
+  text-align: center;
+  height: 80rpx;
+  line-height: 80rpx;
+  display: flex;
+  flex: 1;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-tab-item{
+  width: 100%; 
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#FCFCFC;
+
+}
+.active{
+  color:#F65959;
+  border-bottom: 4rpx solid #F65959;
+}
+swiper{
+  display: flex;
+text-align: center;
+margin-right:0em;
+
+}
+.cu-bar solid-bottom margin-top text-white{
+
+}
+
+.user{
+  padding-left: 50rpx;
+  display: flex;
+  justify-content:left;
+  align-items: center;
+  text-align: center;
+
+}
+
+.name{
+  font-size: 38rpx;
+}
+.smallname{
+  font-size: 25rpx;
+}
+.TopdivLine{
+  background: transparent;
+  width: 100%;
+  height: 15rpx;
+ }
+.divLine{
+  margin-top: 20rpx;
+  background: grey;
+  width: 100%;
+  height: 2rpx;
+ }
+.information{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.information .fortune{
+padding-left: 100rpx;
+}
+.information .profit{
+padding-right: 100rpx;
+}
+.unitprice{
+  margin-left: 50rpx;
+  width: 500rpx;
+  height: 50rpx;
+  color: black;
+  background-color: white;
+}
 

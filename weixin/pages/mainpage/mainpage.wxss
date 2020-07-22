@@ -49,7 +49,6 @@ justify-content: center;
 
 
 .UCenter-bg {
-  background-image: url();
   background-size: cover;
   height: 40vh;
   display: flex;

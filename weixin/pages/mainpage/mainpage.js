@@ -97,7 +97,7 @@ Page({
         'content-type': 'text/json' // 默认值
       },
       success(rec){
-console.log(rec.data)
+//console.log(rec.data)
 that.setData({
   resul:rec.data,
  })
@@ -143,13 +143,13 @@ this.setData({
           'content-type': 'text/json' // 默认值
         },
         success(res) {
-          console.log(res.data)
+          //console.log(res.data)
           that.setData({
            result:res.data,
           })
         },
         fail(log){
-          console.log('--------fail----------')
+          //console.log('--------fail----------')
         }
       })
     }
@@ -178,7 +178,7 @@ this.setData({
         'content-type': 'text/json' // 默认值
       },
       success(res) {
-        console.log(res.data.data.list);
+        //console.log(res.data.data.list);
         that.data.newsTitles = that.data.newsTitles.concat(res.data.data.list);
         that.setData({
           newsTitles: that.data.newsTitles
@@ -366,8 +366,8 @@ this.setData({
             },
             success(res1){
               var temp=res1.data.split(",")
-              console.log(temp)
-              console.log(temp[0].split("\"")[1])
+              //console.log(temp)
+              //console.log(temp[0].split("\"")[1])
               that.setData({
                 tempindex:[
                   {
@@ -380,7 +380,7 @@ this.setData({
                   }
                 ]
               })
-              console.log(that.data.tempindex)
+              //console.log(that.data.tempindex)
               var j=0
               for(;j<that.data.indexItems.length;j++){
                 if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
@@ -391,7 +391,7 @@ this.setData({
               if(j==that.data.indexItems.length){
                 that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
               }
-              console.log(that.data.indexItems)
+              //console.log(that.data.indexItems)
               that.setData({
                 indexItems:that.data.indexItems
 
@@ -425,7 +425,7 @@ this.setData({
     })
   },
   NavtoShare: function(e) {
-    console.log(e);
+    //console.log(e);
     var that=this
     wx.navigateTo({
       url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected="+e.currentTarget.dataset.cur[1],
@@ -534,7 +534,7 @@ this.setData({
   onShow: function() {
     var that = this;
     that.data.PageCur="myOption"
-    console.log(that.data.PageCur)
+    //console.log(that.data.PageCur)
     that.refreshItem()
    /* wx.request({
       method:"POST",
@@ -562,7 +562,7 @@ this.setData({
     })*/
   },
   onPageScroll: function (e) {
-    console.log(e.detail.scrollTop)
+    //console.log(e.detail.scrollTop)
     if (e.detail.scrollTop > 1500) {
       this.setData({
         showGoTop: true
@@ -654,7 +654,7 @@ this.setData({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    console.log(this.data.newspage);
+    //console.log(this.data.newspage);
     this.setData({
       newspage: this.data.newspage + 1
     })

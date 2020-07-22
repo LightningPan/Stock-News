@@ -111,7 +111,7 @@
 
     <scroll-view scroll-x class="imageBg1 nav">
       <view class="flex text-center">
-        <view class=" cu-item flex-sub  {{index==TabCur?'text-white cur':''}} " wx:for="{{3}}" wx:key bindtap="marketSelect" data-id="{{index}}">
+        <view class=" cu-item flex-sub  {{index==TabCur?'text-white cur':''}} " wx:for="{{3}}" wx:key="key" bindtap="marketSelect" data-id="{{index}}">
           <view class="text-white"> {{marketName[index]}}</view>
         </view>
       </view>
@@ -124,9 +124,9 @@
     <view wx:if="{{TabCur==0}}">
 
       <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
-        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ hsstockIndexs[index].name}}</view>
-        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
-          <view class="text-xl  text-white " wx:key>{{ hsstockIndexs[index].price}}</view>
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key="key">{{ hsstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key="key">
+          <view class="text-xl  text-white " wx:key="key">{{ hsstockIndexs[index].price}}</view>
 
           <view class="  grid flex  text-sm  ">
             <view class="  flex-twice padding-sm  {{hsstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{hsstockIndexs[index].changePrice}} </view>
@@ -138,9 +138,9 @@
     </view>
     <view wx:if="{{TabCur==1}}">
       <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
-        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ ggstockIndexs[index].name}}</view>
-        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
-          <view class="text-xl  text-white " wx:key>{{ ggstockIndexs[index].price}}</view>
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key="key">{{ ggstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key="key">
+          <view class="text-xl  text-white " wx:key="key">{{ ggstockIndexs[index].price}}</view>
 
           <view class="  grid flex  text-sm  ">
             <view class="  flex-twice padding-sm  {{ggstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{ggstockIndexs[index].changePrice}} </view>
@@ -152,9 +152,9 @@
     </view>
     <view wx:if="{{TabCur==2}}">
       <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
-        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ mgstockIndexs[index].name}}</view>
-        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
-          <view class="text-xl  text-white " wx:key>{{ mgstockIndexs[index].price}}</view>
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key="key">{{ mgstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key="key">
+          <view class="text-xl  text-white " wx:key="key">{{ mgstockIndexs[index].price}}</view>
 
           <view class="  grid flex  text-sm  ">
             <view class="  flex-twice padding-sm  {{mgstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{mgstockIndexs[index].changePrice}} </view>
@@ -173,7 +173,7 @@
 
 
 
-    <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key>
+    <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key="key">
       <view class="cu-item cardStyle " bindtap="NavtoNewsPage" data-cur="{{index}}">
         <view class="content">
           <view class="desc">

@@ -1,19 +1,9 @@
 //<!--作者：李广 尚志强-->
 // pages/mainpage/mainpage.js
-//主页面 包含tabbar的主界面
 const app = getApp();
 
 Page({
   data: {
-    money:200000,
-    integral: 0,
-    currentTab: 0,
-    result1:0,
-    topprice:0,
-    lowprice:0,
-    profitloss:0,
-    sharenums:0,
-    shareinput:100,
     unreadNum: 0,
     messagesData: null,
     fbInput: null,
@@ -90,109 +80,6 @@ Page({
 
   },
 
-
-   //滑动切换
-   swiperTab: function (e) {
-    var that = this;
-    that.setData({
-      currentTab: e.detail.current
-    });
-  },
-  //点击切换
-  clickTab: function (e) {
-    var that = this;
-    if (this.data.currentTab === e.target.dataset.current) {
-      return false;
-    } else {
-      that.setData({
-        currentTab: e.target.dataset.current
-      })
-    }
-  },
-
-
-
-  searchdetailShare1: function() {
-    if(this.data.inputValue!=null){
-      var that = this;
-      var money=this.data.money;
-      var url = "https://hq.sinajs.cn/list=" + this.data.inputValue;
-      wx.request({
-        url: url,
-        header: {
-          'content-type': 'text/json' // 默认值
-        },
-        success(res1) {
-          console.log(res1.data)
-          var result2=res1.data.split(",")[3]
-        
-          var lowprice=(result2*0.9).toFixed(3)
-          var topprice=(result2*1.1).toFixed(3)
-          console.log(topprice)
-          that.setData({
-           result1:res1.data.split(",")[3],
-           sharenums:parseInt(money/result2),
-           
-           lowprice:lowprice,
-           topprice:topprice,
-           
-          })
-          
-        },
-        fail(log){
-          console.log('--------fail----------')
-        }
-      })
-    }
-
-  },
-
-
-
-
-
-
-  getIntegral: function(e) {
-    var integral = e.detail.value;
-    if(integral<=this.data.sharenums) { // 判断value值是否小于等于100, 如果大于100限制输入100
-      if(integral == '') { // 判断value值是否等于空,为空integral默认0,
-        this.setData({
-          integral: 0
-        })
-      } else {
-        this.setData({
-          integral: integral,
-        })
-      }
-      
-    } else {
-      wx.showToast({
-        title: '最多可买'+this.data.sharenums+'股, 请重新输入',
-        icon: 'none',
-      })
-      this.setData({
-        integral: 100,
-        shareinput: 100,
-      })
-    }
-  },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   NavChange(e) {
     var that = this;
     if (e.currentTarget.dataset.cur == "messagesPage") {
@@ -252,21 +139,22 @@ Page({
   onLoad: function(options) {
     // console.log(app.globalData.openid);
     // console.log(app.globalData.userInfo);
+    this.setData({
+      indexItems:[
+        {
+          shareNum:'sh600519',
+          present:'2.11',
+          shareName:'茅台',
+          forecast:1622,
+          price:'1620'
+        }
+
+      ]
+    })
     this.getMessages();
     this.data.userInfo = app.globalData.userInfo;
     this.setData({
       userInfo: this.data.userInfo,
-      indexItem:[
-        {
-          shareNum:1,
-          present:1,
-          shareNum:1,
-          forecast:1,
-          price:1
-        }
-      ]
-
-      
     })
     this.refreshIndex();
 
@@ -491,7 +379,7 @@ Page({
               case "sh":
               case "sz":
                 {
-                  that.data.indexItems[itemindex].price = result[3];
+                 /* that.data.indexItems[itemindex].price = result[3];
                   if (that.data.indexItems[itemindex].price == 0) {
                     that.data.indexItems[itemindex].price = result[2];
                     that.data.indexItems[itemindex].present = "-";
@@ -503,12 +391,12 @@ Page({
                       that.data.indexItems[itemindex].present = "+"
                     }
                     that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
-                  }
+                  }*/
                 }
                 break;
               case "hk":
                 {
-                  that.data.indexItems[itemindex].price = result[6];
+                  /*that.data.indexItems[itemindex].price = result[6];
                   if (that.data.indexItems[itemindex].price == 0) {
                     that.data.indexItems[itemindex].price = result[3];
                     that.data.indexItems[itemindex].present = "-";
@@ -521,12 +409,12 @@ Page({
                     }
                     that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
 
-                  }
+                  }*/
                 }
                 break;
               case "gb_":
                 {
-                  that.data.indexItems[itemindex].price = result[1];
+                  /*that.data.indexItems[itemindex].price = result[1];
                   if (that.data.indexItems[itemindex].price == 0) {
                     that.data.indexItems[itemindex].price = result[26];
                     that.data.indexItems[itemindex].present = "-";
@@ -539,14 +427,14 @@ Page({
                     }
                     that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
 
-                  }
+                  }*/
                 }
                 break;
             }
 
-            that.setData({
+            /*that.setData({
               indexItems: that.data.indexItems
-            })
+            })*/
             itemindex++;
             // that.stockIndexs[i].price = result[4];
           }
@@ -664,17 +552,17 @@ Page({
         url: 'http://106.15.182.82:8080/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + num,
       })*/
       this.data.indexItems[index].isSelected = true;
-      this.setData({
+     /* this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
     } else {
       /*wx.request({
         url: 'http://106.15.182.82:8080/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + num,
       })*/
-      this.data.indexItems[index].isSelected = false;
+      /*this.data.indexItems[index].isSelected = false;
       this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
     }
   },
   /**
@@ -683,7 +571,7 @@ Page({
   onShow: function() {
     var that = this;
 
-    wx.request({
+   /* wx.request({
       method:"POST",
       url: 'http://106.54.95.249/UserStock' ,
       header:{
@@ -706,7 +594,7 @@ Page({
         })
         that.refreshItem();
       }
-    })
+    })*/
   },
   onPageScroll: function (e) {
     console.log(e.detail.scrollTop)

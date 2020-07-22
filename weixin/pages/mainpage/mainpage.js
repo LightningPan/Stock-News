@@ -5,8 +5,8 @@ const app = getApp();
 
 Page({
   data: {
+    StockInput:null,
     inputnewdetailValue:null,
-    unreadNum: 0,
     messagesData: null,
     fbInput: null,
     modalName: null,
@@ -15,9 +15,11 @@ Page({
     newspage: 1,
     marketName: ["沪深", "港股", "美股"],
     TabCur: 0,
-    indexItems: null,
+    indexItems: [],
     showGoTop: false,
     NewsscrollTop:0,
+    tempindex:null,
+
     ggstockIndexs: [{
       name: "恒生指数",
       num: "hkHSI",
@@ -81,6 +83,7 @@ Page({
     newsTitles: []
 
   },
+
  //跳转到搜索界面
  navToNewdetail:function(){
   wx.navigateTo({
@@ -108,20 +111,9 @@ this.setData({
   inputnewdetailValue: e.detail.value
 })
 },
+ 
   NavChange(e) {
     var that = this;
-    if (e.currentTarget.dataset.cur == "messagesPage") {
-      wx.request({
-        url: 'http://106.54.95.249/' + app.globalData.openid,
-        success(res) {
-          console.log(res.data);
-        }
-      })
-      that.setData({
-        unreadNum: 0,
-        UserStock:app.globalData.openid,
-      })
-    }
     this.setData({
       PageCur: e.currentTarget.dataset.cur,
       modalName: null,
@@ -164,27 +156,14 @@ this.setData({
 
   },
 
-  onLoad: function(options) {
-    // console.log(app.globalData.openid);
-    // console.log(app.globalData.userInfo);
+  onLoad: function() {
     this.getMessages();
     this.data.userInfo = app.globalData.userInfo;
     this.setData({
       userInfo: this.data.userInfo,
-      indexItem:[
-        {
-          shareNum:1,
-          present:1,
-          shareNum:1,
-          forecast:1,
-          price:1
-        }
-      ]
-
-      
     })
     this.refreshIndex();
-
+    this.refreshItem();
     this.getNewsTitle();
   },
 
@@ -363,114 +342,67 @@ this.setData({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
+  /* 
+  * author:Tan Pan
+  * create time:2020-07-21
+  * update time:2020-07-22
+  */
   refreshItem: function() {
     var that = this
-   /* wx.request({
-      url: 'http://106.15.182.82:8080/searchSaveShareByUserName?username=' + app.globalData.openid,
-      success(res) {
-        app.globalData.mySelect = res.data;
-        for (var i = 0; i < res.data.length; i++) {
-          that.data.indexItems[i].isSelected = true;
-          that.data.indexItems[i].forecast = res.data[i].forecast.toFixed(3);
-        }
-        that.setData({
-          indexItems: that.data.indexItems
-        })
-       
-      }
-    })*/
-    var url = 'https://hq.sinajs.cn/list='
-    //沪深
-    {
-      for (var i = 0; i < that.data.indexItems.length; i++) {
-        // console.log(app.globalData.hsstockIndexs[i].num),
-        url = url + that.data.indexItems[i].market + that.data.indexItems[i].shareNum + ',';
-      }
-      url = url.toLowerCase();
-      var itemindex = 0;
-      //console.log(url)
-      wx.request({
-        url: url,
-        //仅为示例，并非真实的接口地址
-
-        header: {
-          'content-type': 'text/json' // 默认值
-        },
-        success(res) {
-          var line = res.data.split(";");
-          for (var j = 0; j < that.data.indexItems.length; j++) {
-            var x = line[j].split("\"");
-            var result = x[1].split(",");
-
-            switch (that.data.indexItems[itemindex].market) {
-              case "sh":
-              case "sz":
-                {
-                  that.data.indexItems[itemindex].price = result[3];
-                  if (that.data.indexItems[itemindex].price == 0) {
-                    that.data.indexItems[itemindex].price = result[2];
-                    that.data.indexItems[itemindex].present = "-";
-                  } else {
-                    var present = (result[3] - result[2]) * 100 / result[2];
-                    present = present.toFixed(2);
-                    that.data.indexItems[itemindex].present = ""
-                    if (present > 0) {
-                      that.data.indexItems[itemindex].present = "+"
-                    }
-                    that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
+    wx.request({
+      url: 'https://106.54.95.249/UserStock',
+      method:"GET",
+      header:{
+        'token' : app.globalData.token
+      },
+      
+    success(res){
+      for(var i=0;i<res.data.length;i++){
+        let index=i
+          wx.request({
+            url: 'https://hq.sinajs.cn/list='+res.data[index],
+            header: {
+              'content-type': 'text/json' // 默认值
+            },
+            success(res1){
+              var temp=res1.data.split(",")
+              console.log(temp)
+              console.log(temp[0].split("\"")[1])
+              that.setData({
+                tempindex:[
+                  {
+                    shareNum:res.data[index],
+                    present:((temp[3]/temp[2]-1)*100).toFixed(2),
+                    shareName:temp[0].split("\"")[1],
+                    forecast:temp[3],
+                     price:temp[3],
+                     isSelected:true
                   }
+                ]
+              })
+              console.log(that.data.tempindex)
+              var j=0
+              for(;j<that.data.indexItems.length;j++){
+                if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
+                  that.data.indexItems[j]=that.data.tempindex[0]
+                  break
                 }
-                break;
-              case "hk":
-                {
-                  that.data.indexItems[itemindex].price = result[6];
-                  if (that.data.indexItems[itemindex].price == 0) {
-                    that.data.indexItems[itemindex].price = result[3];
-                    that.data.indexItems[itemindex].present = "-";
-                  } else {
-                    var present = (result[6] - result[3]) * 100 / result[3];
-                    present = present.toFixed(2);
-                    that.data.indexItems[itemindex].present = "";
-                    if (present > 0) {
-                      that.data.indexItems[itemindex].present = "+"
-                    }
-                    that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
+              }
+              if(j==that.data.indexItems.length){
+                that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
+              }
+              console.log(that.data.indexItems)
+              that.setData({
+                indexItems:that.data.indexItems
 
-                  }
-                }
-                break;
-              case "gb_":
-                {
-                  that.data.indexItems[itemindex].price = result[1];
-                  if (that.data.indexItems[itemindex].price == 0) {
-                    that.data.indexItems[itemindex].price = result[26];
-                    that.data.indexItems[itemindex].present = "-";
-                  } else {
-                    that.data.indexItems[itemindex].present = "";
-                    var present = (result[1] - result[26]) * 100 / result[26];
-                    present = present.toFixed(2);
-                    if (present > 0) {
-                      that.data.indexItems[itemindex].present = "+"
-                    }
-                    that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
-
-                  }
-                }
-                break;
+              })
             }
-
-            that.setData({
-              indexItems: that.data.indexItems
-            })
-            itemindex++;
-            // that.stockIndexs[i].price = result[4];
-          }
-        },
-
-      })
+          })
+      }
     }
+    })
     if (this.data.PageCur =="myOption"){
-      setTimeout(this.refreshItem, 3000)
+      setTimeout(this.refreshItem, 5000)
     }
   },
 
@@ -494,16 +426,17 @@ this.setData({
   },
   NavtoShare: function(e) {
     console.log(e);
+    var that=this
     wx.navigateTo({
-      url: '../shareDetail/shareDetail?market=' + e.currentTarget.dataset.cur[0] + "&num=" + e.currentTarget.dataset.cur[1] + "&isSelected=" + e.currentTarget.dataset.cur[2],
-      success: function(res) {},
+      url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected="+e.currentTarget.dataset.cur[1],
+      success: function(res) {that.data.PageCur="detail"},
       fail: function(res) {},
       complete: function(res) {},
     })
   },
   getInput: function(e) {
     this.setData({
-      inputValue: e.detail.value
+      StockInput: e.detail.value
     })
   },
   getFbIput: function(e) {
@@ -511,6 +444,7 @@ this.setData({
       fbInput: e.detail.value
     })
   },
+
 
   showModal: function(e) {
     if (this.data.modalName != null) {
@@ -561,9 +495,10 @@ this.setData({
 
   },
   navToSp: function() {
+    var that=this
     wx.navigateTo({
-      url: '../searchPage/searchPage',
-      success: function(res) {},
+      url: '../searchPage/searchPage?inputvalue='+that.data.StockInput,
+      success: function(res) {that.data.PageCur="search"},
       fail: function(res) {},
       complete: function(res) {},
     })
@@ -579,17 +514,18 @@ this.setData({
         url: 'http://106.15.182.82:8080/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + num,
       })*/
       this.data.indexItems[index].isSelected = true;
-      this.setData({
+     /* this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
     } else {
       /*wx.request({
         url: 'http://106.15.182.82:8080/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + num,
       })*/
-      this.data.indexItems[index].isSelected = false;
+      /*this.data.indexItems[index].isSelected = false;
       this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
+
     }
   },
   /**
@@ -597,8 +533,10 @@ this.setData({
    */
   onShow: function() {
     var that = this;
-
-    wx.request({
+    that.data.PageCur="myOption"
+    console.log(that.data.PageCur)
+    that.refreshItem()
+   /* wx.request({
       method:"POST",
       url: 'http://106.54.95.249/UserStock' ,
       header:{
@@ -621,7 +559,7 @@ this.setData({
         })
         that.refreshItem();
       }
-    })
+    })*/
   },
   onPageScroll: function (e) {
     console.log(e.detail.scrollTop)

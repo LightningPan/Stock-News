@@ -1,8 +1,0 @@
-/* pages/searchPage/shareItem/shareItem.wxss */
-page{
-  background-color: #333333;
-}.btnSs{
-  margin-left: 15%;
-  widows: 100%;
-  width:70%;
-}

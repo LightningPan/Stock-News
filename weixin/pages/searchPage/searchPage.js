@@ -5,6 +5,7 @@ const app = getApp();
 Page({
 
   data: {
+    indexItems: [],
     inputValue: null,
     shareItems: null,
     items:[],
@@ -15,7 +16,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-console.log(this.data.shareName)
+     this.setData({
+       inputValue : options.inputvalue
+     })
+     this.refreshItem()
+     
   },
   getInput: function(e) {
     this.setData({
@@ -31,16 +36,74 @@ console.log(this.data.shareName)
     //通过提供的JSON.stingify方法,将对象转换成字符串后传递
     var result=JSON.stringify(e.currentTarget.dataset.item);
    wx.navigateTo({
-  url: '../shareDetail/shareDetail',
+      url: '../shareDetail/shareDetail',
   })},
   NavtoShare: function(e) {
     wx.navigateTo({
-      url: '../shareDetail/shareDetail?market=' + e.currentTarget.dataset.cur[0] + "&num=" + e.currentTarget.dataset.cur[1] + "&isSelected=" + e.currentTarget.dataset.cur[2],
+      url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected="+e.currentTarget.dataset.cur[1],
       success: function(res) {},
       fail: function(res) {},
       complete: function(res) {},
     })
   },
+
+  refreshItem: function() {
+    var that = this
+    that.data.indexItems=[];
+    wx.request({
+      url:  "https://106.54.95.249/StockInfo/StockName/" + this.data.inputValue,
+      method:"GET",
+      header:{
+        'content-type': 'text/json'
+      },
+    success(res){
+
+      for(var i=0;i<res.data.length;i++){
+        let index=i
+          wx.request({
+            url: 'https://hq.sinajs.cn/list='+res.data[index][0],
+            header: {
+              'content-type': 'text/json' // 默认值
+            },
+            success(res1){
+              var temp=res1.data.split(",")
+              that.setData({
+                tempindex:[
+                  {
+                    shareNum:res.data[index][0],
+                    present:((temp[3]/temp[2]-1)*100).toFixed(2),
+                    shareName:temp[0].split("\"")[1],
+                    forecast:temp[3],
+                     price:temp[3],
+                     isSelected:true
+                  }
+                ]
+              })
+              var j=0
+              for(;j<that.data.indexItems.length;j++){
+                if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
+                  that.data.indexItems[j]=that.data.tempindex[0]
+                  break
+                }
+              }
+              if(j==that.data.indexItems.length){
+                that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
+              }
+              that.setData({
+                indexItems:that.data.indexItems
+
+              })
+            }
+          })
+      }
+    }
+    })
+    console.log(that.data.indexItems)
+  },
+
+
+
+
   searchShare: function() {
     if(this.data.inputValue!=null){
       var that = this;
@@ -56,7 +119,7 @@ console.log(this.data.shareName)
         success(res) {
           console.log(res.data)
           that.setData({
-           result:res.data,
+           items:res.data,
           
           })
         },
@@ -69,29 +132,7 @@ console.log(this.data.shareName)
 
   },
 
-  addOrDelShare: function(e) {
-    var that = this;
-    var isSelected = e.currentTarget.dataset.cur[0];
-    var num = e.currentTarget.dataset.cur[1];
-    var index = e.currentTarget.dataset.cur[2];
-    if (!isSelected) {
-      wx.request({
-        url: 'http://leektraining.work/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + num,
-      })
-      this.data.shareItems[index].isSelected = true;
-      this.setData({
-        shareItems: this.data.shareItems
-      })
-    } else {
-      wx.request({
-        url: 'http://leektraining.work/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + num,
-      })
-      this.data.shareItems[index].isSelected = false;
-      this.setData({
-        shareItems: this.data.shareItems
-      })
-    }
-  },
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -105,28 +146,7 @@ console.log(this.data.shareName)
   onShow: function() {
     var that = this;
    
-    if(this.data.shareItems!=null){
-      wx.request({
-        url: 'http://leektraining.work/searchSaveShareByUserName?username=' + app.globalData.openid,
-        success(res) {
-          console.log(res.data);
-          app.globalData.mySelect = res.data;
-          for (var i = 0; i < that.data.shareItems.length; i++) {
-            that.data.shareItems[i].isSelected = false;
-            that.data.shareItems[i].index = i;
-            for (var j = 0; j < app.globalData.mySelect.length; j++) {
-              if (that.data.shareItems[i].shareNum == app.globalData.mySelect[j].shareNum) {
-                that.data.shareItems[i].isSelected = true;
-              }
-            }
-          }
-          that.setData({
-            shareItems: that.data.shareItems
-          })
-        }
-      })
 
-    }
   },
 
   /**

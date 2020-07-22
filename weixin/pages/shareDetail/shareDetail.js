@@ -104,8 +104,8 @@ kaipan: this.data.kaipan,
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
- var bean=JSON.parse(options.result)
-
+    console.log(options)
+   var bean=JSON.parse(options.result)
     var mydate = new Date();
     var myddy = mydate.getDay();
     var currentStock=options.currentStock;

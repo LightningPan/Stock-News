@@ -1,7 +1,7 @@
 /*
  * author:Tan Pan
  * create time:2020-07-10
- * update time:2020-07-21
+ * update time:2020-07-23
  * */
 package com.server.main;
 
@@ -89,20 +89,36 @@ public class Chart {
         return resultList;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "Prediction/{StockCode}",method= RequestMethod.GET)
+    public List<Object[]> getPrediction(@PathVariable(value="StockCode")String stockCode){
 
-    /*@RequestMapping(value = "Prediction/{Location}/{StockCode}",method= RequestMethod.GET)
-    public List<Object[]> getPrediction(@PathVariable(value = "Location")String location,
-                                        @PathVariable(value="StockCode")String stockCode,
-                                        @RequestParam(value="Date") String time,
-                                        @RequestParam(value = "Range")String range,
-                                        @RequestHeader(value = "token")String token){
-
-
-        String sql="select time,prediction from "+location+stockCode+" where time>='"+time+"' order by time asc"+" limit "+range;
+        try{
+        String sql="select * from "+stockCode+"predict";
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
-        return resultList;
-    }*/
+        return resultList;}
+        catch (Exception e){
+            String sql="select * from sz300020predict";
+            Query nativeQuery=em.createNativeQuery(sql);
+            List<Object[]> resultList=nativeQuery.getResultList();
+            return resultList;
+        }
+    }
+    @ResponseBody
+    @RequestMapping(value = "Prediction/one/{StockCode}",method= RequestMethod.GET)
+    public Float getPredictionOne(@PathVariable(value="StockCode")String stockCode){
+
+        try{
+            String sql="select predictClose from "+stockCode+"predict order by time desc limit 1";
+            Query nativeQuery=em.createNativeQuery(sql);
+            List<Float> resultList=nativeQuery.getResultList();
+            return resultList.get(0);}
+        catch (Exception e){
+            return null;
+        }
+    }
+
     @ResponseBody
     @GetMapping(value = "WordCloud",produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getWordCloud(@RequestParam (value = "url")String url){

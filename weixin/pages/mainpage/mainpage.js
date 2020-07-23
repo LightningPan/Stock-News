@@ -457,34 +457,43 @@ this.setData({
               var temp=res1.data.split(",")
               //console.log(temp)
               //console.log(temp[0].split("\"")[1])
-              that.setData({
-                tempindex:[
-                  {
-                    shareNum:res.data[index],
-                    present:((temp[3]/temp[2]-1)*100).toFixed(2),
-                    shareName:temp[0].split("\"")[1],
-                    forecast:temp[3],
-                     price:temp[3],
-                     isSelected:true
+              wx.request({
+                url: 'https://106.54.95.249/Chart/Prediction/one/'+res.data[index],
+                method:"GET",
+                header: {
+                  'content-type': 'text/json' // 默认值
+                },success(res2){
+                  that.setData({
+                    tempindex:[
+                      {
+                        shareNum:res.data[index],
+                        present:((temp[3]/temp[2]-1)*100).toFixed(2),
+                        shareName:temp[0].split("\"")[1],
+                        forecast:res2.data.toFixed(2),
+                         price:(temp[3]/1).toFixed(2),
+                         isSelected:true
+                      }
+                    ]
+                  })
+                  //console.log(that.data.tempindex)
+                  var j=0
+                  for(;j<that.data.indexItems.length;j++){
+                    if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
+                      that.data.indexItems[j]=that.data.tempindex[0]
+                      break
+                    }
                   }
-                ]
-              })
-              //console.log(that.data.tempindex)
-              var j=0
-              for(;j<that.data.indexItems.length;j++){
-                if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
-                  that.data.indexItems[j]=that.data.tempindex[0]
-                  break
+                  if(j==that.data.indexItems.length){
+                    that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
+                  }
+                  //console.log(that.data.indexItems)
+                  that.setData({
+                    indexItems:that.data.indexItems
+    
+                  })
                 }
-              }
-              if(j==that.data.indexItems.length){
-                that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
-              }
-              //console.log(that.data.indexItems)
-              that.setData({
-                indexItems:that.data.indexItems
-
               })
+              
             }
           })
       }
@@ -517,7 +526,7 @@ this.setData({
     //console.log(e);
     var that=this
     wx.navigateTo({
-      url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected="+e.currentTarget.dataset.cur[1],
+      url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected=true",
       success: function(res) {that.data.PageCur="detail"},
       fail: function(res) {},
       complete: function(res) {},
@@ -536,6 +545,7 @@ this.setData({
 
 
   showModal: function(e) {
+    console.log(e)
     if (this.data.modalName != null) {
       this.setData({
         modalName: null

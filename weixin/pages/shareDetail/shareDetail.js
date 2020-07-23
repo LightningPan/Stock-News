@@ -90,6 +90,7 @@ imageUrl2:'https://106.54.95.249/Chart/Prediction/'+this.data.jichu+'?Range=50'
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    console.log(options)
  var bean=JSON.parse(options.result)
 
     var mydate = new Date();

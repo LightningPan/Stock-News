@@ -65,7 +65,7 @@
     <import src="myOption/indexItem/indexItem.wxml" />
     <view>
 
-      <view class="padding-xxl radius bg-black imageBg1 grid flex flex-wrap  text-center margin-bottom ">
+      <view class="padding-xxl radius bg-black imageBg1 grid flex flex-wrap  text-left margin-bottom ">
         <view class="basis-sm">
           <view class=" text-m text-left padding-left-xl ">股票名称</view>
           <view class=" text-sm text-grey text-left padding-left-xl">股票代号</view>

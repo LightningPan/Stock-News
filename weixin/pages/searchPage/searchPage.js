@@ -40,7 +40,7 @@ Page({
   })},
   NavtoShare: function(e) {
     wx.navigateTo({
-      url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected="+e.currentTarget.dataset.cur[1],
+      url: '../shareDetail/shareDetail?StockCode='+e.currentTarget.dataset.cur[0]+"&isSelected=false",
       success: function(res) {},
       fail: function(res) {},
       complete: function(res) {},
@@ -67,32 +67,40 @@ Page({
             },
             success(res1){
               var temp=res1.data.split(",")
-              that.setData({
-                tempindex:[
-                  {
-                    shareNum:res.data[index][0],
-                    present:((temp[3]/temp[2]-1)*100).toFixed(2),
-                    shareName:temp[0].split("\"")[1],
-                    forecast:temp[3],
-                     price:temp[3],
-                     isSelected:true
+              wx.request({
+                url: 'https://106.54.95.249/Chart/Prediction/one/'+res.data[index][0],
+                success(res2){
+                  that.setData({
+                    tempindex:[
+                      {
+                        shareNum:res.data[index][0],
+                        present:((temp[3]/temp[2]-1)*100).toFixed(2),
+                        shareName:temp[0].split("\"")[1],
+                        forecast:res2.data.toFixed(2),
+                         price:(temp[3]/1).toFixed(2),
+                         isSelected:true
+                      }
+                    ]
+                  })
+                  var j=0
+                  for(;j<that.data.indexItems.length;j++){
+                    if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
+                      that.data.indexItems[j]=that.data.tempindex[0]
+                      break
+                    }
                   }
-                ]
-              })
-              var j=0
-              for(;j<that.data.indexItems.length;j++){
-                if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
-                  that.data.indexItems[j]=that.data.tempindex[0]
-                  break
-                }
-              }
-              if(j==that.data.indexItems.length){
-                that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
-              }
-              that.setData({
-                indexItems:that.data.indexItems
+                  if(j==that.data.indexItems.length){
+                    that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
+                  }
+                  that.setData({
+                    indexItems:that.data.indexItems
+    
+                  })
 
+
+                }
               })
+             
             }
           })
       }

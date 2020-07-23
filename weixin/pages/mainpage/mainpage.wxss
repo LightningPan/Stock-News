@@ -283,4 +283,9 @@ padding-right: 100rpx;
   color: black;
   background-color: white;
 }
+.choose{
+  height: 200rpx;
+  width: 100%;
+  display: flex;
+}
 

@@ -236,6 +236,10 @@
              <view class="name">{{money}}</view>
          </view>
         
+        <view class="wealth">
+            <view style="color:grey;margin-top:10rpx;">股票总市值:</view>
+             <view class="name">{{marketvalue}}</view>
+         </view>
          <view class="profit">
          
             <view style="color:grey;margin-top:10rpx; ">浮动盈亏:</view>
@@ -336,7 +340,7 @@
     <view class="cu-bar search">
         <view class="search-form  radius">
           <text class="cuIcon-search"></text>
-          <input type="text" bindinput="getdetailinput" auto-focus placeholder="股票代码/上市地点+代码" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
+          <input type="text"  auto-focus placeholder="股票代码/上市地点+代码" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
           </view>
         <view class="action ">
           <button class=" round" size="mini" style="text-align:center；margin:0 auto" bindtap="searchdetailShare1">搜索</button>
@@ -353,15 +357,14 @@
       
 <view class="cu-bar search">
        <view class="search-form  radius">
-          <input type="number"  value="{{shareinput==100?'':shareinput}}"  placeholder="最大买入股数：{{sharenums==0?'':sharenums}}"confirm-type="search" bindconfirm="searchdetailShare" bindinput="getIntegral"></input>
+          <input type="number"  value="{{shareinput==100?'':shareinput}}"  placeholder="最大买入股数：{{sharenums==0?'':sharenums}}"confirm-type="search" bindconfirm="getIntegral" bindinput="getIntegral"></input>
        </view>
         <view class="action ">
-            <button class="square" size="mini" style="text-align:center；margin:0 auto" bindtap="searchdetailShare1">买入</button>
+            <button class="square" size="mini" style="text-align:center；margin:0 auto" bindtap="purchaseshares">买入</button>
        </view>
-           </view>
+        </view>
            
    </view>
-           
 </swiper-item>
 
 

@@ -6,15 +6,16 @@ const app = getApp();
 Page({
   data: {
     money:200000,
-    integral: 0,
+    integral: 0,//判断最大值
     currentTab: 0,
-    result1:0,
-    topprice:0,
-    lowprice:0,
-    profitloss:0,
-    sharenums:0,
-    shareinput:100,
-
+    result1:0,//股票当前价格
+    topprice:0,//股票涨停价格
+    lowprice:0,//股票跌停价格
+    profitloss:0,//浮动盈亏
+    sharenums:0,//最大购买股票数量
+    shareinput:100,//输入购买股票数量
+    sharename:null,//股票名称
+    marketvalue:0,//股票总市值
     StockInput:null,
     inputnewdetailValue:null,
     messagesData: null,
@@ -141,19 +142,22 @@ searchdetailShare1: function() {
     wx.request({
       url: url,
       header: {
-        'content-type': 'text/json' // 默认值
+        'content-type': 'text/json;charset=utf-8' // 默认值
+        
       },
       success(res1) {
         console.log(res1.data)
         var result2=res1.data.split(",")[3]
-
-        var lowprice=(result2*0.9).toFixed(3)
-        var topprice=(result2*1.1).toFixed(3)
-        console.log(topprice)
+        var openprice=res1.data.split(",")[1]
+        var lowprice=(openprice*0.9).toFixed(3)
+        var topprice=(openprice*1.1).toFixed(3)
+        var name=res1.data.split(",")[0]
+        var pricename=name.split("\"")[1]
+        console.log(pricename)
         that.setData({
          result1:res1.data.split(",")[3],
          sharenums:parseInt(money/result2),
-
+         sharename:pricename,
          lowprice:lowprice,
          topprice:topprice,
 
@@ -165,8 +169,60 @@ searchdetailShare1: function() {
       }
     })
   }
-
+  
 },
+
+
+
+purchaseshares: function() {
+  if(this.data.shareinput!=null){
+    var sharenum=this.data.sharenums;
+    var priceid=this.data.inputValue;
+    var price=this.data.result1;
+    var pricename=this.data.sharename;
+    var shareinput=this.data.shareinput===100?this.data.sharenums:this.data.shareinput
+    if(priceid!=null){
+    wx.showModal({
+      title: '股票买入确认',
+      content: "账户：模拟股票用户\r\n股票代码："+priceid+"\r\n数量："+shareinput+"  价格："+price+"\r\n您是否确认以上买入信息",
+      success (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+
+        this.setData({
+         result1:res1.data.split(",")[3],
+         sharenums:parseInt(money/result2),
+
+         lowprice:lowprice,
+         topprice:topprice,
+
+        })
+
+ 
+    }
+    else{
+      wx.showModal({
+        title: '提示信息',
+        content: "请输入股票代码",
+        success (res) {   
+        }
+      })
+    }
+    
+  }
+  
+},
+
+
+
+
+
+
 
 getIntegral: function(e) {
   var integral = e.detail.value;
@@ -178,6 +234,7 @@ getIntegral: function(e) {
     } else {
       this.setData({
         integral: integral,
+        shareinput:e.detail.value,
       })
     }
     
@@ -187,8 +244,8 @@ getIntegral: function(e) {
       icon: 'none',
     })
     this.setData({
-      integral: 100,
-      shareinput: 100,
+      integral: this.data.sharenums,
+      shareinput: this.data.sharenums,
     })
   }
 },

@@ -5,9 +5,9 @@
 
 
   <view class="padding-xxl text-white radius  grid flex flex-wrap  align-center margin-bottom ">
-    <view class="basis-sm  " bindtap="NavtoShare" data-cur="{{[item.market,item.shareNum]}}">
+    <view class="basis-sm  " bindtap="NavtoShare" data-cur="{{[item.shareNum]}}">
       <view class=" text-md text-cut text-bold text-left padding-left-lg align-center" style="width:150px">
-        <view class="cu-tag line-white">{{item.shareMarket=='gb_'?'us':item.market}}</view> {{item.shareName}}</view>
+        {{item.shareName}}</view>
     </view>
     
     <view class="basis-sm  text-sm ">

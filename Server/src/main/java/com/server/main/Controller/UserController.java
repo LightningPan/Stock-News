@@ -1,7 +1,7 @@
 /*
  * author:Tan Pan
  * create time:2020-07-09
- * update time:2020-07-21
+ * update time:2020-07-24
  **/
 package com.server.main.Controller;
 
@@ -60,7 +60,27 @@ public class UserController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "delStock/{StockCode}",method = RequestMethod.POST)
+    @Modifying
+    @Transactional
+    public String delUserStock(@RequestHeader(value = "token")String token,
+                               @PathVariable(value = "StockCode")String StockCode){
+        try{
 
+            String sql="select openid from user where token='"+token+"'";
+            Query nativeQuery=em.createNativeQuery(sql);
+            List<String> s=nativeQuery.getResultList();
+            sql="delete from user_stock where stock='"+StockCode+"'";
+            Query a=em.createNativeQuery(sql);
+            a.executeUpdate();
+            return "success";}
+        catch (Exception e){
+
+            return "fail";
+        }
+
+    }
 
 
 

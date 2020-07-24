@@ -26,7 +26,7 @@ public class StockNewsController {
                                       @RequestParam(value = "Range" ,defaultValue = "10") Integer range,
                                       @RequestParam(value="Order",defaultValue = "desc") String order){
         try{
-            String sql="select link from "+location+" where stockCode='"+StockCode+"' and link in " +
+            String sql="select link from "+location+" where stockCode='"+StockCode.substring(2,8)+"' and link in " +
                     "(select link from newslinks where releasetime>='"+date+"' order by releasetime "+order+") limit "+range;
             Query nativeQuery=em.createNativeQuery(sql);
             List<String> resultList=nativeQuery.getResultList();

@@ -40,11 +40,20 @@ public class Chart {
         public List<Object[]> getActuality(@RequestParam(value="StockCode")String stockCode,
                                            @RequestParam(value="Date") String time,
                                            @RequestParam(value = "Range")String range){
-        String sql="select time,tclose from "+stockCode+" where time>='"+time+"' order by time asc"+" limit "+range;
+        String sql="select time,tclose from "+stockCode+" where time>='"+time+"' order by time desc"+" limit "+range;
         Query nativeQuery=em.createNativeQuery(sql);
         List<Object[]> resultList=nativeQuery.getResultList();
         return resultList;
         }
+    @ResponseBody
+    @RequestMapping(value="Actuality/{StockCode}",method= RequestMethod.GET)
+    public List<Object[]> getActuality250(@PathVariable(value="StockCode")String stockCode){
+        String sql="select time,tclose from "+stockCode+" order by time desc"+" limit 250";
+        Query nativeQuery=em.createNativeQuery(sql);
+        List<Object[]> resultList=nativeQuery.getResultList();
+        return resultList;
+    }
+
 
 
 
@@ -259,8 +268,37 @@ public class Chart {
         }
         return null;
 
-
     }
+    @ResponseBody
+    @GetMapping(value = "NewsWordCloud",produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getNewsWordCloud(@RequestParam (value = "StockCode")String StockCode){
+        String location;
+        if(StockCode.contains("h")){
+            location="sse";
+        }
+        else{
+            location="szse";
+        }
 
+        String sql="select link from "+location+" where stockCode='"+StockCode.substring(2,8)+"' limit 1";
+        Query nativeQuery=em.createNativeQuery(sql);
+        List<String> rl=nativeQuery.getResultList();
+        String filePath=generateWordsCloud(rl.get(0));
+        if(filePath=="fail") return null;
+        File file=new File(filePath);
+        FileInputStream inputStream=null;
+        try{
+            inputStream=new FileInputStream(file);
+            byte[] bytes=new byte[inputStream.available()];
+            inputStream.read(bytes,0,inputStream.available());
+            inputStream.close();
+            file.delete();
+            return bytes;
+        }
+        catch (Exception e){
+
+        }
+        return null;
+    }
 
 }

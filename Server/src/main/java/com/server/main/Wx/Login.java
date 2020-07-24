@@ -54,7 +54,7 @@ public class Login {
             return "fail";
         }
         try{
-            Map map=getWxUserOpenid(code,"wx6da9db3558e80c44","14a14aef47e5215df9d59c161f799a57");
+            Map map=getWxUserOpenid(code,"wx5b48aa8435da0e74","19ccff9251abdb24f4f1a3f9a5346bbb");
             if(map.get("openid")==null){
                 return "fail";
             }

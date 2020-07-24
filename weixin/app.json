@@ -3,11 +3,11 @@
     "pages/index/index",
     "pages/mainpage/mainpage",
     "pages/newsPage/newsPage",
-    "pages/shareDetail/shareDetail",
     "pages/mainpage/myOption/indexItem/indexItem",
     "pages/searchPage/searchPage",
-    "pages/searchPage/shareItem/shareItem",
-    "pages/mainpage/selectItem/selectItem"
+    "pages/mainpage/selectItem/selectItem",
+    "pages/newDetailPage/newDetailPage",
+    "pages/stockDetail/stockDetail"
   ],
   "window": {
     "navigationStyle": "custom"

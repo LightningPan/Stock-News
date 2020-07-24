@@ -1,19 +1,32 @@
-// pages/searchPage/shareItem/shareItem.js
+
+// pages/mainpage/myOption/indexItem/indexItem.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    showModal:false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    console.log("调用组件")
   },
+
+  sell:function(){
+  console.log("卖出")
+    this.setData({
+   showModal:true
+  })
+  },
+   ok:function(){
+  console.log(this.data.textV)
+  this.setData({
+   showModal:false
+  })},
 
   /**
    * 生命周期函数--监听页面初次渲染完成

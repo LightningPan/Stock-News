@@ -1,20 +1,24 @@
 //<!--作者：李广 尚志强-->
 // pages/mainpage/mainpage.js
 //主页面 包含tabbar的主界面
+import * as echarts from "../../ec-canvas/echarts"
 const app = getApp();
 
 Page({
   data: {
     money:200000,
-    integral: 0,
+    integral: 0,//判断最大值
     currentTab: 0,
-    result1:0,
-    topprice:0,
-    lowprice:0,
-    profitloss:0,
-    sharenums:0,
-    shareinput:100,
-    unreadNum: 0,
+    result1:0,//股票当前价格
+    topprice:0,//股票涨停价格
+    lowprice:0,//股票跌停价格
+    profitloss:0,//浮动盈亏
+    sharenums:0,//最大购买股票数量
+    shareinput:100,//输入购买股票数量
+    sharename:null,//股票名称
+    marketvalue:0,//股票总市值
+    StockInput:null,
+    inputnewdetailValue:null,
     messagesData: null,
     fbInput: null,
     modalName: null,
@@ -23,9 +27,11 @@ Page({
     newspage: 1,
     marketName: ["沪深", "港股", "美股"],
     TabCur: 0,
-    indexItems: null,
+    indexItems: [],
     showGoTop: false,
     NewsscrollTop:0,
+    tempindex:null,
+
     ggstockIndexs: [{
       name: "恒生指数",
       num: "hkHSI",
@@ -86,60 +92,155 @@ Page({
     }],
 
     PageCur: 'myOption',
-    newsTitles: []
-
+    newsTitles: [],
+    ecReturnRate: {
+      lazyLoad: true
+    },
+    optionReturnRate: null,
+    message: [{
+      code: 'sz000001',
+      name: '平安银行',
+      price: 13.50,
+      holdNum: 100,
+      returnRate: -3.64,
+      change: -0.51
+    }, {
+      code: 'sh600519',
+      name: '贵州茅台',
+      price: 1595.30,
+      holdNum: 100,
+      returnRate: -3.11,
+      change: -80.7
+    }],
   },
 
-
-   //滑动切换
-   swiperTab: function (e) {
-    var that = this;
+ //跳转到搜索界面
+ navToNewdetail:function(){
+  wx.navigateTo({
+    url: '../newDetailPage/newDetailPage?inputnewdetailValue='+this.data.inputnewdetailValue,
+  })
+  if(this.data.inputnewdetailValue!=null){
+    wx.request({
+   
+      url: 'https://106.54.95.249/StockNews/FuzzySearch?content='+this.data.inputnewdetailValue,
+      header: {
+        'content-type': 'text/json' // 默认值
+      },
+      success(rec){
+//console.log(rec.data)
+that.setData({
+  resul:rec.data,
+ })
+      }
+    })
+  }
+},
+//滑动切换
+swiperTab: function (e) {
+  var that = this;
+  that.setData({
+    currentTab: e.detail.current
+  });
+},
+//点击切换
+clickTab: function (e) {
+  var that = this;
+  if (e.target.dataset.current == 3) {
+    this.ecComponentReturn = this.selectComponent('#mychart-dom-line');
+    that.initBarReturn();
+  }
+  if (this.data.currentTab === e.target.dataset.current) {
+    return false;
+  } else {
     that.setData({
-      currentTab: e.detail.current
+      currentTab: e.target.dataset.current
+    })
+  }
+},
+
+initBarReturn: function () {
+  console.log("初始化图表")
+  var that = this
+  this.ecComponentReturn.init((canvas, width, height) => {
+    // 初始化图表
+    const chart = echarts.init(canvas, null, {
+      width: width,
+      height: height
     });
-  },
-  //点击切换
-  clickTab: function (e) {
-    var that = this;
-    if (this.data.currentTab === e.target.dataset.current) {
-      return false;
-    } else {
-      that.setData({
-        currentTab: e.target.dataset.current
-      })
-    }
-  },
+    chart.setOption(that.data.optionReturnRate);
+    //wx.hideLoading();
+    // 注意这里一定要返回 chart 实例，否则会影响事件处理等
+    return chart;
+  });
+},
 
-
-
-  searchdetailShare1: function() {
-    if(this.data.inputValue!=null){
+setReturnRateOption: function () {
+  console.log("加载option")
+  var option = {
+    xAxis: {
+      type: 'category',
+      data: ['2020/7/17', '2020/7/18', '2020/7/19', '2020/7/20', '2020/7/21', '2020/7/22', '2020/7/23', '2020/7/24', '2020/7/25', ],
+      axisLabel: {
+        textStyle: {
+          color: '#ffffff'
+        }
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '{value} %',
+        textStyle: {
+          color: '#ffffff'
+        }
+      }
+    },
+    series: [{
+      data: [0, 0, 0, -0.67, 1.23, 1.83, 1.71, -3.11],
+      type: 'line'
+    }]
+  }
+  this.setData({
+    optionReturnRate: option
+  })
+},
+  //模拟交易界面中的搜索函数
+  searchdetailShare1: function () {
+    console.log(this.data.inputValue)
+    if (this.data.inputValue != null) {
       var that = this;
-      var money=this.data.money;
+      var money = this.data.money;
+
       var url = "https://hq.sinajs.cn/list=" + this.data.inputValue;
       wx.request({
         url: url,
         header: {
-          'content-type': 'text/json' // 默认值
+          'content-type': 'text/json;charset=utf-8' // 默认值
+
         },
         success(res1) {
           console.log(res1.data)
-          var result2=res1.data.split(",")[3]
-        
-          var lowprice=(result2*0.9).toFixed(3)
-          var topprice=(result2*1.1).toFixed(3)
-          console.log(topprice)
+          var result2 = res1.data.split(",")[3] //当前价格
+          var openprice = res1.data.split(",")[1] //开盘价
+          var lowprice = (openprice * 0.9).toFixed(3) //最低价
+          var topprice = (openprice * 1.1).toFixed(3) //最高价
+          var name = res1.data.split(",")[0] //股票名称
+          var pricename = name.split("\"")[1] //
+          console.log(name)
+          console.log(pricename)
+          console.log("test:"+((money-that.data.marketvalue)/result2))
           that.setData({
-           result1:res1.data.split(",")[3],
-           sharenums:parseInt(money/result2),
-           
-           lowprice:lowprice,
-           topprice:topprice,
-           
+            result1: res1.data.split(",")[3], //设置股票当前价格
+            sharenums: parseInt((money-that.data.marketvalue) / result2), //最大购买数量
+            sharename: pricename, //股票名称
+            lowprice: lowprice,
+            topprice: topprice,
           })
-          
+          console.log("this is ")
+          console.log(that.data)
+
         },
-        fail(log){
+        fail(log) {
           console.log('--------fail----------')
         }
       })
@@ -151,62 +252,125 @@ Page({
 
 
 
-
-  getIntegral: function(e) {
-    var integral = e.detail.value;
-    if(integral<=this.data.sharenums) { // 判断value值是否小于等于100, 如果大于100限制输入100
-      if(integral == '') { // 判断value值是否等于空,为空integral默认0,
-        this.setData({
-          integral: 0
+  //模拟交易界面中的购买股票函数
+  purchaseshares: function () {
+    var that = this
+    if (this.data.shareinput != null) {
+      var sharenum = this.data.sharenums;
+      var priceid = this.data.inputValue;
+      var price = this.data.result1;
+      var pricename = this.data.sharename;
+      var shareinput = this.data.shareinput === 100 ? this.data.sharenums : this.data.shareinput
+      if (priceid != null) {
+        wx.showModal({
+          title: '股票买入确认',
+          content: "账户：模拟股票用户\r\n股票代码：" + priceid + "\r\n数量：" + shareinput + "  价格：" + price + "\r\n您是否确认以上买入信息",
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              var temp = that.data.marketvalue
+              var messageTemp = that.data.message
+              var t = {
+                code: sharenum,
+                name: pricename,
+                price: price,
+                holdNum: shareinput,
+                returnRate: 0,
+                change: 0
+              }
+              messageTemp.push(t)
+              that.setData({
+                marketvalue: temp + price * shareinput,
+                message:messageTemp
+              })
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
         })
+
       } else {
-        this.setData({
-          integral: integral,
+        wx.showModal({
+          title: '提示信息',
+          content: "请输入股票代码",
+          success(res) {}
         })
       }
-      
-    } else {
-      wx.showToast({
-        title: '最多可买'+this.data.sharenums+'股, 请重新输入',
-        icon: 'none',
-      })
-      this.setData({
-        integral: 100,
-        shareinput: 100,
-      })
+
     }
+
   },
 
+ //模拟卖出股票
+ sell: function () {
+  var that = this
+  wx.showModal({
+    title: '股票卖出',
+    content: "账户：模拟股票用户\r\n您是否确认以上买出信息",
+    success(res) {
+      if (res.confirm) {
+        var temp = that.data.marketvalue
+        console.log('用户点击确定')
+        that.setData({
+          message: [{
+            code: 'sh600519',
+            name: '贵州茅台',
+            price: 1595.30,
+            holdNum: 100,
+            returnRate: -3.11,
+            change: -80.7
+          }],
+          marketvalue: temp - 13.50 * 100
+        })
+
+
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+      }
+    }
+  })
+},
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  NavChange(e) {
-    var that = this;
-    if (e.currentTarget.dataset.cur == "messagesPage") {
-      wx.request({
-        url: 'http://106.54.95.249/' + app.globalData.openid,
-        success(res) {
-          console.log(res.data);
-        }
+getIntegral: function (e) {
+  var integral = e.detail.value;
+  if (integral <= this.data.sharenums) { // 判断value值是否小于等于100, 如果大于100限制输入100
+    if (integral == '') { // 判断value值是否等于空,为空integral默认0,
+      this.setData({
+        integral: 0
       })
-      that.setData({
-        unreadNum: 0,
-        UserStock:app.globalData.openid,
+    } else {
+      this.setData({
+        integral: integral,
+        shareinput: e.detail.value,
       })
     }
+
+  } else {
+    wx.showToast({
+      title: '最多可买' + this.data.sharenums + '股, 请重新输入',
+      icon: 'none',
+    })
+    this.setData({
+      integral: this.data.sharenums,
+      shareinput: this.data.sharenums,
+    })
+  }
+},
+
+
+//获取新闻输入
+getdetailinput:function(e){
+this.setData({
+  inputnewdetailValue: e.detail.value
+})
+},
+ 
+  NavChange(e) {
+    var that = this;
     this.setData({
       PageCur: e.currentTarget.dataset.cur,
       modalName: null,
@@ -236,46 +400,34 @@ Page({
           'content-type': 'text/json' // 默认值
         },
         success(res) {
-          console.log(res.data)
+          //console.log(res.data)
           that.setData({
            result:res.data,
           })
         },
         fail(log){
-          console.log('--------fail----------')
+          //console.log('--------fail----------')
         }
       })
     }
 
   },
 
-  onLoad: function(options) {
-    // console.log(app.globalData.openid);
-    // console.log(app.globalData.userInfo);
+  onLoad: function() {
     this.getMessages();
     this.data.userInfo = app.globalData.userInfo;
     this.setData({
       userInfo: this.data.userInfo,
-      indexItem:[
-        {
-          shareNum:1,
-          present:1,
-          shareNum:1,
-          forecast:1,
-          price:1
-        }
-      ]
-
-      
     })
     this.refreshIndex();
-
+    this.refreshItem();
     this.getNewsTitle();
+    this.setReturnRateOption()
   },
 
   getNewsTitle: function() {
     var that = this;
-    var newsUrl = "http://api.dagoogle.cn/news/nlist?cid=4&psize=1";
+    var newsUrl = "http://api.dagoogle.cn/news/nlist?cid=4&psize=10";
     wx.request({
       url: newsUrl + "&page=" + that.data.newspage,
       //仅为示例，并非真实的接口地址
@@ -284,7 +436,7 @@ Page({
         'content-type': 'text/json' // 默认值
       },
       success(res) {
-        console.log(res.data.data.list);
+        //console.log(res.data.data.list);
         that.data.newsTitles = that.data.newsTitles.concat(res.data.data.list);
         that.setData({
           newsTitles: that.data.newsTitles
@@ -448,112 +600,81 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
+  /* 
+  * author:Tan Pan
+  * create time:2020-07-21
+  * update time:2020-07-22
+  */
   refreshItem: function() {
     var that = this
-   /* wx.request({
-      url: 'http://106.15.182.82:8080/searchSaveShareByUserName?username=' + app.globalData.openid,
-      success(res) {
-        app.globalData.mySelect = res.data;
-        for (var i = 0; i < res.data.length; i++) {
-          that.data.indexItems[i].isSelected = true;
-          that.data.indexItems[i].forecast = res.data[i].forecast.toFixed(3);
-        }
-        that.setData({
-          indexItems: that.data.indexItems
-        })
-       
-      }
-    })*/
-    var url = 'https://hq.sinajs.cn/list='
-    //沪深
-    {
-      for (var i = 0; i < that.data.indexItems.length; i++) {
-        // console.log(app.globalData.hsstockIndexs[i].num),
-        url = url + that.data.indexItems[i].market + that.data.indexItems[i].shareNum + ',';
-      }
-      url = url.toLowerCase();
-      var itemindex = 0;
-      //console.log(url)
-      wx.request({
-        url: url,
-        //仅为示例，并非真实的接口地址
-
-        header: {
-          'content-type': 'text/json' // 默认值
-        },
-        success(res) {
-          var line = res.data.split(";");
-          for (var j = 0; j < that.data.indexItems.length; j++) {
-            var x = line[j].split("\"");
-            var result = x[1].split(",");
-
-            switch (that.data.indexItems[itemindex].market) {
-              case "sh":
-              case "sz":
-                {
-                  that.data.indexItems[itemindex].price = result[3];
-                  if (that.data.indexItems[itemindex].price == 0) {
-                    that.data.indexItems[itemindex].price = result[2];
-                    that.data.indexItems[itemindex].present = "-";
-                  } else {
-                    var present = (result[3] - result[2]) * 100 / result[2];
-                    present = present.toFixed(2);
-                    that.data.indexItems[itemindex].present = ""
-                    if (present > 0) {
-                      that.data.indexItems[itemindex].present = "+"
+    var tindex=[]
+    that.data.tempindex=null
+    wx.request({
+      url: 'https://106.54.95.249/UserStock',
+      method:"GET",
+      header:{
+        'token' : app.globalData.token
+      },
+      
+    success(res){
+      for(var i=0;i<res.data.length;i++){
+        let index=i
+          wx.request({
+            url: 'https://hq.sinajs.cn/list='+res.data[index],
+            header: {
+              'content-type': 'text/json' // 默认值
+            },
+            success(res1){
+              var temp=res1.data.split(",")
+              //console.log(temp)
+              //console.log(temp[0].split("\"")[1])
+              wx.request({
+                url: 'https://106.54.95.249/Chart/Prediction/one/'+res.data[index],
+                method:"GET",
+                header: {
+                  'content-type': 'text/json' // 默认值
+                },success(res2){
+                  that.setData({
+                    tempindex:[
+                      {
+                        shareNum:res.data[index],
+                        present:((temp[3]/temp[2]-1)*100).toFixed(2),
+                        shareName:temp[0].split("\"")[1],
+                        forecast:res2.data.toFixed(2),
+                         price:(temp[3]/1).toFixed(2),
+                         isSelected:true
+                      }
+                    ]
+                  })
+                  //console.log(that.data.tempindex)
+                  var j=0
+                  for(;j<tindex.length;j++){
+                    if(tindex[j].shareNum==that.data.tempindex[0].shareNum){
+                      tindex[j]=that.data.tempindex[0]
+                      break
                     }
-                    that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
                   }
-                }
-                break;
-              case "hk":
-                {
-                  that.data.indexItems[itemindex].price = result[6];
-                  if (that.data.indexItems[itemindex].price == 0) {
-                    that.data.indexItems[itemindex].price = result[3];
-                    that.data.indexItems[itemindex].present = "-";
-                  } else {
-                    var present = (result[6] - result[3]) * 100 / result[3];
-                    present = present.toFixed(2);
-                    that.data.indexItems[itemindex].present = "";
-                    if (present > 0) {
-                      that.data.indexItems[itemindex].present = "+"
-                    }
-                    that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
+                  if(j==tindex.length){
+                    tindex=tindex.concat(that.data.tempindex);
+                  }
+                  if(tindex==[]){
+                    that.setData({
+                      indexItems:[]
+                    })
 
                   }
+                  that.setData({
+                    indexItems:tindex
+    
+                  })
                 }
-                break;
-              case "gb_":
-                {
-                  that.data.indexItems[itemindex].price = result[1];
-                  if (that.data.indexItems[itemindex].price == 0) {
-                    that.data.indexItems[itemindex].price = result[26];
-                    that.data.indexItems[itemindex].present = "-";
-                  } else {
-                    that.data.indexItems[itemindex].present = "";
-                    var present = (result[1] - result[26]) * 100 / result[26];
-                    present = present.toFixed(2);
-                    if (present > 0) {
-                      that.data.indexItems[itemindex].present = "+"
-                    }
-                    that.data.indexItems[itemindex].present = that.data.indexItems[itemindex].present + present;
-
-                  }
-                }
-                break;
+              })
+              
             }
-
-            that.setData({
-              indexItems: that.data.indexItems
-            })
-            itemindex++;
-            // that.stockIndexs[i].price = result[4];
-          }
-        },
-
-      })
+          })
+      }
     }
+    })
     if (this.data.PageCur =="myOption"){
       setTimeout(this.refreshItem, 3000)
     }
@@ -578,17 +699,18 @@ Page({
     })
   },
   NavtoShare: function(e) {
-    console.log(e);
+    //console.log(e);
+    var that=this
     wx.navigateTo({
-      url: '../shareDetail/shareDetail?market=' + e.currentTarget.dataset.cur[0] + "&num=" + e.currentTarget.dataset.cur[1] + "&isSelected=" + e.currentTarget.dataset.cur[2],
-      success: function(res) {},
+      url: '../stockDetail/stockDetail?stockcode='+e.currentTarget.dataset.cur[0]+"&isSelected=1",
+      success: function(res) {that.data.PageCur="detail"},
       fail: function(res) {},
       complete: function(res) {},
     })
   },
   getInput: function(e) {
     this.setData({
-      inputValue: e.detail.value
+      StockInput: e.detail.value
     })
   },
   getFbIput: function(e) {
@@ -597,7 +719,9 @@ Page({
     })
   },
 
+
   showModal: function(e) {
+    console.log(e)
     if (this.data.modalName != null) {
       this.setData({
         modalName: null
@@ -646,9 +770,10 @@ Page({
 
   },
   navToSp: function() {
+    var that=this
     wx.navigateTo({
-      url: '../searchPage/searchPage',
-      success: function(res) {},
+      url: '../searchPage/searchPage?inputvalue='+that.data.StockInput+'&stockcode='+that.data.StockInput,
+      success: function(res) {that.data.PageCur="search"},
       fail: function(res) {},
       complete: function(res) {},
     })
@@ -664,17 +789,18 @@ Page({
         url: 'http://106.15.182.82:8080/addSaveShare?username=' + app.globalData.openid + '&sharenum=' + num,
       })*/
       this.data.indexItems[index].isSelected = true;
-      this.setData({
+     /* this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
     } else {
       /*wx.request({
         url: 'http://106.15.182.82:8080/deleteSaveShare?username=' + app.globalData.openid + '&shareNum=' + num,
       })*/
-      this.data.indexItems[index].isSelected = false;
+      /*this.data.indexItems[index].isSelected = false;
       this.setData({
         indexItems: this.data.indexItems
-      })
+      })*/
+
     }
   },
   /**
@@ -682,34 +808,13 @@ Page({
    */
   onShow: function() {
     var that = this;
-
-    wx.request({
-      method:"POST",
-      url: 'http://106.54.95.249/UserStock' ,
-      header:{
-        'token' : app.globalData.token,
-        'Content-Type':'application/x-www-form-urlencoded'
-      },
-      success(res) {  
-        console.log(res.data);
-        app.globalData.mySelect = res.data;
-        that.setData({
-          indexItems: res.data
-        })
-        for (var i = 0; i < that.data.indexItems.length; i++) {
-          that.data.indexItems[i].isSelected = true;
-          that.data.indexItems[i].index = i;
-          that.data.indexItems[i].forecast = that.data.indexItems[i].forecast.toFixed(3);
-        }
-        that.setData({
-          indexItems: that.data.indexItems
-        })
-        that.refreshItem();
-      }
-    })
+    that.data.PageCur="myOption"
+    //console.log(that.data.PageCur)
+    that.refreshItem()
+  
   },
   onPageScroll: function (e) {
-    console.log(e.detail.scrollTop)
+    //console.log(e.detail.scrollTop)
     if (e.detail.scrollTop > 1500) {
       this.setData({
         showGoTop: true
@@ -801,7 +906,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    console.log(this.data.newspage);
+    //console.log(this.data.newspage);
     this.setData({
       newspage: this.data.newspage + 1
     })

@@ -1,0 +1,122 @@
+/*<!--作者：李广 尚志强-->*/
+/* pages/mainpage/myOption/indexItem/indexItem.wxss */
+.test{
+margin-top: 200rpx;
+width: 100%;
+height: 100rpx;
+background-color: teal;}
+
+.codeAndNameItem{
+width: 240rpx;
+margin-left: 15rpx;
+height: 100rpx;
+display: inline-block;
+color: white;
+background-color: thistle;
+}
+
+.codeItem{
+/* display: inline-block; */
+width: 240rpx;
+height: 60rpx;
+text-align: center;
+align-items: center;
+color: white;
+margin-top: 30;
+}
+
+.nameItem{
+/* display: inline-block; */
+width: 160rpx;
+height: 40rpx;
+/* text-align: center; */
+/* align-items: center; */
+}
+
+.textItem1{
+display: inline-block;
+width: 160rpx;
+height: 100rpx;
+color: white;
+text-align: center;
+align-items: center;
+background-color: red;
+}
+.textItem2{
+display: inline-block;
+width: 160rpx;
+height: 100rpx;
+color: white;
+/* text-align: center; */
+/* align-items: center; */
+background-color: green;
+}
+.textItem3{
+display: inline-block;
+width: 160rpx;
+height: 100rpx;
+color: white;
+text-align: center;
+align-items: center;
+background-color:darkblue;
+}
+
+
+.model{
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ background: #000;
+ z-index: 999;
+ opacity: 0.5;
+ top: 0;
+ left:0;
+}
+.modalDlg{
+ width: 70%;
+ position: fixed;
+ top:350rpx;
+ left: 0;
+ right: 0;
+ z-index: 9999;
+ margin: 0 auto;
+ background-color: #fff;
+ border-radius: 10rpx;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+.windowRow{
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+ height: 110rpx;
+ width: 100%;
+}
+.wishName{
+ width: 100%;
+ justify-content: center;
+ flex-direction: row;
+ display: flex;
+ margin-bottom: 30rpx;
+}
+.wish_put{
+ width: 80%;
+ border: 1px solid;
+ border-radius: 10rpx;
+ padding-left: 10rpx;
+}
+.wishbnt{
+ width: 100%;
+ font-size: 30rpx;
+ margin-bottom: 30rpx;
+}
+.wishbnt_bt{
+ width: 50%;
+ color: white;
+ background-color: red;
+ /* background-color: #f7a6a2; */
+ /* color: #fbf1e8; */
+ font-size: 30rpx;
+ border: 0;
+}

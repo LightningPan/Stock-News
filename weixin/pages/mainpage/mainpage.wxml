@@ -11,10 +11,10 @@
       <view class="cu-bar  search">
         <view class="search-form  radius">
           <text class="cuIcon-search"></text>
-          <input type="text" placeholder="搜索股票" confirm-type="search" bindtap="navToSp"></input>
+          <input type="text" placeholder="搜索股票" confirm-type="search" bindinput="getInput" ></input>
         </view>
         <view class="action ">
-          <button class="cu-btn bg-black round">搜索</button>
+          <button class="cu-btn bg-black round" bindtap="navToSp">搜索</button>
         </view>
       </view>
       <view class="grid col-3 margin-bottom text-center">
@@ -65,14 +65,14 @@
     <import src="myOption/indexItem/indexItem.wxml" />
     <view>
 
-      <view class="padding-xxl radius bg-black imageBg1 grid flex flex-wrap  text-center margin-bottom ">
+      <view class="padding-xxl radius bg-black imageBg1 grid flex flex-wrap  text-left margin-bottom ">
         <view class="basis-sm">
           <view class=" text-m text-left padding-left-xl ">股票名称</view>
           <view class=" text-sm text-grey text-left padding-left-xl">股票代号</view>
         </view>
         <view class="  text-sm basis-xs padding-top-sm text-left ">当前价格</view>
         <view class=" text-sm basis-xs padding-top-sm text-left">当前涨跌幅</view>
-        <view class=" text-xs basis-xs padding-top-sm text-left">预测明日收盘价</view>
+        <view class=" text-sm basis-xs padding-top-sm text-left">明日估值</view>
       </view>
       
 
@@ -100,10 +100,10 @@
       <view class="cu-bar search">
         <view class="search-form  radius">
           <text class="cuIcon-search"></text>
-          <input type="text" placeholder="搜索股票" confirm-type="search" bindtap="navToSp"></input>
+          <input type="text" placeholder="搜索股票新闻" confirm-type="search" bindinput="getdetailinput"></input>
         </view>
-        <view class="action ">
-          <button class="cu-btn bg-black round">搜索</button>
+        <view class="newaction ">
+          <button class="bg-black round" bindtap='navToNewdetail'>搜索</button>
         </view>
       </view>
 
@@ -111,7 +111,7 @@
 
     <scroll-view scroll-x class="imageBg1 nav">
       <view class="flex text-center">
-        <view class=" cu-item flex-sub  {{index==TabCur?'text-white cur':''}} " wx:for="{{3}}" wx:key bindtap="marketSelect" data-id="{{index}}">
+        <view class=" cu-item flex-sub  {{index==TabCur?'text-white cur':''}} " wx:for="{{3}}" wx:key="key" bindtap="marketSelect" data-id="{{index}}">
           <view class="text-white"> {{marketName[index]}}</view>
         </view>
       </view>
@@ -124,9 +124,9 @@
     <view wx:if="{{TabCur==0}}">
 
       <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
-        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ hsstockIndexs[index].name}}</view>
-        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
-          <view class="text-xl  text-white " wx:key>{{ hsstockIndexs[index].price}}</view>
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key="key">{{ hsstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key="key">
+          <view class="text-xl  text-white " wx:key="key">{{ hsstockIndexs[index].price}}</view>
 
           <view class="  grid flex  text-sm  ">
             <view class="  flex-twice padding-sm  {{hsstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{hsstockIndexs[index].changePrice}} </view>
@@ -138,9 +138,9 @@
     </view>
     <view wx:if="{{TabCur==1}}">
       <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
-        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ ggstockIndexs[index].name}}</view>
-        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
-          <view class="text-xl  text-white " wx:key>{{ ggstockIndexs[index].price}}</view>
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key="key">{{ ggstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key="key">
+          <view class="text-xl  text-white " wx:key="key">{{ ggstockIndexs[index].price}}</view>
 
           <view class="  grid flex  text-sm  ">
             <view class="  flex-twice padding-sm  {{ggstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{ggstockIndexs[index].changePrice}} </view>
@@ -152,9 +152,9 @@
     </view>
     <view wx:if="{{TabCur==2}}">
       <view class="grid col-3 margin-bottom shadow shadow-lg  text-center">
-        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key>{{ mgstockIndexs[index].name}}</view>
-        <view class="text text-white indexnum" wx:for="{{3}}" wx:key>
-          <view class="text-xl  text-white " wx:key>{{ mgstockIndexs[index].price}}</view>
+        <view class="text-xl  text-white indexnum" wx:for="{{3}}" wx:key="key">{{ mgstockIndexs[index].name}}</view>
+        <view class="text text-white indexnum" wx:for="{{3}}" wx:key="key">
+          <view class="text-xl  text-white " wx:key="key">{{ mgstockIndexs[index].price}}</view>
 
           <view class="  grid flex  text-sm  ">
             <view class="  flex-twice padding-sm  {{mgstockIndexs[index].changePrice>0?'text-red':'text-green'}}">{{mgstockIndexs[index].changePrice}} </view>
@@ -173,7 +173,7 @@
 
 
 
-    <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key>
+    <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key="key">
       <view class="cu-item cardStyle " bindtap="NavtoNewsPage" data-cur="{{index}}">
         <view class="content">
           <view class="desc">
@@ -206,254 +206,157 @@
 <!--消息界面-->
 
   <view class="messagePageSs" style="color:white" wx:if="{{PageCur=='messagesPage'}}">
-    <view class="text-white">
-      <cu-custom bgColor="imageBg1" isBack="{{true}}">
-        <view slot="backText">返回</view>
-        <view slot="content">模拟交易</view>
-      </cu-custom>
-    </view>
-
-    
-    <view class="detailsearch">
-     <view class="TopdivLine"></view>
-      <view class ="user">
-      <view class="cu-avatar xl round" style="background-image:url({{userInfo.avatarUrl}})"></view>
-      <view>
-      <view class="name">模拟股票用户</view>
-      <text class="smallname "space="ensp">战胜了100.0%的用户</text>
-     </view>
-    
-      </view>
-
-
-
-     <!-- 分割线 -->
-  <view class="divLine"></view>
-
-      <view class ="information">
-        <view class="fortune">
-            <view style="color:grey;margin-top:10rpx;">总资产:</view>
-             <view class="name">{{money}}</view>
-         </view>
-        
-         <view class="profit">
-         
-            <view style="color:grey;margin-top:10rpx; ">浮动盈亏:</view>
-            <view class="name">{{profitloss}}</view>
-           
-         </view>
-      </view>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <view class="divLine"></view>
-    <!--
-      <view class="cu-bar search">
-        <view class="search-form  radius">
-          <text class="cuIcon-search"></text>
-          <input type="text" bindinput="getdetailinput" auto-focus placeholder="搜索股票交易明细" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
-        </view>
-        <view class="action ">
-          <button class=" round" size="mini" style="text-align:center；margin:0 auto" bindtap="searchdetailShare">搜索</button>
-        </view>
-      </view>
--->
-<!--
-      <i-collapse name="{{name}}">
-        <i-collapse-item title="使用指南" name="name2">
-          <view slot="content" i-class-content="green-text">
-             <view> 根据股票代码，日期获取交易信息 </view>
-             <view> 请输入Day?Date=20200106&StockCode=sz000001</view>
-             <view>根据股票代码，月份获取交易信息   </view>
-             <view>请输入Month?Date=202001&StockCode=sz000001</view>
-             <view>根据股票代码，数量获取交易信息 </view>
-             <view>请输入Range?Date=20200101&StockCode=sz000001&Range=10</view>
-          </view>
-      </i-collapse-item>
-      </i-collapse>
--->
-      <!--
-      <form>
-<view  class="class">
-  
-<text space="ensp"style="font-size:16px">    日期   单股平均值  涨跌额   涨跌幅     成交量 </text>
-
-<view wx:for="{{result}}" wx:key="item">
-<view style="font-size=18px;display:flex;">
-  <text space="emsp" >
- {{item[0]}}  {{item[1]}}  {{item[6]}}  {{item[7]}}%  {{item[8]}}
-</text>
-</view>
-  
-</view>
-</view>
-</form>
-
--->
-
-
-<!--
-<view class ="tabs">
-  <view class ="tabs_title">
-<view wx:for="{{tabs}}" class="tabs_item">{{item.name}}
-</view>
-  
-    <view class="title_item active">买入</view>
-    <view class="title_item">卖出</view>
-    <view class="title_item">撤单</view>
-    <view class="title_item">持仓</view>
-
-</view>
-<view class="tabs_content">内容</view>
-</view>
--->
-
-
-
-<view class="cu-bar solid-bottom margin-top text-white">
-    <view class='action'>
-      <view><view class="swiper-tab">
-          <view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">买入</view>
-          <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">卖出</view>
-          <view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">持仓</view>
-           <view class="swiper-tab-item {{currentTab==3?'active':''}}" data-current="3" bindtap="clickTab">撤单</view>
-      </view>
-      
-      <swiper current="{{currentTab}}" duration="200"  bindchange="swiperTab">
-<swiper-item>
-  <view>
-    <view class="cu-bar search">
-        <view class="search-form  radius">
-          <text class="cuIcon-search"></text>
-          <input type="text" bindinput="getdetailinput" auto-focus placeholder="股票代码/上市地点+代码" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
-          </view>
-        <view class="action ">
-          <button class=" round" size="mini" style="text-align:center；margin:0 auto" bindtap="searchdetailShare1">搜索</button>
-          </view>
-
-
-      </view>
-
-      <view class="search-form  radius">
-          <input type="text"   placeholder="当前价格：{{result1==0?'':result1}}  涨停:{{topprice==0?'':topprice}}  跌停:{{lowprice==0?'':lowprice}}"confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
-      </view>
-
-
-      
-<view class="cu-bar search">
-       <view class="search-form  radius">
-          <input type="number"  value="{{shareinput==100?'':shareinput}}"  placeholder="最大买入股数：{{sharenums==0?'':sharenums}}"confirm-type="search" bindconfirm="searchdetailShare" bindinput="getIntegral"></input>
-       </view>
-        <view class="action ">
-            <button class="square" size="mini" style="text-align:center；margin:0 auto" bindtap="searchdetailShare1">买入</button>
-       </view>
-           </view>
-           
-   </view>
-           
-</swiper-item>
-
-
-
-          <swiper-item>
-          
-            
- 
-        
-          
-
-
-           
-          </swiper-item>
-
-
-
-
-          <swiper-item>
-
-
-
-
-
-          </swiper-item>
-
-
-          <swiper-item>
-
-
-
-
-
-          </swiper-item>
-
-
-
-      </swiper>
-      </view>
-    </view>
-  </view>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </view>
-
-
-
-
-
-    <view class = "text-center margin-top-xl" wx:if="{{messagesData.num==0}}">
-     <text class="cuIcon-emoji xxl text-black"></text><text class="text-xxl text-black text-bold"> 暂无消息~ </text>
-    </view>
-    <block wx:for="{{messagesData}}" wx:key="messagesData" wx:for-item="message">
-
-      <view wx:if="{{index!='num'}}"  class="cu-timeline ">
-        <view class="cu-time  ">{{message[0].date}}</view>
-
-        <block wx:for="{{message}}" wx:key="message" wx:for-item="content">
-          <view class=" cu-item" bindtap="NavtoShare" data-cur="{{[content.contents.market,content.contents.sharenum,true]}}" cur cuIcon-noticefill>
-            <view class="content  bg-black shadow-blur">
-
-
-              <view>{{content.contents.content}} </view>
-              <view class="text-right padding"> ————
-                <view class="cu-tag sm line-white ">{{content.contents.market=='gb_'?'us':content.contents.market}}</view>
-                {{content.contents.sharenum}}
-                <text>{{content.contents.sharename}} </text>
-              </view>
-            </view>
-
-          </view>
-        </block>
-      </view>
-    </block>
-    <view class="margin-bottom-xl">
-      <text>\n
-  </text>
-    </view>
-  </view>
+ 		<view class="text-white">
+ 			<cu-custom bgColor="imageBg1" isBack="{{true}}">
+ 				<view slot="backText">返回</view>
+ 				<view slot="content">模拟交易</view>
+ 			</cu-custom>
+ 		</view>
+
+
+ 		<view class="detailsearch">
+ 			<view class="TopdivLine"></view>
+ 			<view class="user">
+ 				<view class="cu-avatar xl round" style="background-image:url({{userInfo.avatarUrl}})"></view>
+ 				<view>
+ 					<view class="name">模拟股票用户</view>
+ 					<text class="smallname "space="ensp">战胜了100.0%的用户</text>
+ 				</view>
+ 			</view>
+ 			<!-- 分割线 -->
+ 			<view class="divLine"></view>
+
+ 			<view class="information">
+ 				<view class="fortune">
+ 					<view style="color:grey;margin-top:10rpx;">总资产:</view>
+ 					<view class="name">{{money}}</view>
+ 				</view>
+
+ 				<view class="wealth">
+ 					<view style="color:grey;margin-top:10rpx;">股票总市值:</view>
+ 					<view class="name">{{marketvalue}}</view>
+ 				</view>
+ 				<view class="profit">
+
+ 					<view style="color:grey;margin-top:10rpx; ">浮动盈亏:</view>
+ 					<view class="name">{{profitloss}}</view>
+
+ 				</view>
+ 			</view>
+
+
+ 			<view class="divLine"></view>
+ 			<!-- margin-top  -->
+ 			<view class="cu-bar solid-bottom text-white">
+ 				<view class='action'>
+ 					<view>
+ 						<view class="swiper-tab">
+ 							<view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">买入</view>
+ 							<view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">卖出</view>
+ 							<view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">持仓</view>
+ 							<view class="swiper-tab-item {{currentTab==3?'active':''}}" data-current="3" bindtap="clickTab">累计盈亏</view>
+ 						</view>
+
+ 						<swiper class="currentPage" current="{{currentTab}}" duration="200" bindchange="swiperTab">
+ 							<swiper-item>
+ 								<view>
+ 									<view class="cu-bar search">
+ 										<view class="search-form  radius">
+ 											<text class="cuIcon-search"></text>
+ 											<input type="text" auto-focus placeholder="股票代码/上市地点+代码" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
+ 										</view>
+ 										<view class="action ">
+ 											<button class=" round" size="mini" style="text-align:center；margin:0 auto" bindtap="searchdetailShare1">搜索</button>
+ 										</view>
+ 									</view>
+ 									<view class="search-form  radius">
+ 										<input type="text" placeholder="当前价格：{{result1==0?'':result1}}  涨停:{{topprice==0?'':topprice}}  跌停:{{lowprice==0?'':lowprice}}" confirm-type="search" bindconfirm="searchdetailShare" bindinput="getdetailInput"></input>
+ 									</view>
+ 									<view class="cu-bar search">
+ 										<view class="search-form  radius">
+ 											<input type="number" value="{{shareinput==100?'':shareinput}}" placeholder="最大买入股数：{{sharenums==0?'':sharenums}}" confirm-type="search" bindconfirm="getIntegral" bindinput="getIntegral"></input>
+ 										</view>
+ 										<view class="action ">
+ 											<button class="square" size="mini" style="text-align:center；margin:0 auto" bindtap="purchaseshares">买入</button>
+ 										</view>
+ 									</view>
+ 								</view>
+ 							</swiper-item>
+
+
+ 							<!-- 卖出 -->
+ 							<swiper-item>
+ 								<view>
+ 									<view class="basis-sm">
+ 										<view class=" text-m text-left padding-left-xl ">股票名称</view>
+ 										<view class=" text-sm text-grey text-left padding-left-xl">股票代号</view>
+ 									</view>
+ 									<view class="text-smTxtItem">当前价格</view>
+ 									<view class="text-smTxtItem">持有数量</view>
+ 									<view class="text-smTxtItem">操作</view>
+ 								</view>
+ 								<import src="myOption/exchange/exchange.wxml" />
+ 								<block wx:for="{{message}}" wx:key="messages" wx:for-item="item">
+ 									<template is="sellStockItem" data="{{item}}" />
+ 								</block>
+ 							</swiper-item>
+
+ 							<!-- 持仓 -->
+ 							<swiper-item>
+ 								<view>
+ 									<view class="basis-sm">
+ 										<view class=" text-m text-left padding-left-xl ">股票名称</view>
+ 										<view class=" text-sm text-grey text-left padding-left-xl">股票代号</view>
+ 									</view>
+ 									<view class="text-smTxtItem">当前价格</view>
+ 									<view class="text-smTxtItem">持有数量</view>
+ 									<view class="text-smTxtItem">累计收益率</view>
+ 								</view>
+ 								<import src="myOption/exchange/exchange.wxml" />
+ 								<block wx:for="{{message}}" wx:key="messages" wx:for-item="item">
+ 									<template wx:if="item.holdNum<0" is="holdStockItem" data="{{item}}" />
+ 								</block>
+ 								
+ 							</swiper-item>
+
+ 							<!-- 收益率 -->
+ 							<swiper-item>
+ 								<ec-canvas id="mychart-dom-line" canvas-id="mychart-bar" ec="{{ ecReturnRate }}"></ec-canvas>
+ 							</swiper-item>
+ 						</swiper>
+ 					</view>
+ 				</view>
+ 			</view>
+ 			<view class="text-center margin-top-xl" wx:if="{{messagesData.num==0}}">
+ 				<text class="cuIcon-emoji xxl text-black"></text><text class="text-xxl text-black text-bold"> 暂无消息~ </text>
+ 			</view>
+ 			<block wx:for="{{messagesData}}" wx:key="messagesData" wx:for-item="message">
+
+ 				<view wx:if="{{index!='num'}}" class="cu-timeline ">
+ 					<view class="cu-time  ">{{message[0].date}}</view>
+
+ 					<block wx:for="{{message}}" wx:key="message" wx:for-item="content">
+ 						<view class=" cu-item" bindtap="NavtoShare" data-cur="{{[content.contents.market,content.contents.sharenum,true]}}" cur cuIcon-noticefill>
+ 							<view class="content  bg-black shadow-blur">
+
+
+ 								<view>{{content.contents.content}} </view>
+ 								<view class="text-right padding"> ————
+ 									<view class="cu-tag sm line-white ">{{content.contents.market=='gb_'?'us':content.contents.market}}</view>
+ 									{{content.contents.sharenum}}
+ 									<text>{{content.contents.sharename}} </text>
+ 								</view>
+ 							</view>
+
+ 						</view>
+ 					</block>
+ 				</view>
+ 			</block>
+ 			<view class="margin-bottom-xl">
+ 				<text>\n</text>
+ 			</view>
+ 		</view>
+ 	</view>
 
 
 
@@ -477,7 +380,7 @@
             </view>
 
           </view>
-          <image src="http://i1.fuimg.com/691748/83388a096d28fab7.gif" mode="scaleToFill" class="gif-wave"></image>
+          
         </view>
         <view class=" text-bold text-center">
           <text class="text-xxl">leeks</text>
@@ -517,7 +420,7 @@
             </view>
           </view>
 
-          <button class="cu-btn lines-black margin-tb-sm lg" bindtap="showModal" data-target="selectModal">我的自选</button>
+          <button class="cu-btn lines-black margin-tb-sm lg" bindtap="showModal" data-target="selectModal">新闻讯息</button>
 
 
 
@@ -561,7 +464,6 @@
         <view>
           <image src="/images/tabbar/messagesPage{{PageCur=='messagesPage'?'_cur':''}}.png"> </image>
         </view>
-        <view wx:if="{{unreadNum!=0}}" style="margin-right:20%" class="cu-tag badge">{{unreadNum}}</view>
       </view>
       <view class="{{PageCur=='messagesPage'?'text-white':'text-gray'}}">消息</view>
     </view>
@@ -579,6 +481,23 @@
 <scroll-view scroll-y class="DrawerWindow  {{modalName=='selectModal'?'show':''}}">
   <view class="cu-list menu  card-menu selectViewSs shadow-lg">
     <import src="./selectItem/selectItem.wxml" />
+    
+    <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key="key">
+      <view class="cu-item cardStyle " bindtap="NavtoNewsPage" data-cur="{{index}}">
+        <view class="content">
+          <view class="desc">
+            <view class="text-content padding-sm  ">
+              <view class="text-xl text-white ">{{newsTitles[index].title}}</view>
+            </view>
+            <view>
+              <view class="cu-tag bg-red light sm round">{{newsTitles[index].source}}</view>
+            </view>
+          </view>
+          <image class="padding-sm " src="{{newsTitles[index].headpic}}  " mode="aspectFill"></image>
+
+        </view>
+      </view>
+    </view>
 
     <block wx:for="{{indexItems}}" wx:key="indexItems" wx:for-item="item">
       <template is="selectItemTemp" data="{{item}}" />

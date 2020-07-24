@@ -10,37 +10,33 @@
     <view class="cu-bar  search">
       <view class="search-form  radius">
         <text class="cuIcon-search"></text>
-        <input type="text" bindinput="getinput" auto-focus placeholder="搜索股票" confirm-type="search" bindconfirm="searchShare" bindinput="getInput"></input>
+        <input type="text" bindinput="getinput" auto-focus placeholder="搜索股票" confirm-type="search" bindconfirm="searchShare"></input>
       </view>
       <view class="action">
-        <button class="cu-btn bg-black round" bindtap="searchShare">搜索</button>
+        <button class="cu-btn bg-black round" bindtap="refreshItem">搜索</button>
       </view>
     </view>
   </view>
-  <import src="shareItem/shareItem.wxml" />
+  
   <view>
-
     <view class="padding-xxl radius bg-black  grid flex flex-wrap  text-center margin-bottom ">
-      <view class="basis-sm">
-        <view class=" text-m text-left padding-left-xl ">股票预测详情</view>
-      </view>
-
-
     </view> </view>
 
-<form>
-  <view class="class">
-    <text space="emsp">  股票编码   股票名称  所在地   行业</text>
-<view wx:for="{{result}}" wx:key="item">
-<view  space="ensp" style="font-size=18px;display:flex;" bindtap="NavtoShareItem">
- <text space="ensp" >
-    {{item[0]}}     {{item[1]}}     {{item[2]}}       {{item[3]}}
-</text>
+<import src="../mainpage/myOption/indexItem/indexItem.wxml" />
+<view>
+<view class="padding-xxl radius bg-black imageBg1 grid flex flex-wrap  text-center margin-bottom ">
+        <view class="basis-sm">
+          <view class=" text-m text-left padding-left-xl ">股票名称</view>
+          <view class=" text-sm text-grey text-left padding-left-xl">股票代号</view>
+        </view>
+        <view class="  text-sm basis-xs padding-top-sm text-left ">当前价格</view>
+        <view class=" text-sm basis-xs padding-top-sm text-left">当前涨跌幅</view>
+        <view class=" text-sm basis-xs padding-top-sm text-left">明日估值</view>
+      </view>
+      <block wx:for="{{indexItems}}" wx:key="indexItems" wx:for-item="item">
+        <template is="indexItemTemp" data="{{item}}" />
+      </block>
 </view>
+ </view>
 
-
-  
-</view></view>
-</form>
-  </view>
 

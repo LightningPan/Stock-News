@@ -1,0 +1,218 @@
+/* pages/test/test.wxss */
+ec-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+page {
+    background-color: #333333;
+}
+
+/* 设置边框 */
+.stockinfo {
+    border: 2rpx solid white;
+    width: 750rpx;
+    height: 250rpx;
+    /* background-color: blue; */
+}
+
+/* 设置第一个区域 */
+.stockinfo_label1 {
+    width: 750rpx;
+    height: 120rpx;
+    /* background-color: crimson; */
+    /* margin-left: 30rpx;
+    margin-right: 30rpx; */
+}
+
+.stockinfo_label2 {
+    width: 750rpx;
+    height: 65rpx;
+    font-size: small;
+    /* background-color: cyan; */
+}
+
+.stockinfo_label3 {
+    width: 750rpx;
+    height: 65rpx;
+    font-size: small;
+    /* background-color: darkcyan; */
+}
+
+.red_item {
+    width: 300rpx;
+    font-size: 60rpx;
+    display: block;
+    color: red;
+    text-align: center;
+    display: inline-block;
+    margin-top: 15rpx;
+    /* background-color: cyan; */
+    /* margin-left: 30rpx; */
+}
+
+.green_item {
+    width: 300rpx;
+    font-size: 60rpx;
+    display: block;
+    color: green;
+    text-align: center;
+    display: inline-block;
+    margin-top: 15rpx;
+    /* background-color: cyan; */
+    /* margin-left: 30rpx; */
+}
+
+.open_item {
+    /* margin-top: 60rpx; */
+    display: inline-block;
+    width: 225rpx;
+    color: white;
+    /* background-color: coral; */
+    font-size: small;
+}
+
+
+.last_close_item {
+    display: inline-block;
+    width: 225rpx;
+    color: white;
+    /* background-color: cornsilk; */
+    font-size: small;
+}
+
+.red_change_item {
+    width: 300rpx;
+    /* background-color: darkcyan; */
+    color: red;
+    display: inline-block;
+    font-size: small;
+    text-align: center;
+}
+
+.green_change_item {
+    width: 300rpx;
+    /* background-color: darkcyan; */
+    color: green;
+    display: inline-block;
+    font-size: small;
+    text-align: center;
+
+}
+
+
+
+.forecast_item {
+    width: 225rpx;
+    color: white;
+    display: inline-block;
+}
+
+.amount_item {
+    width: 225rpx;
+    white-space: nowrap;
+    display: inline-block;
+    color: white;
+    /* margin-left: 25rpx; */
+}
+
+
+.min_item {
+    width: 300rpx;
+    display: inline-block;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: small;
+}
+
+.max_item {
+    width: 225rpx;
+    color: white;
+    display: inline-block;
+}
+
+.numShare_item {
+    width: 225rpx;
+    color: white;
+    display: inline-block;
+}
+
+.pictures {
+    width: 750rpx;
+    height: 830rpx;
+    /* background-color: hotpink; */
+}
+
+.navbar {
+    width: 750rpx;
+    height: 80rpx;
+    text-align: center;
+}
+
+.navPrebar {
+    width: 750rpx;
+    height: 40rpx;
+    text-align: center;
+    /* background-color: red; */
+
+}
+
+.select_txt {
+    color: red;
+    display: inline-block;
+    width: 33.3%;
+    text-align: center;
+    margin-top: 20rpx;
+}
+
+.txt {
+    color: white;
+    display: inline-block;
+    width: 33.3%;
+    text-align: center;
+    margin-top: 20rpx;
+}
+
+.select_pre_txt {
+    color: red;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+}
+
+.pre_txt {
+    color: white;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+}
+
+.currentPage {
+    width: 750rpx;
+    height: 750rpx;
+    /* background-color: green; */
+}
+
+
+.collect_btn {
+    margin-top: 25rpx;
+    /* background-color: lightblue; */
+}
+
+.currentPrePage1 {
+    width: 750rpx;
+    height: 710rpx;
+    /* background-color: blue; */
+}
+
+.currentPrePage2 {
+    width: 750rpx;
+    height: 710rpx;
+    /* background-color: yellow; */
+}
+
+.imageView {
+    display: flex;
+    justify-content: center;
+}

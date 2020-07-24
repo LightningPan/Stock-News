@@ -1,0 +1,14 @@
+/* pages/newDetailPage/newDetailPage.wxss */
+
+page{
+  background: #333333;
+}
+.cardStyle{
+  background-color: #84817a;
+}
+.indexFrame{
+  padding-bottom: 0;
+ }
+ .carView{
+   margin : 10rpx;
+ }

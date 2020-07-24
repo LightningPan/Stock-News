@@ -1,0 +1,31 @@
+
+<view class='leeksnews' bindscrolltolower="onReachBottom" >
+<cu-custom class="text-white" bgColor="imageBg1" isBack="{{true}}">
+  <view slot="backText">返回</view>
+</cu-custom>
+<view class="cu-bar solid-bottom margin-top text-white imageBg1">
+  <view class='action'>
+    <text class='cuIcon-titles  '></text> 资讯详情
+  </view>
+</view>
+  <view class="cu-card article  " wx:for="{{newsTitles}}" wx:key>
+    <view class="cu-item cardStyle " bindtap="NavtoNewsPage" data-cur="{{index}}">
+      <view class="content">
+        <view class="desc">
+          <view class="text-content padding-sm  ">
+            <view class="text-xl text-white ">{{newsTitles[index].title}}</view>
+          </view>
+          <view>
+            <view class="cu-tag bg-red light sm round">{{newsTitles[index].source}}</view>
+          </view>
+        </view>
+      <image class="padding-sm " src="{{newsTitles[index].headpic}}  " mode="aspectFill"></image>
+
+      </view>
+    </view>
+  </view>
+  
+  
+   
+
+</view>

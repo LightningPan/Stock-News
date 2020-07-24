@@ -1,6 +1,7 @@
 /*<!--作者：李广 尚志强-->*/
 /* pages/searchPage/searchPage.wxss */
-@import "shareItem/shareItem.wxss";
-.class{
-  display: list-item;
+
+page{
+
+  background-color: #333333;
 }

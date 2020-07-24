@@ -49,7 +49,6 @@ justify-content: center;
 
 
 .UCenter-bg {
-  background-image: url();
   background-size: cover;
   height: 40vh;
   display: flex;
@@ -173,7 +172,6 @@ justify-content: center;
 }
 
 .DrawerPage .cu-bar.tabbar .action .cu-avatar {
-  
   margin: 0;
 }
 
@@ -205,15 +203,6 @@ justify-content: center;
 .shadow shadow-lg{
   background-color: #333333;
 }
-
-
-
-
-
-
-
-
-
 .swiper-tab{
 
   width: 700rpx;
@@ -236,6 +225,12 @@ justify-content: center;
   color:#FCFCFC;
 
 }
+.currentPage{
+  width: 100%;
+  height: 800rpx;
+  /* //background-color: red; */
+  }
+
 .active{
   color:#F65959;
   border-bottom: 4rpx solid #F65959;
@@ -246,9 +241,7 @@ text-align: center;
 margin-right:0em;
 
 }
-.cu-bar solid-bottom margin-top text-white{
 
-}
 
 .user{
   padding-left: 50rpx;
@@ -256,7 +249,7 @@ margin-right:0em;
   justify-content:left;
   align-items: center;
   text-align: center;
- 
+
 }
 
 .name{
@@ -294,5 +287,36 @@ padding-right: 100rpx;
   color: black;
   background-color: white;
 }
+.choose{
+  height: 200rpx;
+  width: 100%;
+  display: flex;
+}
+ec-canvas{
+  width: 100%;
+  height: 100%;
+  /* margin-top: 50rpx; */
+  }
 
-
+  .container{
+    width: 750rpx;
+    height: 1000rpx;
+    background-color: red;  
+    }
+    
+    .basis-sm{
+    display: inline-block;
+    /* width: 240rpx; */
+    /* margin-left: 15rpx; */
+    height: 100rpx;
+    }
+    .text-smTxtItem{
+    display: inline-block;
+    width: 160rpx;
+    height: 100rpx;
+    }
+    
+    .text{
+    background-color: yellowgreen;
+    
+    }

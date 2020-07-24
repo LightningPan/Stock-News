@@ -1,0 +1,41 @@
+<template name="holdStockItem">
+	<view data-cur="{{[item.shareNum,item.isSelected]}}" class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
+		<view class="basis-sm  ">
+			<view class=" text-xl  text-left padding-left-lg ">{{item.name}}</view>
+			<view class=" padding-left-lg  align-center">
+				{{item.code}}</view>
+		</view>
+		<view class="basis-xs text-left  {{item.change>0?'text-red':'text-green'}}">
+			<view class="text-lg">￥{{item.price}}</view>
+		</view>
+		<view class=" text-lg basis-xs  text-left  }}">{{item.holdNum}}</view>
+		<view class=" text-lg  basis-xs  text-left  {{returnRate>0?'text-red':'text-green'}}">{{item.returnRate}}%</view>
+	</view>
+</template>
+
+<template name="sellStockItem">
+	<view data-cur="{{[item.shareNum,item.isSelected]}}" class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
+		<view class="basis-sm  ">
+			<view class=" text-xl  text-left padding-left-lg ">{{item.name}}</view>
+			<view class=" padding-left-lg ">
+				{{item.code}}</view>
+		</view>
+		<view class="basis-xs text-left  {{item.change>0?'text-red':'text-green'}}">
+			<view class="text-lg">￥{{item.price}}</view>
+		</view>
+		<view class=" text-lg basis-xs  text-left  }}">{{item.holdNum}}</view>
+		<view class=" text-lg  basis-xs  text-left">
+			<button size="mini" bindtap="sell">卖出</button>
+		</view>
+		<view class="model" catchtouchmove='preventTouchMove' wx:if='{{showModal}}'></view>
+		<view class="modalDlg" catchtouchmove='preventTouchMove' wx:if='{{showModal}}'>
+			<view class="windowRow"></view>
+			<view class='wishName'>
+				<input bindinput='wish_put' placeholder='请输入内容' class='wish_put'></input>
+			</view>
+			<view class='wishbnt'>
+				<button class='wishbnt_bt' bindtap='ok'>确定</button>
+			</view>
+		</view>
+	</view>
+</template>

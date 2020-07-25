@@ -148,7 +148,7 @@ def trainmodel(x_train,y_train,dataname):
 
 ###############
 # 超参数
-    epochs = 5
+    epochs = 3
     batch_size = 16
 # LSTM 参数: return_sequences=True LSTM输出为一个序列。默认为False，输出一个值。
 # input_dim：输入单个样本特征值的维度
@@ -160,7 +160,7 @@ def trainmodel(x_train,y_train,dataname):
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, verbose=1)
     modelname=dataname+'.h5'
-    model.save(modelname)
+    model.save('model/'+modelname)
     return modelname
 
 #trainmodel(x_train,y_train)
@@ -170,7 +170,7 @@ def predictx_valid(x_valid,y_valid,stockname,modelname):
     scaler = MinMaxScaler(feature_range=(0, 1))
     time_stamp = 50
     valid = stockname[:time_stamp+250]
-    model=load_model(modelname)
+    model=load_model('model/'+modelname)
     closing_price = model.predict(x_valid)
     scaler.fit_transform(pd.DataFrame(valid['Close'].values))
 # 反归一化
@@ -180,7 +180,6 @@ def predictx_valid(x_valid,y_valid,stockname,modelname):
 # print(closing_price)
     rms = np.sqrt(np.mean(np.power((y_valid - closing_price), 2)))
     print(rms)
-    print(closing_price.shape)
     print(y_valid.shape)
     return closing_price,y_valid
 #closing_price,y_valid=predictx_valid(x_valid,y_valid)
@@ -245,8 +244,7 @@ def matchstock(closing_price,y_valid,stockname,dataname,timeinterval):
 
 # 设置ax区域背景颜色透明度
     #ax.patch.set_alpha(0.8)
-    plt.savefig('resultimage/'+dataname+'-'+str(timeinterval)+'epochs5'+'.png',transparent=True)
-    plt.show()
+    plt.savefig('resultimage/'+dataname+'-'+str(timeinterval)+'epochs3'+'.png',transparent=True)
 
 
 #matchstock(closing_price,y_valid)
@@ -262,9 +260,25 @@ def predictstock(dataname):
     modelname=trainmodel(x_train,y_train,dataname)
     closing_price,y_valid=predictx_valid(x_valid,y_valid,stockname,modelname)
     matchstock(closing_price,y_valid,stockname,dataname,timeinterval)
-    np.savetxt(dataname+'-predictclosingprice.txt',closing_price,fmt='%f',delimiter=',')
+    np.savetxt('closingprice/'+dataname+'-predictclosingprice.txt',closing_price,fmt='%f',delimiter=',')
 
 
 if __name__ == '__main__':
 
-    predictstock('600519')
+    filepath=os.path.dirname(__file__)+'/stocks/'
+    print(os.path.dirname(__file__)+'/stocks/')
+    filepath = os.listdir(filepath)
+    print(filepath)
+    name=[]
+    for id in filepath:
+        portion = os.path.splitext(id)  # 把文件名拆分为名字和后缀
+        if portion[1] == ".csv":
+            name.append(portion[0])
+        if portion[1] == ".h5":
+            name.append(portion[0])
+    print(name)
+    for stock in name:
+        predictstock(stock)
+        #predictstock(stock)
+
+

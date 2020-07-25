@@ -1,5 +1,6 @@
-//test.js
-//首先要引入ec-canvas
+// author:张圯
+// createTime:2020-07-19
+// updateTime:2020-07-24
 
 import * as echarts from '../../ec-canvas/echarts';
 const app = getApp();
@@ -7,15 +8,19 @@ var kLineData = {}
 var predictData = []
 var realData = []
 var catagroy = []
-var sellPoint_50 = [] //50天的卖出点
-var sellPoint_250 = [] //250天的卖出点
-var buyPoint_50 = [] //50天的买入点
-var buyPoint_250 = [] //250天的买入点
+// var sellPoint_50 = [] //50天的卖出点
+// var sellPoint_250 = [] //250天的卖出点
+// var buyPoint_50 = [] //50天的买入点
+// var buyPoint_250 = [] //250天的买入点
 
 var upColor = '#ec0000';
 var upBorderColor = '#8A0000';
 var downColor = '#00da3c';
 var downBorderColor = '#008F28';
+
+// var optionkLine = null; //K线图option
+// var optionPre_50 = null; //50天预测图option
+// var optionPre_250 = null; //250天折线图
 
 Page({
     data: {
@@ -29,9 +34,9 @@ Page({
         ecPredict_250: {
             lazyLoad: true
         },
-        optionkLine: null, //K线图option
-        optionPre_50: null, //50天预测图option
-        optionPre_250: null, //250天折线图
+        optionkLine: null,
+        optionPre_50: null,
+        optionPre_250: null,
         currentTab: 0,
         currentPreTab: 0,
         stockcode: null,
@@ -58,15 +63,14 @@ Page({
             title: 'Loading',
         })
         var that = this
-        if(options.isSelected==1){
+        if (options.isSelected == 1) {
             this.setData({
-                saveButton: "删自选" ,
+                saveButton: "取消自选",
                 isSelected: true,
             })
-        }
-        else{
+        } else {
             this.setData({
-                saveButton: "+自选" ,
+                saveButton: "+自选",
                 isSelected: false,
             })
         }
@@ -116,9 +120,15 @@ Page({
                             })
                         }
                         //console.log("end" + that.data.edate)
+                        console.log(res.data[0][1] + "(" + that.data.stockcode.slice(2, 8) + "." + that.data.stockcode.slice(0, 2) + ")")
+
                         wx.setNavigationBarTitle({
-                            title: res.data[0][1] + "(" + that.data.stockcode.slice(2, 8) + "." + that.data.stockcode.slice(0, 2) + ")"
+                            title: res.data[0][1] + "(" + that.data.stockcode.slice(2, 8) + "." + that.data.stockcode.slice(0, 2) + ")",
                         });
+                        // wx.setNavigationBarColor({
+                        //   backgroundColor: '#333333',
+                        //   frontColor: 'white',
+                        // })
 
                         that.setOptionkLine()
 
@@ -155,6 +165,20 @@ Page({
 
     },
 
+    onUnload: function () {
+        console.log("释放内存")
+        this.setData({
+            kLineData: null,
+            predictData: null,
+            realData: null,
+            catagroy: null,
+            ecPredict_250: null,
+            eckLine: null,
+            ecPredict_50: null,
+        })
+        console.log(realData)
+    },
+
     getNextPredictData: function () {
         var that = this
         wx.request({
@@ -184,78 +208,95 @@ Page({
                         "Content-Type": "application/json"
                     },
                     success: function (res) {
-                        //console.log(res.data)
-                        that.processRowPredictData(res.data)
+                        console.log("预测数据：" + res.data)
+                        var temp=that.processRowPredictData(res.data)
+                        resolve(temp)
                     },
                     fail: function (err) {
                         console.log(err)
                         reject(err)
                     }
                 })
+            }
+        );
+        promise.then(function (res) {
+            console.log('获取预测数据成功');
+            //that.setoptionPre_250()
+        }).catch(function (error) {
+            console.log(error)
+            console.log('fail');
+        });
+
+        const promise1 = new Promise(
+            function (resolve, reject) {
+                console.log("开始获取股票预测信息")
                 wx.request({
                     url: 'https://106.54.95.249/Chart/Actuality/' + that.data.stockcode,
                     header: {
                         "Content-Type": "application/json"
                     },
                     success: function (res) {
-                        //console.log(res.data)
-                        that.processRowRealData(res.data)
-                        resolve(res)
+                        console.log("真实数据：" + res.data)
+                        var temp=that.processRowRealData(res.data)
+                        resolve(temp)
                     },
                     fail: function (err) {
                         console.log(err)
                         reject(err)
                     }
                 })
-
             }
         );
-        promise.then(function (res) {
-            console.log('获取历史与预测数据成功');
-            //console.log(catagroy)
-            //console.log(realData)
+        promise1.then(function (res) {
+            console.log('获取真实数据成功');
             that.setoptionPre_50()
             that.setoptionPre_250()
-            wx.hideLoading()
         }).catch(function (error) {
             console.log(error)
             console.log('fail');
         });
+
     },
 
     processRowPredictData: function (rowData) {
-        for (var i = 0; i < rowData.length; i++) {
+        console.log("predictData:"+rowData.length)
+        for (var i = 50; i < rowData.length; i++) {
             var temp = rowData[i]
-            catagroy.push(temp[0])
+            catagroy.push(i-50)
             predictData.push(temp[1])
+        }
+        return {
+            catagroy,
+            predictData
         }
     },
 
     processRowRealData: function (rowData) {
-
+         console.log("realData:"+rowData.length)
         //处理数据
-        for (var i = rowData.length - 1; i >= 0; i--) {
+        for (var i = rowData.length -1; i >= 50; i--) {
             var temp = rowData[i]
             realData.push(temp[1])
         }
+        return realData
 
-        //选取买入卖出点
-        for (var i = rowData.length - 6; i >= 5; i--) {
-            var temp = rowData[i][1]
-            if (temp > rowData[i - 1][1] && temp > rowData[i - 2][1] && temp > rowData[i - 3][1] && temp > rowData[i - 4][1] && temp > rowData[i - 5][1] && temp > rowData[i + 1][1] && temp > rowData[i + 2][1] && temp > rowData[i + 3][1] && temp > rowData[i + 4][1] && temp > rowData[i + 5][1]) {
-                if (i > 200) {
-                    sellPoint_50.push(rowData[i])
-                }
-                sellPoint_250.push(rowData[i])
-            }
+        // //选取买入卖出点
+        // for (var i = rowData.length - 6; i >= 5; i--) {
+        //     var temp = rowData[i][1]
+        //     if (temp > rowData[i - 1][1] && temp > rowData[i - 2][1] && temp > rowData[i - 3][1] && temp > rowData[i - 4][1] && temp > rowData[i - 5][1] && temp > rowData[i + 1][1] && temp > rowData[i + 2][1] && temp > rowData[i + 3][1] && temp > rowData[i + 4][1] && temp > rowData[i + 5][1]) {
+        //         if (i > 200) {
+        //             sellPoint_50.push(rowData[i])
+        //         }
+        //         sellPoint_250.push(rowData[i])
+        //     }
 
-            if (temp < rowData[i - 1][1] && temp < rowData[i - 2][1] && temp < rowData[i - 3][1] && temp < rowData[i - 4][1] && temp < rowData[i - 5][1] && temp < rowData[i + 1][1] && temp < rowData[i + 2][1] && temp < rowData[i + 3][1] && temp < rowData[i + 4][1] && temp < rowData[i + 5][1]) {
-                if (i > 200) {
-                    buyPoint_50.push(rowData[i])
-                }
-                buyPoint_250.push(rowData[i])
-            }
-        }
+        //     if (temp < rowData[i - 1][1] && temp < rowData[i - 2][1] && temp < rowData[i - 3][1] && temp < rowData[i - 4][1] && temp < rowData[i - 5][1] && temp < rowData[i + 1][1] && temp < rowData[i + 2][1] && temp < rowData[i + 3][1] && temp < rowData[i + 4][1] && temp < rowData[i + 5][1]) {
+        //         if (i > 200) {
+        //             buyPoint_50.push(rowData[i])
+        //         }
+        //         buyPoint_250.push(rowData[i])
+        //     }
+        // }
 
         //console.log(realData)
     },
@@ -303,16 +344,11 @@ Page({
                     },
                     data: {
                         StockCode: that.data.stockcode,
-                        SDate: that.data.sdate,
-                        //SDate: 20180101,
+                        SDate: "20180712",
                         EDate: that.data.edate
-                        //EDate: 20200109
                     },
                     success: function (res) {
-                        //console.log("20190202002")
-                        //var temp = {}
                         kLineData = that.processRowKLineData(res.data)
-                        //console.log(temp)
                         resolve(kLineData)
                     },
                     fail: function (err) {
@@ -439,8 +475,9 @@ Page({
 
                 ]
             };
+            //optionkLine: option
             that.setData({
-                optionkLine: option
+            optionkLine:option
             })
             that.currentTabChange1()
         }).catch(function (error) {
@@ -449,12 +486,12 @@ Page({
     },
 
     setoptionPre_50: function () {
-        //console.log("设置option时:"+catagroy.slice(0, 50))
-        //console.log("设置option时:"+realData.slice(0, 50))
+        // console.log("设置option时:"+catagroy.slice(0, 50))
+        // console.log("设置option时:"+realData.slice(0, 50))
 
-        var catagroyTemp = catagroy.slice(200, 250)
-        var realDataTemp = realData.slice(200, 250)
-        var predictDataTemp = predictData.slice(200, 250)
+        var catagroyTemp = catagroy.slice(150, 200)
+        var realDataTemp = realData.slice(150, 200)
+        var predictDataTemp = predictData.slice(150, 200)
         var option_50 = {
             title: {
                 text: '折线图堆叠'
@@ -474,14 +511,8 @@ Page({
                 bottom: '3%',
                 containLabel: true
             },
-            toolbox: {
-                // feature: {
-                //     saveAsImage: {}
-                // }
-            },
             xAxis: {
                 type: 'category',
-                //boundaryGap: true,
                 scale: true,
                 data: catagroyTemp,
                 axisLabel: {
@@ -506,7 +537,7 @@ Page({
                     type: 'line',
                     //stack: '总量',
                     data: realDataTemp,
-                   
+
                 },
                 {
                     name: '预测',
@@ -514,7 +545,7 @@ Page({
                     color: '#3333FF',
                     //stack: '总量',
                     data: predictDataTemp,
-                     markPoint: {
+                    markPoint: {
                         data: [{
                                 type: 'max',
                                 name: '最大值',
@@ -532,7 +563,7 @@ Page({
                 },
             ]
         };
-
+        //optionPre_50 = option_50
         this.setData({
             optionPre_50: option_50
         })
@@ -540,19 +571,11 @@ Page({
 
     setoptionPre_250: function () {
         var option_250 = {
-            title: {
-                //text: '折线图堆叠'
-            },
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
-                data: [
-                '真实', 
-                '预测',
-                {name:'卖出',icon:'cycle'},
-                {name:"买入",icon:'rect'}
-                ],
+                data: ['真实', '预测'],
                 textStyle: {
                     color: '#ffffff' //设置字体颜色
                 },
@@ -562,11 +585,6 @@ Page({
                 right: '4%',
                 bottom: '3%',
                 containLabel: true
-            },
-            toolbox: {
-                // feature: {
-                //     saveAsImage: {}
-                // }
             },
             xAxis: {
                 type: 'category',
@@ -581,7 +599,6 @@ Page({
             },
             yAxis: {
                 type: 'value',
-                //boundaryGap : true,
                 scale: true,
                 axisLabel: {
                     textStyle: {
@@ -598,7 +615,6 @@ Page({
                     name: '预测',
                     type: 'line',
                     color: '#3333FF',
-                    //stack: '总量',
                     data: predictData,
                     markPoint: {
                         data: [{
@@ -618,6 +634,7 @@ Page({
                 },
             ]
         };
+        // optionPre_250 = option_250
         this.setData({
             optionPre_250: option_250
         })
@@ -629,14 +646,11 @@ Page({
         var categoryData = []
         for (var i = 0; i < rowData.length; i++) {
             var temp = rowData[i]
-            //console.log(rowData[i])
             temp[0] = String(temp[0]).replace('-', '/')
             categoryData.push(temp.splice(0, 1)[0]);
             values.push(temp)
 
         }
-        // console.log("catagoryData:" + categoryData)
-        // console.log("values:" + values)
         kLineData = {
             categoryData,
             values
@@ -666,58 +680,6 @@ Page({
         return result;
     },
 
-    // addMarkPoint_1: function (tag, chart) {
-
-    //     console.log("卖出点:"+sellPoint_50)
-    //     //50天
-    //     if (tag) {
-    //         for (var i = 0; i < sellPoint_50.length; i++) {
-    //             var markPoint = {
-    //                 data: [{
-    //                     coord: sellPoint_50[i],
-    //                     symbol: 'diamond',
-    //                     symbolSize: 20
-    //                 }]
-    //             }
-    //             chart.addMarkPoint(0,markPoint)
-    //         }
-    //         for (var i = 0; i < buyPoint_50.length; i++) {
-    //             var markPoint = {
-    //                 data: [{
-    //                     coord: buyPoint_50[i],
-    //                     symbol: 'pin',
-    //                     symbolSize: 20
-    //                 }]
-    //             }
-    //             chart.addMarkPoint(0,markPoint)
-    //         }
-    //     }
-    //     //250天
-    //     else {
-    //         for (var i = 0; i < sellPoint_250.length; i++) {
-    //             var markPoint = {
-    //                 data: [{
-    //                     coord: sellPoint_250[i],
-    //                     symbol: 'diamond',
-    //                     symbolSize: 20
-    //                 }]
-    //             }
-    //             chart.addMarkPoint(0,markPoint)
-    //         }
-    //         for (var i = 0; i < buyPoint_250.length; i++) {
-    //             var markPoint = {
-    //                 data: [{
-    //                     coord: buyPoint_250[i],
-    //                     symbol: 'pin',
-    //                     symbolSize: 20
-    //                 }]
-    //             }
-    //             chart.addMarkPoint(0,markPoint)
-    //         }
-    //     }
-    // },
-
-    
     //初始化预测图
     initBarPre_50: function () {
 
@@ -728,8 +690,7 @@ Page({
                 width: width,
                 height: height
             });
-            chart.setOption(that.data.optionPre_50);
-            //that.addMarkPoint_1(true, chart)
+            chart.setOption(that.data.optionPre_50, true);
             wx.hideLoading();
             // 注意这里一定要返回 chart 实例，否则会影响事件处理等
             return chart;
@@ -744,17 +705,8 @@ Page({
                 width: width,
                 height: height
             });
-            chart.setOption(that.data.optionPre_250);
-            
-            //that.addMarkPoint_1(false, chart)
-            // var markPoint = {
-            //         data: [{
-            //             coord: ['2020-06-25',13],
-            //             symbol: 'diamond',
-            //             symbolSize: 20
-            //         }]
-            //     }
-            // chart.addMarkPoint(0,markPoint)
+            chart.setOption(that.data.optionPre_250, true);
+
             wx.hideLoading();
             // 注意这里一定要返回 chart 实例，否则会影响事件处理等
             return chart;
@@ -770,8 +722,7 @@ Page({
                 width: width,
                 height: height
             });
-            chart.setOption(that.data.optionkLine);
-            //wx.hideLoading();
+            chart.setOption(that.data.optionkLine, true);
             // 注意这里一定要返回 chart 实例，否则会影响事件处理等
             return chart;
         });
@@ -795,8 +746,6 @@ Page({
             currentTab: 1
         })
         this.currentPreTabChange1()
-        // this.ecComponentPre_50 = this.selectComponent('#mychart-dom-line_50');
-        // this.initBarPre_50();
     },
 
     //切换到词云图
@@ -816,6 +765,7 @@ Page({
         this.ecComponentPre_50 = this.selectComponent('#mychart-dom-line_50');
         this.initBarPre_50();
     },
+
     currentPreTabChange2: function () {
         console.log(this.data.currentPreTab)
         console.log("切换到250天")
@@ -839,11 +789,11 @@ Page({
                 },
                 success: function (res) {
                     that.setData({
-                        saveButton: "删自选"
+                        saveButton: "取消自选"
                     })
                 }
             })
-        }else{
+        } else {
             wx.request({
                 url: 'https://106.54.95.249/delStock/' + that.data.stockcode,
                 method: "POST",
@@ -857,7 +807,7 @@ Page({
                     })
                 }
             })
-            
+
         }
     }
 })

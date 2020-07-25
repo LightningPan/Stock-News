@@ -1,5 +1,9 @@
 
-// pages/mainpage/myOption/indexItem/indexItem.js
+// author:张圯
+// createTime:2020-07-23
+// updateTime:2020-07-24
+
+
 Page({
 
   /**

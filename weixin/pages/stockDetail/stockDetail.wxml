@@ -1,4 +1,8 @@
-<!--pages/test/test.wxml-->
+<!-- author:张圯
+	createTime:2020-07-19
+	updateTime:2020-07-24 -->
+
+
 <view>
 	<cu-custom class="text-white" bgColor="imageBg1" isBack="{{true}}">
 		<view slot="backText">返回</view>
@@ -40,14 +44,14 @@
 			<view class="navPrebar">
 				<view class="{{currentPreTab==0?'select_pre_txt':'pre_txt'}}" bindtap="currentPreTabChange1">50天
 				</view>
-				<view class="{{currentPreTab==1?'select_pre_txt':'pre_txt'}}" bindtap="currentPreTabChange2">250天
+				<view class="{{currentPreTab==1?'select_pre_txt':'pre_txt'}}" bindtap="currentPreTabChange2">200天
 				</view>
 			</view>
 			<view hidden="{{currentPreTab!==0}}" id="test1" class="currentPrePage1">
-				<ec-canvas id="mychart-dom-line_50" canvas-id="mychart-bar" ec="{{ ecPredict }}"></ec-canvas>
+				<ec-canvas id="mychart-dom-line_50" canvas-id="mychart-bar" ec="{{ ecPredict_50 }}"></ec-canvas>
 			</view>
 			<view hidden="{{currentPreTab!==1}}" id="test2" class="currentPrePage2">
-				<ec-canvas id="mychart-dom-line_250" canvas-id="mychart-bar" ec="{{ ecPredict }}"></ec-canvas>
+				<ec-canvas id="mychart-dom-line_250" canvas-id="mychart-bar" ec="{{ ecPredict_250 }}"></ec-canvas>
 			</view>
 		</view>
 		<!-- 词云图页面 -->

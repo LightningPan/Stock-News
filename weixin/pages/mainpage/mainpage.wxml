@@ -465,7 +465,7 @@
           <image src="/images/tabbar/messagesPage{{PageCur=='messagesPage'?'_cur':''}}.png"> </image>
         </view>
       </view>
-      <view class="{{PageCur=='messagesPage'?'text-white':'text-gray'}}">消息</view>
+      <view class="{{PageCur=='messagesPage'?'text-white':'text-gray'}}">模拟交易</view>
     </view>
     <view class="action" bindtap="NavChange" data-cur="myPage">
       <view class='cuIcon-cu-image'>

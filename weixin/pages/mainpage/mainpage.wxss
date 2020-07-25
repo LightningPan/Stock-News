@@ -316,7 +316,4 @@ ec-canvas{
     height: 100rpx;
     }
     
-    .text{
-    background-color: yellowgreen;
-    
-    }
+   

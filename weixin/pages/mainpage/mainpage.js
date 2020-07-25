@@ -12,11 +12,11 @@ Page({
     result1:0,//股票当前价格
     topprice:0,//股票涨停价格
     lowprice:0,//股票跌停价格
-    profitloss:0,//浮动盈亏
+    profitloss:-8121,//浮动盈亏
     sharenums:0,//最大购买股票数量
     shareinput:100,//输入购买股票数量
     sharename:null,//股票名称
-    marketvalue:0,//股票总市值
+    marketvalue:160880,//股票总市值
     StockInput:null,
     inputnewdetailValue:null,
     messagesData: null,
@@ -258,7 +258,7 @@ setReturnRateOption: function () {
     if (this.data.shareinput != null) {
       var sharenum = this.data.sharenums;
       var priceid = this.data.inputValue;
-      var price = this.data.result1;
+      var price = (this.data.result1/1).toFixed(1);
       var pricename = this.data.sharename;
       var shareinput = this.data.shareinput === 100 ? this.data.sharenums : this.data.shareinput
       if (priceid != null) {
@@ -271,7 +271,7 @@ setReturnRateOption: function () {
               var temp = that.data.marketvalue
               var messageTemp = that.data.message
               var t = {
-                code: sharenum,
+                code: priceid,
                 name: pricename,
                 price: price,
                 holdNum: shareinput,
@@ -280,7 +280,7 @@ setReturnRateOption: function () {
               }
               messageTemp.push(t)
               that.setData({
-                marketvalue: temp + price * shareinput,
+                marketvalue: (temp + price * shareinput).toFixed(2),
                 message:messageTemp
               })
             } else if (res.cancel) {
@@ -302,7 +302,9 @@ setReturnRateOption: function () {
   },
 
  //模拟卖出股票
- sell: function () {
+ sell: function (e) {
+ console.log( e.currentTarget.dataset.cur[0])
+  var targetCode=e.currentTarget.dataset.cur[0]
   var that = this
   wx.showModal({
     title: '股票卖出',
@@ -310,18 +312,23 @@ setReturnRateOption: function () {
     success(res) {
       if (res.confirm) {
         var temp = that.data.marketvalue
+        var price=that.data.result1
+        var sharenum=that.data.shareinput
+        var messageTemp=[]
+        for(var i =0;i<that.data.message.length;i++){
+          console.log(that.data.message[i].code)
+          if(that.data.message[i].code!=targetCode){
+            messageTemp.push(that.data.message[i])
+          }
+        }
         console.log('用户点击确定')
+        console.log(price)
+        console.log(sharenum)
         that.setData({
-          message: [{
-            code: 'sh600519',
-            name: '贵州茅台',
-            price: 1595.30,
-            holdNum: 100,
-            returnRate: -3.11,
-            change: -80.7
-          }],
-          marketvalue: temp - 13.50 * 100
+          message: messageTemp,
+          marketvalue: temp - price*sharenum
         })
+        console.log(that.data.message)
 
 
       } else if (res.cancel) {
@@ -607,7 +614,6 @@ this.setData({
   */
   refreshItem: function() {
     var that = this
-    var tindex=[]
     that.data.tempindex=null
     wx.request({
       url: 'https://106.54.95.249/UserStock',
@@ -648,23 +654,23 @@ this.setData({
                   })
                   //console.log(that.data.tempindex)
                   var j=0
-                  for(;j<tindex.length;j++){
-                    if(tindex[j].shareNum==that.data.tempindex[0].shareNum){
-                      tindex[j]=that.data.tempindex[0]
+                  for(;j<that.data.indexItems.length;j++){
+                    if(that.data.indexItems[j].shareNum==that.data.tempindex[0].shareNum){
+                      that.data.indexItems[j]=that.data.tempindex[0]
                       break
                     }
                   }
-                  if(j==tindex.length){
-                    tindex=tindex.concat(that.data.tempindex);
+                  if(j==that.data.indexItems.length){
+                    that.data.indexItems=that.data.indexItems.concat(that.data.tempindex);
                   }
-                  if(tindex==[]){
+                  if(that.data.indexItems==[]){
                     that.setData({
                       indexItems:[]
                     })
 
                   }
                   that.setData({
-                    indexItems:tindex
+                    indexItems:that.data.indexItems
     
                   })
                 }
@@ -676,7 +682,7 @@ this.setData({
     }
     })
     if (this.data.PageCur =="myOption"){
-      setTimeout(this.refreshItem, 3000)
+      setTimeout(this.refreshItem, 100)
     }
   },
 

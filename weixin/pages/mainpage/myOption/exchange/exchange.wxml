@@ -1,3 +1,7 @@
+<!--author:张圯
+	createTime:2020-07-23
+	updateTime:2020-07-24 -->
+
 <template name="holdStockItem">
 	<view data-cur="{{[item.shareNum,item.isSelected]}}" class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
 		<view class="basis-sm  ">
@@ -14,7 +18,7 @@
 </template>
 
 <template name="sellStockItem">
-	<view data-cur="{{[item.shareNum,item.isSelected]}}" class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
+	<view bindtap="sell" data-cur="{{[item.code,item.isSelected]}}" class="padding-xxl radius bg-black  grid flex flex-wrap  align-center margin-bottom ">
 		<view class="basis-sm  ">
 			<view class=" text-xl  text-left padding-left-lg ">{{item.name}}</view>
 			<view class=" padding-left-lg ">
